@@ -1,0 +1,132 @@
+{
+  "contentHash": "9f7fa649b95e5773ef0d0838c918f90d859c1296",
+  "fileContext": {
+    "relativePath": "src/core/analyzer/indexer.ts",
+    "language": "typescript",
+    "overview": "This file, `indexer.ts`, is responsible for building a semantic index of a codebase, which includes a flat symbol index, a file index, and an inverted keyword index. It aggregates data from individual file analyses and dependency graphs to provide a comprehensive understanding of the codebase.",
+    "symbols": [
+      {
+        "name": "buildIndex",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Builds a semantic index from file contexts and dependency graphs.",
+        "behavior": "Iterates over file contexts, extracts symbol information, and constructs the index.",
+        "parameters": "fileContexts: FileContext[], graph: DependencyGraph",
+        "returns": "SemanticIndex",
+        "limitations": "Requires file contexts and dependency graphs as input.",
+        "uses": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/workflow/runner.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "persistIndex",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Persists the semantic index to a file.",
+        "behavior": "Writes the index to a JSON file.",
+        "parameters": "index: SemanticIndex",
+        "returns": "void",
+        "limitations": "Requires a valid semantic index as input.",
+        "uses": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/workflow/runner.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "persistContextOverview",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Generates a context overview file from the semantic index and dependency graph.",
+        "behavior": "Constructs a markdown file with codebase statistics, usage instructions, and file overviews.",
+        "parameters": "index: SemanticIndex, graph: DependencyGraph",
+        "returns": "void",
+        "limitations": "Requires a valid semantic index and dependency graph as input.",
+        "uses": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/workflow/runner.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "indexKeywords",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Indexes keywords from symbol purposes and behaviors.",
+        "behavior": "Extracts meaningful words from text and stores them in a keyword index.",
+        "parameters": "sym: SymbolContext, filePath: string, keywords: Record<string, string[]>",
+        "returns": "void",
+        "limitations": "Requires a symbol context, file path, and keyword index as input.",
+        "uses": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/workflow/runner.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "extractMeaningfulWords",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Extracts meaningful words from text.",
+        "behavior": "Removes stop words, punctuation, and short words from text.",
+        "parameters": "text: string",
+        "returns": "string[]",
+        "limitations": "Requires a string as input.",
+        "uses": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/workflow/runner.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "inlineOverview",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Formats an overview string for inline use in a markdown list item.",
+        "behavior": "Collapses newlines, truncates text, and falls back to a placeholder if empty.",
+        "parameters": "overview: string | undefined",
+        "returns": "string",
+        "limitations": "Requires a string or undefined as input.",
+        "uses": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/workflow/runner.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/core/analyzer/fileAnalyzer.ts",
+      "src/core/analyzer/graphBuilder.ts",
+      "src/utils/logger.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:19.184Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.642Z"
+}

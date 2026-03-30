@@ -1,0 +1,60 @@
+{
+  "contentHash": "00d8492bdb2aa0b78b8fe5c385c8ea8f987e715e",
+  "fileContext": {
+    "relativePath": "src/utils/logger.ts",
+    "language": "typescript",
+    "overview": "Provides a logging utility for the application.",
+    "symbols": [
+      {
+        "name": "Logger",
+        "kind": "class",
+        "line": 0,
+        "purpose": "Represents a logger that can output messages to the console.",
+        "behavior": "Provides methods for logging at different levels (info, warn, error, debug).",
+        "parameters": "None",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/analyzer/indexer.ts",
+          "src/core/cache/contextCache.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/core/workflow/runner.ts",
+          "src/extension.ts",
+          "src/llm/providers/openaiCompat.ts",
+          "src/llm/rateLimiter.ts"
+        ]
+      },
+      {
+        "name": "logger",
+        "kind": "const",
+        "line": 0,
+        "purpose": "A global logger instance.",
+        "behavior": "Provides a single instance of the Logger class.",
+        "parameters": "None",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/analyzer/indexer.ts",
+          "src/core/cache/contextCache.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/core/workflow/runner.ts",
+          "src/extension.ts",
+          "src/llm/providers/openaiCompat.ts",
+          "src/llm/rateLimiter.ts"
+        ]
+      }
+    ],
+    "dependencies": [],
+    "analyzedAt": "2026-03-30T19:56:16.383Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.636Z"
+}

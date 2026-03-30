@@ -1,0 +1,32 @@
+{
+  "contentHash": "a260b17c4b80d47aa8506066a7ece0490fd05731",
+  "fileContext": {
+    "relativePath": "src/llm/providers/claude.ts",
+    "language": "typescript",
+    "overview": "ClaudeProvider connects to the Anthropic API to generate text based on user input.",
+    "symbols": [
+      {
+        "name": "complete",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Generate text based on user input.",
+        "behavior": "Makes a POST request to the Anthropic API with the user input and returns the generated text.",
+        "parameters": "messages: LLMMessage[], maxTokens: number, signal?: AbortSignal",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "Requires an API key and may be rate-limited.",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/llm/types.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:15.512Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.637Z"
+}

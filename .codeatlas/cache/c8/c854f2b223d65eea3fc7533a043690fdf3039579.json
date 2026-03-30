@@ -1,0 +1,26 @@
+{
+  "contentHash": "c854f2b223d65eea3fc7533a043690fdf3039579",
+  "fileContext": {
+    "relativePath": "src/test/index.ts",
+    "language": "typescript",
+    "overview": "Runs tests for the extension using the test-electron module.",
+    "symbols": [
+      {
+        "name": "main",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Entrypoint for running tests.",
+        "behavior": "Resolves extension development path and tests path, then runs tests using test-electron.",
+        "parameters": "None",
+        "returns": "Promise<void>",
+        "limitations": "Assumes test-electron is installed and configured correctly.",
+        "uses": [],
+        "usedBy": []
+      }
+    ],
+    "dependencies": [],
+    "analyzedAt": "2026-03-30T19:56:16.237Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.639Z"
+}

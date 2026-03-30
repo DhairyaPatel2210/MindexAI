@@ -1,0 +1,80 @@
+{
+  "contentHash": "740e620cfd5c448b44e831d90d8f3e308f02e388",
+  "fileContext": {
+    "relativePath": "src/llm/providers/local.ts",
+    "language": "typescript",
+    "overview": "LocalProvider is a class that connects to OpenAI-compatible local inference servers for text completion tasks, supporting early termination and cancellation.",
+    "symbols": [
+      {
+        "name": "LocalProvider",
+        "kind": "class",
+        "line": 0,
+        "purpose": "Connects to OpenAI-compatible local inference servers for text completion tasks",
+        "behavior": "Supports early termination and cancellation, handles different server types and error cases",
+        "parameters": "baseUrl, model, apiKey, name, serverLabel",
+        "returns": "LLMResponse",
+        "limitations": "Requires OpenAI-compatible local inference server, may not work with all server types",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      },
+      {
+        "name": "complete",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Completes text based on input messages",
+        "behavior": "Makes a POST request to the server, handles errors and cancellation, returns LLMResponse",
+        "parameters": "messages, maxTokens, signal",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "May throw LLMError or RateLimitError, requires OpenAI-compatible local inference server",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      },
+      {
+        "name": "readStream",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Reads an SSE stream from the server",
+        "behavior": "Tracks JSON brace depth, handles early termination and cancellation, returns LLMResponse",
+        "parameters": "body, signal",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "May throw DOMException or LLMError, requires SSE stream from server",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      },
+      {
+        "name": "readNonStreamingResponse",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Reads a non-streaming response from the server",
+        "behavior": "Handles different response formats, returns LLMResponse",
+        "parameters": "response",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "May throw LLMError, requires non-streaming response from server",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/llm/types.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:20.171Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.643Z"
+}

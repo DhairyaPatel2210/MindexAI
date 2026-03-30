@@ -1,0 +1,48 @@
+{
+  "contentHash": "03450744e83be730f0c30e395d7651002a624077",
+  "fileContext": {
+    "relativePath": "src/llm/providers/gemini.ts",
+    "language": "typescript",
+    "overview": "Provides a Gemini LLM provider.",
+    "symbols": [
+      {
+        "name": "GeminiProvider",
+        "kind": "class",
+        "line": 0,
+        "purpose": "Represents a Gemini LLM provider.",
+        "behavior": "Provides a complete method for generating text.",
+        "parameters": "apiKey: string; model: string;",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "None",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      },
+      {
+        "name": "parseRetryDelay",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Parses the retry delay from a 429 response.",
+        "behavior": "Returns the retry delay in milliseconds.",
+        "parameters": "body: string;",
+        "returns": "number",
+        "limitations": "None",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/llm/types.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:16.383Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.637Z"
+}

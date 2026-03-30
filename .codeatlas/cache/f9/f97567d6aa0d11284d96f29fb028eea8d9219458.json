@@ -1,0 +1,32 @@
+{
+  "contentHash": "f97567d6aa0d11284d96f29fb028eea8d9219458",
+  "fileContext": {
+    "relativePath": "src/llm/providers/ollama.ts",
+    "language": "typescript",
+    "overview": "OllamaProvider connects to a locally-running Ollama instance using its native NDJSON streaming API.",
+    "symbols": [
+      {
+        "name": "complete",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Generate text based on user input.",
+        "behavior": "Makes a POST request to the Ollama API with the user input and returns the generated text.",
+        "parameters": "messages: LLMMessage[], maxTokens: number, signal?: AbortSignal",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "Requires a locally-running Ollama instance and may be rate-limited.",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/llm/types.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:15.512Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.638Z"
+}

@@ -1,0 +1,38 @@
+{
+  "contentHash": "6b8449688a8bad1d76a3e661f16d5199f6adbe6d",
+  "fileContext": {
+    "relativePath": "src/vscode/activityBar.ts",
+    "language": "typescript",
+    "overview": "CodeAtlasActivityProvider class that displays the CodeAtlas activity bar item in the VS Code activity bar.",
+    "symbols": [
+      {
+        "name": "CodeAtlasActivityProvider",
+        "kind": "class",
+        "line": 0,
+        "purpose": "Display the CodeAtlas activity bar item.",
+        "behavior": "Creates an activity bar item and updates its children based on the CodeAtlas workflow status.",
+        "parameters": "",
+        "returns": "void",
+        "limitations": "Requires VS Code and may throw errors if VS Code is not available.",
+        "uses": [
+          "src/core/workflow/runner.ts",
+          "src/core/stats/usageStats.ts",
+          "src/llm/factory.ts",
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/core/workflow/runner.ts",
+      "src/core/stats/usageStats.ts",
+      "src/llm/factory.ts",
+      "src/llm/types.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:15.512Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.639Z"
+}

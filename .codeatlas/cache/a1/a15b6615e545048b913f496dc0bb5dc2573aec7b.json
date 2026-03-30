@@ -1,0 +1,169 @@
+{
+  "contentHash": "a15b6615e545048b913f496dc0bb5dc2573aec7b",
+  "fileContext": {
+    "relativePath": "src/server/serverManager.ts",
+    "language": "typescript",
+    "overview": "Manages a llama-server child process, providing a singleton instance for starting, stopping, and monitoring the server.",
+    "symbols": [
+      {
+        "name": "ServerManager",
+        "kind": "class",
+        "line": 0,
+        "purpose": "Singleton class for managing a llama-server child process.",
+        "behavior": "Provides methods for starting, stopping, and monitoring the server, as well as emitting events to registered callbacks.",
+        "parameters": "ServerOptions",
+        "returns": "void",
+        "limitations": "Only one instance of the server can run at a time.",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "start",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Starts the llama-server child process with the given options.",
+        "behavior": "Checks if the server is already running, stops it if necessary, and then starts the new server with the provided options.",
+        "parameters": "ServerOptions",
+        "returns": "Promise<void>",
+        "limitations": "Fails if the model file or llama-server binary is not found.",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "stop",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Stops the llama-server child process.",
+        "behavior": "Kills the server process and emits a 'stopped' event to registered callbacks.",
+        "parameters": "void",
+        "returns": "Promise<void>",
+        "limitations": "Fails if the server process is not found.",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "dispose",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Disposes of the llama-server child process and clears any registered callbacks.",
+        "behavior": "Kills the server process and clears any registered callbacks.",
+        "parameters": "void",
+        "returns": "void",
+        "limitations": "Does not emit any events.",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "pollHealth",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Polls the server's health endpoint to determine its status.",
+        "behavior": "Sends a GET request to the server's health endpoint and updates the server's status accordingly.",
+        "parameters": "number",
+        "returns": "void",
+        "limitations": "Fails if the server is not running or the health endpoint is not available.",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "addLog",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Adds a log line to the server's log buffer.",
+        "behavior": "Pushes the log line to the server's log buffer and emits an event to registered callbacks.",
+        "parameters": "string",
+        "returns": "void",
+        "limitations": "Does not emit any events if the log buffer is full.",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "emit",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Emits an event to registered callbacks.",
+        "behavior": "Updates the server's status and emits an event to registered callbacks.",
+        "parameters": "ServerStatus, number, string, string?",
+        "returns": "void",
+        "limitations": "Does not emit any events if the server is not running.",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "detectBinary",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Detects the llama-server binary on the system.",
+        "behavior": "Checks a list of possible binary locations and returns the first one that exists.",
+        "parameters": "void",
+        "returns": "Promise<string | null>",
+        "limitations": "Fails if none of the binary locations are found.",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "commandExists",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Checks if a command exists on the system.",
+        "behavior": "Executes a command to check if the binary exists and returns a promise with the result.",
+        "parameters": "string",
+        "returns": "Promise<boolean>",
+        "limitations": "Fails if the command execution fails.",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/utils/logger.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:20.824Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.643Z"
+}

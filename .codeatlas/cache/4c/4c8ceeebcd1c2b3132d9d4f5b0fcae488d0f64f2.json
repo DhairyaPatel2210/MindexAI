@@ -1,0 +1,58 @@
+{
+  "contentHash": "4c8ceeebcd1c2b3132d9d4f5b0fcae488d0f64f2",
+  "fileContext": {
+    "relativePath": "src/test/suite/rateLimiter.test.ts",
+    "language": "typescript",
+    "overview": "Tests the rate limiter class.",
+    "symbols": [
+      {
+        "name": "RateLimiter",
+        "kind": "class",
+        "line": 0,
+        "purpose": "Rate limiter class.",
+        "behavior": "Limits the number of requests within a time window.",
+        "parameters": "number",
+        "returns": "RateLimiter",
+        "limitations": "Does not handle edge cases correctly.",
+        "uses": [
+          "src/llm/rateLimiter.ts"
+        ],
+        "usedBy": []
+      },
+      {
+        "name": "acquire",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Acquires a slot in the rate limiter.",
+        "behavior": "Returns a promise that resolves when a slot is acquired.",
+        "parameters": "None",
+        "returns": "Promise<void>",
+        "limitations": "Does not handle cases where the rate limiter is full.",
+        "uses": [
+          "src/llm/rateLimiter.ts"
+        ],
+        "usedBy": []
+      },
+      {
+        "name": "usedInWindow",
+        "kind": "property",
+        "line": 0,
+        "purpose": "Returns the number of slots used in the time window.",
+        "behavior": "Returns the number of slots used in the time window.",
+        "parameters": "None",
+        "returns": "number",
+        "limitations": "Does not handle cases where the time window is not set.",
+        "uses": [
+          "src/llm/rateLimiter.ts"
+        ],
+        "usedBy": []
+      }
+    ],
+    "dependencies": [
+      "src/llm/rateLimiter.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:16.237Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.640Z"
+}

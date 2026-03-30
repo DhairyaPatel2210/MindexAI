@@ -1,0 +1,736 @@
+{
+  "contentHash": "82541951643ca14fb914567cf19ccfb5eef5e642",
+  "fileContext": {
+    "relativePath": "src/utils/fileUtils.ts",
+    "language": "typescript",
+    "overview": "This file provides utility functions for file system operations, branch management, and workspace configuration. It exports constants, functions, and variables for working with the CodeAtlas directory structure, branch tracking, and file path manipulation.",
+    "symbols": [
+      {
+        "name": "CODEATLAS_DIR",
+        "kind": "constant",
+        "line": 0,
+        "purpose": "Directory path for CodeAtlas",
+        "behavior": "Returns the absolute path to the CodeAtlas directory",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getWorkspaceRoot",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the workspace root directory",
+        "behavior": "Returns the absolute path to the workspace root directory",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "Throws an error if no workspace folder is open",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getCodeAtlasDir",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the CodeAtlas directory path",
+        "behavior": "Returns the absolute path to the CodeAtlas directory",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getCodeAtlasDirForRoot",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the CodeAtlas directory path for a given workspace root",
+        "behavior": "Returns the absolute path to the CodeAtlas directory",
+        "parameters": "workspaceRoot: string",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "sanitizeBranchName",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Sanitize a git branch name for use as a filesystem directory name",
+        "behavior": "Replaces '/' with '--' in the branch name",
+        "parameters": "branch: string",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getBranchDir",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the per-branch directory under `.codeatlas/branches/{sanitized-branch}/`",
+        "behavior": "Returns the absolute path to the branch directory",
+        "parameters": "branch: string",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getSharedCacheDir",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the shared content-hash cache directory (`.codeatlas/cache/`)",
+        "behavior": "Returns the absolute path to the cache directory",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "setActiveBranch",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Set the active branch",
+        "behavior": "Sets the active branch for branch-aware path helpers",
+        "parameters": "branch: string",
+        "returns": "void",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getActiveBranch",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the currently active branch name",
+        "behavior": "Returns the active branch name",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "Throws an error if no active branch is set",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getActiveBranchDir",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the directory for the currently active branch",
+        "behavior": "Returns the absolute path to the active branch directory",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getContextDir",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the context directory",
+        "behavior": "Returns the absolute path to the context directory",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getGraphFilePath",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the graph file path",
+        "behavior": "Returns the absolute path to the graph file",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getIndexFilePath",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the index file path",
+        "behavior": "Returns the absolute path to the index file",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getContextOverviewPath",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the context overview file path",
+        "behavior": "Returns the absolute path to the context overview file",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getBranchStatePath",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the branch state file path",
+        "behavior": "Returns the absolute path to the branch state file",
+        "parameters": "branch?: string",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getContextFilePath",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the context file path",
+        "behavior": "Returns the absolute path to the context file",
+        "parameters": "relativeFilePath: string",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getCurrentIndexDir",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the stable `.codeatlas/current/` directory path",
+        "behavior": "Returns the absolute path to the current index directory",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "publishCurrentIndex",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Copy the active branch's output files to `.codeatlas/current/`",
+        "behavior": "Copies the index file, context overview file, graph file, and context directory",
+        "parameters": "",
+        "returns": "void",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "copyDirRecursive",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Copy a directory recursively",
+        "behavior": "Copies the directory and its contents",
+        "parameters": "src: string, dst: string",
+        "returns": "void",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "ensureDir",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Ensure a directory exists",
+        "behavior": "Creates the directory if it does not exist",
+        "parameters": "dirPath: string",
+        "returns": "void",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "ensureCodeAtlasDirs",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Ensure the CodeAtlas directory structure exists",
+        "behavior": "Creates the CodeAtlas directory and its subdirectories",
+        "parameters": "",
+        "returns": "void",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "writeJson",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Write JSON data to a file",
+        "behavior": "Writes the JSON data to the file",
+        "parameters": "filePath: string, data: unknown",
+        "returns": "void",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "readJson",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Read JSON data from a file",
+        "behavior": "Returns the JSON data",
+        "parameters": "filePath: string",
+        "returns": "T | null",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "writeText",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Write text to a file",
+        "behavior": "Writes the text to the file",
+        "parameters": "filePath: string, content: string",
+        "returns": "void",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "readText",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Read text from a file",
+        "behavior": "Returns the text",
+        "parameters": "filePath: string",
+        "returns": "string | null",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "fileExists",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Check if a file exists",
+        "behavior": "Returns true if the file exists",
+        "parameters": "filePath: string",
+        "returns": "boolean",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getFileSizeKB",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the file size in KB",
+        "behavior": "Returns the file size in KB",
+        "parameters": "filePath: string",
+        "returns": "number",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "toRelativePath",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the relative path from the workspace root",
+        "behavior": "Returns the relative path",
+        "parameters": "absolutePath: string",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "toAbsolutePath",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the absolute path from a relative path",
+        "behavior": "Returns the absolute path",
+        "parameters": "relativePath: string",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "INCLUDE_FILE",
+        "kind": "constant",
+        "line": 0,
+        "purpose": "File path for the .include.codeatlas file",
+        "behavior": "Returns the absolute path to the .include.codeatlas file",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "isGitRepo",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Check if the workspace root is inside a git repository",
+        "behavior": "Returns true if the workspace root is inside a git repository",
+        "parameters": "",
+        "returns": "boolean",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getIncludeFilePath",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Get the path to the .include.codeatlas file",
+        "behavior": "Returns the absolute path to the .include.codeatlas file",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "hasIncludeFile",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Check if a .include.codeatlas file exists in the workspace root",
+        "behavior": "Returns true if the .include.codeatlas file exists",
+        "parameters": "",
+        "returns": "boolean",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "parseIncludeFile",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Parse the .include.codeatlas file",
+        "behavior": "Returns the list of resolved entries",
+        "parameters": "",
+        "returns": "string[]",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "collectSourceFiles",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Collect source files using the .include.codeatlas file",
+        "behavior": "Returns the list of source files",
+        "parameters": "",
+        "returns": "string[]",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "collectSourceFilesViaGlob",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Collect files based on glob patterns",
+        "behavior": "Returns the list of files",
+        "parameters": "includedExtensions: string[], excludePatterns: string[]",
+        "returns": "string[]",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "chunkText",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Chunk text into smaller pieces",
+        "behavior": "Returns the list of chunks",
+        "parameters": "text: string, maxChars: number",
+        "returns": "string[]",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "detectLanguage",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Detect the language of a file",
+        "behavior": "Returns the language",
+        "parameters": "filePath: string",
+        "returns": "string",
+        "limitations": "",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts",
+          "src/core/git/gitService.ts",
+          "src/core/stats/usageStats.ts",
+          "src/test/suite/fileUtils.test.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      }
+    ],
+    "dependencies": [],
+    "analyzedAt": "2026-03-30T19:56:18.060Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.640Z"
+}

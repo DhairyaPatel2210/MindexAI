@@ -1,0 +1,26 @@
+{
+  "contentHash": "61d1cbea7f9e20f03467f1b316b70d27b81d858b",
+  "fileContext": {
+    "relativePath": "src/test/suite/index.ts",
+    "language": "typescript",
+    "overview": "Runs tests for the extension using Mocha.",
+    "symbols": [
+      {
+        "name": "run",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Runs tests using Mocha.",
+        "behavior": "Creates a Mocha instance, adds test files, and runs tests.",
+        "parameters": "None",
+        "returns": "Promise<void>",
+        "limitations": "Assumes test files are in the correct format and location.",
+        "uses": [],
+        "usedBy": []
+      }
+    ],
+    "dependencies": [],
+    "analyzedAt": "2026-03-30T19:56:16.237Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.639Z"
+}

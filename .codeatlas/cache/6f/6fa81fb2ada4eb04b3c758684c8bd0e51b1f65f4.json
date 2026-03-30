@@ -1,0 +1,153 @@
+{
+  "contentHash": "6fa81fb2ada4eb04b3c758684c8bd0e51b1f65f4",
+  "fileContext": {
+    "relativePath": "src/core/git/gitService.ts",
+    "language": "typescript",
+    "overview": "This file provides a set of Git-related utility functions for managing branches, diffs, and content hashing. It allows for retrieving branch information, computing content hashes, and capturing the current Git state.",
+    "symbols": [
+      {
+        "name": "getCurrentBranch",
+        "kind": "function",
+        "line": 26,
+        "purpose": "Returns the current branch name, or HEAD commit hash if detached, or 'default' for empty repos.",
+        "behavior": "Tries to get the current branch using 'git rev-parse --abbrev-ref HEAD', falling back to 'git rev-parse --short HEAD' if that fails, and returning 'default' if the repo is empty.",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "getHeadCommit",
+        "kind": "function",
+        "line": 34,
+        "purpose": "Returns the commit hash that HEAD points to.",
+        "behavior": "Tries to get the commit hash using 'git rev-parse HEAD', returning an empty string if that fails.",
+        "parameters": "",
+        "returns": "string",
+        "limitations": "",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "getChangedFilesBetweenRefs",
+        "kind": "function",
+        "line": 44,
+        "purpose": "Get files that differ between two refs (branches/commits).",
+        "behavior": "Uses 'git diff --name-status' to get the files that were added, modified, or deleted between the two refs.",
+        "parameters": "fromRef: string, toRef: string",
+        "returns": "{ added: string[], modified: string[], deleted: string[] }",
+        "limitations": "",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "getUncommittedChanges",
+        "kind": "function",
+        "line": 83,
+        "purpose": "Get uncommitted changes (both staged and unstaged) relative to HEAD.",
+        "behavior": "Uses 'git diff --name-status HEAD' and 'git diff --name-status --cached' to get the modified and deleted files, and 'git ls-files -o --exclude-standard' to get the untracked files.",
+        "parameters": "",
+        "returns": "{ modified: string[], deleted: string[], untracked: string[] }",
+        "limitations": "",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "getAllChangedFiles",
+        "kind": "function",
+        "line": 121,
+        "purpose": "Get ALL files that have changed relative to the last indexed state.",
+        "behavior": "Combines branch diff + uncommitted changes into a single set.",
+        "parameters": "lastIndexedRef?: string",
+        "returns": "{ needsAnalysis: string[], deleted: string[] }",
+        "limitations": "",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "getFileContentHash",
+        "kind": "function",
+        "line": 144,
+        "purpose": "Compute a content hash for a file using the same algorithm as git (SHA-1 of blob).",
+        "behavior": "Uses 'git hash-object' if in a git repo, falling back to SHA-256 of content.",
+        "parameters": "absolutePath: string",
+        "returns": "string",
+        "limitations": "",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "getFileHashAtRef",
+        "kind": "function",
+        "line": 157,
+        "purpose": "Get the git blob hash for a file at a specific ref (commit/branch).",
+        "behavior": "Uses 'git rev-parse' to get the hash of the file at the specified ref.",
+        "parameters": "relPath: string, ref: string",
+        "returns": "string",
+        "limitations": "",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "captureGitState",
+        "kind": "function",
+        "line": 173,
+        "purpose": "Capture the current Git state.",
+        "behavior": "Returns an object with the current branch, head commit, and timestamp.",
+        "parameters": "",
+        "returns": "GitState",
+        "limitations": "",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/utils/fileUtils.ts",
+      "src/utils/logger.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:19.696Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.642Z"
+}

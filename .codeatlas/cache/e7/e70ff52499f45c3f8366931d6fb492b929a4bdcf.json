@@ -1,0 +1,175 @@
+{
+  "contentHash": "e70ff52499f45c3f8366931d6fb492b929a4bdcf",
+  "fileContext": {
+    "relativePath": "src/llm/types.ts",
+    "language": "typescript",
+    "overview": "Defines types and interfaces for the LLM (Large Language Model) module.",
+    "symbols": [
+      {
+        "name": "LLMMessage",
+        "kind": "interface",
+        "line": 0,
+        "purpose": "Represents a message sent to or received from the LLM.",
+        "behavior": "Contains a role (user, assistant, or system) and content.",
+        "parameters": "role: 'user' | 'assistant' | 'system'; content: string;",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/stats/usageStats.ts",
+          "src/core/workflow/runner.ts",
+          "src/extension.ts",
+          "src/llm/factory.ts",
+          "src/llm/providers/claude.ts",
+          "src/llm/providers/gemini.ts",
+          "src/llm/providers/local.ts",
+          "src/llm/providers/ollama.ts",
+          "src/llm/providers/openai.ts"
+        ]
+      },
+      {
+        "name": "LLMResponse",
+        "kind": "interface",
+        "line": 0,
+        "purpose": "Represents the response from the LLM.",
+        "behavior": "Contains content, tokens used, input tokens, and output tokens.",
+        "parameters": "content: string; tokensUsed?: number; inputTokens?: number; outputTokens?: number;",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/stats/usageStats.ts",
+          "src/core/workflow/runner.ts",
+          "src/extension.ts",
+          "src/llm/factory.ts",
+          "src/llm/providers/claude.ts",
+          "src/llm/providers/gemini.ts",
+          "src/llm/providers/local.ts",
+          "src/llm/providers/ollama.ts",
+          "src/llm/providers/openai.ts"
+        ]
+      },
+      {
+        "name": "ILLMProvider",
+        "kind": "interface",
+        "line": 0,
+        "purpose": "Defines the interface for an LLM provider.",
+        "behavior": "Provides a complete method for generating text.",
+        "parameters": "readonly name: string; complete(messages: LLMMessage[], maxTokens?: number, signal?: AbortSignal): Promise<LLMResponse>;",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "None",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/stats/usageStats.ts",
+          "src/core/workflow/runner.ts",
+          "src/extension.ts",
+          "src/llm/factory.ts",
+          "src/llm/providers/claude.ts",
+          "src/llm/providers/gemini.ts",
+          "src/llm/providers/local.ts",
+          "src/llm/providers/ollama.ts",
+          "src/llm/providers/openai.ts"
+        ]
+      },
+      {
+        "name": "LLMProviderType",
+        "kind": "type",
+        "line": 0,
+        "purpose": "Enum for LLM provider types.",
+        "behavior": "Can be one of 'openai', 'gemini', 'claude', 'local', or 'openai-compat'.",
+        "parameters": "None",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/stats/usageStats.ts",
+          "src/core/workflow/runner.ts",
+          "src/extension.ts",
+          "src/llm/factory.ts",
+          "src/llm/providers/claude.ts",
+          "src/llm/providers/gemini.ts",
+          "src/llm/providers/local.ts",
+          "src/llm/providers/ollama.ts",
+          "src/llm/providers/openai.ts"
+        ]
+      },
+      {
+        "name": "LLMConfig",
+        "kind": "interface",
+        "line": 0,
+        "purpose": "Represents the configuration for an LLM provider.",
+        "behavior": "Contains provider, API key, and model.",
+        "parameters": "provider: LLMProviderType; apiKey: string; model: string;",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/stats/usageStats.ts",
+          "src/core/workflow/runner.ts",
+          "src/extension.ts",
+          "src/llm/factory.ts",
+          "src/llm/providers/claude.ts",
+          "src/llm/providers/gemini.ts",
+          "src/llm/providers/local.ts",
+          "src/llm/providers/ollama.ts",
+          "src/llm/providers/openai.ts"
+        ]
+      },
+      {
+        "name": "LLMError",
+        "kind": "class",
+        "line": 0,
+        "purpose": "Represents an error that occurred while using the LLM.",
+        "behavior": "Extends the Error class.",
+        "parameters": "message: string; provider: string; statusCode?: number;",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/stats/usageStats.ts",
+          "src/core/workflow/runner.ts",
+          "src/extension.ts",
+          "src/llm/factory.ts",
+          "src/llm/providers/claude.ts",
+          "src/llm/providers/gemini.ts",
+          "src/llm/providers/local.ts",
+          "src/llm/providers/ollama.ts",
+          "src/llm/providers/openai.ts"
+        ]
+      },
+      {
+        "name": "RateLimitError",
+        "kind": "class",
+        "line": 0,
+        "purpose": "Represents a rate limit error that occurred while using the LLM.",
+        "behavior": "Extends the LLMError class.",
+        "parameters": "provider: string; retryAfterMs: number;",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/stats/usageStats.ts",
+          "src/core/workflow/runner.ts",
+          "src/extension.ts",
+          "src/llm/factory.ts",
+          "src/llm/providers/claude.ts",
+          "src/llm/providers/gemini.ts",
+          "src/llm/providers/local.ts",
+          "src/llm/providers/ollama.ts",
+          "src/llm/providers/openai.ts"
+        ]
+      }
+    ],
+    "dependencies": [],
+    "analyzedAt": "2026-03-30T19:56:16.383Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.635Z"
+}

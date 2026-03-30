@@ -1,0 +1,193 @@
+{
+  "contentHash": "af2e363bb2632ae3d5140965232b130647e0cee8",
+  "fileContext": {
+    "relativePath": "src/core/analyzer/graphBuilder.ts",
+    "language": "typescript",
+    "overview": "This file is responsible for building a dependency graph of source files, including their symbols and import relationships. It uses a combination of ctags and regex-based parsing to extract symbols and import statements.",
+    "symbols": [
+      {
+        "name": "buildDependencyGraph",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Builds a dependency graph of source files",
+        "behavior": "Takes an array of source file paths, extracts symbols and import relationships, and returns a dependency graph object",
+        "parameters": "sourceFiles: string[]",
+        "returns": "Promise<DependencyGraph>",
+        "limitations": "Requires ctags to be installed and configured properly",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/indexer.ts",
+          "src/core/workflow/runner.ts",
+          "src/test/suite/fileAnalyzer.test.ts",
+          "src/test/suite/graphBuilder.test.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "isCtagsAvailable",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Checks if ctags is available on the system",
+        "behavior": "Runs a ctags command with the --version flag and checks for errors",
+        "parameters": "None",
+        "returns": "Promise<boolean>",
+        "limitations": "May return false positives if ctags is not properly installed or configured",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/indexer.ts",
+          "src/core/workflow/runner.ts",
+          "src/test/suite/fileAnalyzer.test.ts",
+          "src/test/suite/graphBuilder.test.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "extractSymbolsWithCtags",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Extracts symbols from source files using ctags",
+        "behavior": "Runs ctags with the --output-format=json flag and parses the output to extract symbols",
+        "parameters": "workspaceRoot: string, files: Record<string, FileNode>",
+        "returns": "Promise<void>",
+        "limitations": "Requires ctags to be installed and configured properly",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/indexer.ts",
+          "src/core/workflow/runner.ts",
+          "src/test/suite/fileAnalyzer.test.ts",
+          "src/test/suite/graphBuilder.test.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "extractSymbolsWithRegex",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Extracts symbols from source files using regex-based parsing",
+        "behavior": "Parses source files to extract symbols based on language-specific patterns",
+        "parameters": "files: Record<string, FileNode>",
+        "returns": "void",
+        "limitations": "May not cover all possible symbol types or languages",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/indexer.ts",
+          "src/core/workflow/runner.ts",
+          "src/test/suite/fileAnalyzer.test.ts",
+          "src/test/suite/graphBuilder.test.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "extractImports",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Extracts import relationships from source files",
+        "behavior": "Parses source files to extract import statements based on language-specific patterns",
+        "parameters": "content: string, currentFile: string, workspaceRoot: string, allFiles: Record<string, FileNode>",
+        "returns": "string[]",
+        "limitations": "May not cover all possible import types or languages",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/indexer.ts",
+          "src/core/workflow/runner.ts",
+          "src/test/suite/fileAnalyzer.test.ts",
+          "src/test/suite/graphBuilder.test.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "buildImportGraph",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Builds the import graph of source files",
+        "behavior": "Parses source files to extract import relationships and updates the import graph",
+        "parameters": "files: Record<string, FileNode>, workspaceRoot: string",
+        "returns": "void",
+        "limitations": "May not cover all possible import types or languages",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/indexer.ts",
+          "src/core/workflow/runner.ts",
+          "src/test/suite/fileAnalyzer.test.ts",
+          "src/test/suite/graphBuilder.test.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "normalizeKind",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Normalizes the kind of a symbol",
+        "behavior": "Maps ctags kind codes to human-readable symbol types",
+        "parameters": "kind: string",
+        "returns": "string",
+        "limitations": "May not cover all possible kind codes",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/indexer.ts",
+          "src/core/workflow/runner.ts",
+          "src/test/suite/fileAnalyzer.test.ts",
+          "src/test/suite/graphBuilder.test.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      },
+      {
+        "name": "getLanguageFromPath",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Determines the language of a source file",
+        "behavior": "Parses the file extension to determine the language",
+        "parameters": "filePath: string",
+        "returns": "string",
+        "limitations": "May not cover all possible file extensions",
+        "uses": [
+          "src/utils/fileUtils.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/indexer.ts",
+          "src/core/workflow/runner.ts",
+          "src/test/suite/fileAnalyzer.test.ts",
+          "src/test/suite/graphBuilder.test.ts",
+          "src/test/suite/indexer.test.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/utils/fileUtils.ts",
+      "src/utils/logger.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:17.650Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.641Z"
+}

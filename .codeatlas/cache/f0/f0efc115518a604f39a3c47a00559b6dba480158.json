@@ -1,0 +1,15 @@
+{
+  "contentHash": "f0efc115518a604f39a3c47a00559b6dba480158",
+  "fileContext": {
+    "relativePath": "src/test/suite/fileAnalyzer.test.ts",
+    "language": "typescript",
+    "overview": "",
+    "symbols": [],
+    "dependencies": [
+      "src/core/analyzer/graphBuilder.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:31.813Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.643Z"
+}

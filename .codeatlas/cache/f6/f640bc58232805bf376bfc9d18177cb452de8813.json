@@ -1,0 +1,46 @@
+{
+  "contentHash": "f640bc58232805bf376bfc9d18177cb452de8813",
+  "fileContext": {
+    "relativePath": "src/llm/factory.ts",
+    "language": "typescript",
+    "overview": "LLM factory function that creates an instance of a language model provider based on the user's configuration.",
+    "symbols": [
+      {
+        "name": "createLLMProvider",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Create a language model provider instance.",
+        "behavior": "Creates an instance of a language model provider based on the user's configuration and returns it.",
+        "parameters": "",
+        "returns": "Promise<ILLMProvider>",
+        "limitations": "Requires user configuration and may throw errors if configuration is invalid.",
+        "uses": [
+          "src/llm/types.ts",
+          "src/llm/providers/openai.ts",
+          "src/llm/providers/gemini.ts",
+          "src/llm/providers/claude.ts",
+          "src/llm/providers/local.ts",
+          "src/llm/providers/ollama.ts",
+          "src/llm/providers/openaiCompat.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/activityBar.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/llm/types.ts",
+      "src/llm/providers/openai.ts",
+      "src/llm/providers/gemini.ts",
+      "src/llm/providers/claude.ts",
+      "src/llm/providers/local.ts",
+      "src/llm/providers/ollama.ts",
+      "src/llm/providers/openaiCompat.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:15.512Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.638Z"
+}

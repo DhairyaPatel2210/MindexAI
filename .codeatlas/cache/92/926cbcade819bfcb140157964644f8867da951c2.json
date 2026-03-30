@@ -1,0 +1,44 @@
+{
+  "contentHash": "926cbcade819bfcb140157964644f8867da951c2",
+  "fileContext": {
+    "relativePath": "src/test/suite/graphBuilder.test.ts",
+    "language": "typescript",
+    "overview": "This file contains unit tests for the GraphBuilder class, specifically for the extractSymbolsFromContent and extractImports methods. The tests cover various programming languages, including TypeScript, JavaScript, Python, Go, Rust, and Java, to ensure the GraphBuilder can correctly extract symbols and imports from code in different languages.",
+    "symbols": [
+      {
+        "name": "extractSymbolsFromContent",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Extracts symbols from a given code snippet",
+        "behavior": "Takes a code snippet and a file path as input, and returns an array of symbols extracted from the code",
+        "parameters": "code: string, filePath: string",
+        "returns": "Array of symbols",
+        "limitations": "Only supports a limited set of programming languages",
+        "uses": [
+          "src/core/analyzer/graphBuilder.ts"
+        ],
+        "usedBy": []
+      },
+      {
+        "name": "extractImports",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Extracts imports from a given code snippet",
+        "behavior": "Takes a code snippet, a file path, and a workspace root as input, and returns an array of imports extracted from the code",
+        "parameters": "code: string, filePath: string, workspaceRoot: string, allFiles: Record<string, FileNode>",
+        "returns": "Array of imports",
+        "limitations": "Only supports a limited set of programming languages",
+        "uses": [
+          "src/core/analyzer/graphBuilder.ts"
+        ],
+        "usedBy": []
+      }
+    ],
+    "dependencies": [
+      "src/core/analyzer/graphBuilder.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:36.901Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.644Z"
+}

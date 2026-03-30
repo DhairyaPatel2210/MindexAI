@@ -1,0 +1,52 @@
+{
+  "contentHash": "a96cf85138a3fa7624b8f20c06d667aa7582e4be",
+  "fileContext": {
+    "relativePath": "src/llm/rateLimiter.ts",
+    "language": "typescript",
+    "overview": "Provides a rate limiter for the LLM module.",
+    "symbols": [
+      {
+        "name": "RateLimiter",
+        "kind": "class",
+        "line": 0,
+        "purpose": "Represents a rate limiter that tracks timestamps of recent requests.",
+        "behavior": "Provides an acquire method that blocks until it is safe to proceed.",
+        "parameters": "maxRequestsPerMinute: number;",
+        "returns": "Promise<void>",
+        "limitations": "None",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/workflow/runner.ts",
+          "src/test/suite/rateLimiter.test.ts"
+        ]
+      },
+      {
+        "name": "sleep",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Provides a function that sleeps for a specified amount of time.",
+        "behavior": "Returns a promise that resolves after the specified time.",
+        "parameters": "ms: number;",
+        "returns": "Promise<void>",
+        "limitations": "None",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/workflow/runner.ts",
+          "src/test/suite/rateLimiter.test.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/utils/logger.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:16.383Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.636Z"
+}

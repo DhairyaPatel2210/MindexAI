@@ -1,0 +1,50 @@
+{
+  "contentHash": "3d90733a53c9a0d4e47717453f02b6099c5b7ace",
+  "fileContext": {
+    "relativePath": "src/test/suite/indexer.test.ts",
+    "language": "typescript",
+    "overview": "This file contains unit tests for the indexer functionality, which is responsible for building a semantic index of code files. The tests cover various aspects of the indexer, including building the index structure, counting symbols, handling symbol collisions, and populating the keyword index.",
+    "symbols": [
+      {
+        "name": "buildIndex",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Builds a semantic index of code files",
+        "behavior": "Takes a list of file contexts and a dependency graph as input and returns a semantic index",
+        "parameters": "file contexts, dependency graph",
+        "returns": "semantic index",
+        "limitations": "Requires a valid dependency graph and file contexts",
+        "uses": [
+          "src/core/analyzer/indexer.ts",
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts"
+        ],
+        "usedBy": []
+      },
+      {
+        "name": "extractMeaningfulWords",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Extracts meaningful words from a given text",
+        "behavior": "Takes a string as input and returns a list of meaningful words",
+        "parameters": "text",
+        "returns": "list of meaningful words",
+        "limitations": "May not work correctly with non-English text or text with special characters",
+        "uses": [
+          "src/core/analyzer/indexer.ts",
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/analyzer/graphBuilder.ts"
+        ],
+        "usedBy": []
+      }
+    ],
+    "dependencies": [
+      "src/core/analyzer/indexer.ts",
+      "src/core/analyzer/fileAnalyzer.ts",
+      "src/core/analyzer/graphBuilder.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:37.518Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.644Z"
+}

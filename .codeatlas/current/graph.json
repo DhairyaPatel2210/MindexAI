@@ -1,0 +1,3836 @@
+{
+  "version": "1.0",
+  "generatedAt": "2026-03-30T19:56:14.065Z",
+  "workspaceRoot": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0",
+  "stats": {
+    "totalFiles": 31,
+    "totalSymbols": 555,
+    "totalEdges": 69
+  },
+  "files": {
+    "src/core/analyzer/fileAnalyzer.ts": {
+      "path": "src/core/analyzer/fileAnalyzer.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/core/analyzer/fileAnalyzer.ts",
+      "language": "typescript",
+      "sizeBytes": 20520,
+      "symbols": [
+        {
+          "name": "FileContext",
+          "kind": "interface",
+          "line": 10,
+          "signature": "export interface FileContext {"
+        },
+        {
+          "name": "SymbolContext",
+          "kind": "interface",
+          "line": 20,
+          "signature": "export interface SymbolContext {"
+        },
+        {
+          "name": "MAX_CHUNK_CHARS",
+          "kind": "const",
+          "line": 35,
+          "signature": "const MAX_CHUNK_CHARS = 60_000;"
+        },
+        {
+          "name": "BATCH_SIZE_THRESHOLD_BYTES",
+          "kind": "const",
+          "line": 38,
+          "signature": "export const BATCH_SIZE_THRESHOLD_BYTES = 6_000;"
+        },
+        {
+          "name": "FILES_PER_BATCH",
+          "kind": "const",
+          "line": 41,
+          "signature": "const FILES_PER_BATCH = 6;"
+        },
+        {
+          "name": "analyzeFile",
+          "kind": "function",
+          "line": 48,
+          "signature": "export async function analyzeFile("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 64,
+          "signature": "if (chunks.length === 1) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 87,
+          "signature": "for (let i = 0; i < chunks.length; i++) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 105,
+          "signature": "if (result?.overview) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 114,
+          "signature": "for (const sym of symbolContexts) {"
+        },
+        {
+          "name": "analyzeFileBatch",
+          "kind": "function",
+          "line": 134,
+          "signature": "export async function analyzeFileBatch("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 142,
+          "signature": "if (fileNodes.length === 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 198,
+          "signature": "if (tracker) { tracker.recordCall(response, Date.now() - t0); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 203,
+          "signature": "if (!rawContent) {"
+        },
+        {
+          "name": "individualFallback",
+          "kind": "function",
+          "line": 225,
+          "signature": "async function individualFallback("
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 235,
+          "signature": "for (const node of fileNodes) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 236,
+          "signature": "if (signal?.aborted) {"
+        },
+        {
+          "name": "emptyFileContext",
+          "kind": "function",
+          "line": 254,
+          "signature": "function emptyFileContext(node: FileNode): FileContext {"
+        },
+        {
+          "name": "partitionForBatching",
+          "kind": "function",
+          "line": 273,
+          "signature": "export function partitionForBatching(fileNodes: FileNode[]): {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 280,
+          "signature": "for (const node of fileNodes) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 281,
+          "signature": "if (node.sizeBytes <= BATCH_SIZE_THRESHOLD_BYTES) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 289,
+          "signature": "for (let i = 0; i < small.length; i += FILES_PER_BATCH) {"
+        },
+        {
+          "name": "ChunkResult",
+          "kind": "interface",
+          "line": 298,
+          "signature": "interface ChunkResult {"
+        },
+        {
+          "name": "analyzeChunk",
+          "kind": "function",
+          "line": 303,
+          "signature": "async function analyzeChunk("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 345,
+          "signature": "if (tracker) { tracker.recordCall(response, elapsed); }"
+        },
+        {
+          "name": "parseChunkResponse",
+          "kind": "function",
+          "line": 353,
+          "signature": "function parseChunkResponse("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 359,
+          "signature": "if (!parsed) {"
+        },
+        {
+          "name": "parseBatchResponse",
+          "kind": "function",
+          "line": 371,
+          "signature": "function parseBatchResponse("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 376,
+          "signature": "if (!raw) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 386,
+          "signature": "if (!parsed) {"
+        },
+        {
+          "name": "extractJson",
+          "kind": "function",
+          "line": 430,
+          "signature": "export function extractJson<T>(raw: string): T | null {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 431,
+          "signature": "if (!raw) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 448,
+          "signature": "if (start === -1) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 456,
+          "signature": "for (let i = start; i < text.length; i++) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 458,
+          "signature": "if (escape) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 462,
+          "signature": "if (ch === '\\\\' && inString) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 466,
+          "signature": "if (ch === '\"') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 470,
+          "signature": "if (inString) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 473,
+          "signature": "if (ch === '{') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 476,
+          "signature": "if (ch === '}') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 478,
+          "signature": "if (depth === 0) {"
+        },
+        {
+          "name": "RawSymbol",
+          "kind": "interface",
+          "line": 491,
+          "signature": "interface RawSymbol {"
+        },
+        {
+          "name": "normalizeSymbols",
+          "kind": "function",
+          "line": 502,
+          "signature": "export function normalizeSymbols(raw: RawSymbol[]): SymbolContext[] {"
+        },
+        {
+          "name": "buildDependencyContext",
+          "kind": "function",
+          "line": 515,
+          "signature": "function buildDependencyContext("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 519,
+          "signature": "if (fileNode.imports.length === 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 525,
+          "signature": "if (!depNode) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 529,
+          "signature": "if (names) {"
+        },
+        {
+          "name": "buildSystemPrompt",
+          "kind": "function",
+          "line": 536,
+          "signature": "function buildSystemPrompt(): string {"
+        },
+        {
+          "name": "isContextSizeError",
+          "kind": "function",
+          "line": 548,
+          "signature": "function isContextSizeError(e: unknown): boolean {"
+        },
+        {
+          "name": "isTransientNetworkError",
+          "kind": "function",
+          "line": 556,
+          "signature": "function isTransientNetworkError(e: unknown): boolean {"
+        },
+        {
+          "name": "callWithRetry",
+          "kind": "function",
+          "line": 572,
+          "signature": "async function callWithRetry<T>("
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 577,
+          "signature": "for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 594,
+          "signature": "if (isRetryable && attempt < MAX_RETRIES) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 608,
+          "signature": "if (attempt === MAX_RETRIES) {"
+        },
+        {
+          "name": "renderContextMarkdown",
+          "kind": "function",
+          "line": 618,
+          "signature": "export function renderContextMarkdown(ctx: FileContext): string {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 627,
+          "signature": "if (!ctx.overview && ctx.symbols.length === 0 && ctx.chunkCount === 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 640,
+          "signature": "if (ctx.overview) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 646,
+          "signature": "if (ctx.dependencies.length > 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 648,
+          "signature": "for (const dep of ctx.dependencies) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 654,
+          "signature": "if (ctx.symbols.length > 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 657,
+          "signature": "for (const sym of ctx.symbols) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 659,
+          "signature": "if (sym.line > 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 666,
+          "signature": "if (sym.parameters) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 669,
+          "signature": "if (sym.returns) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 672,
+          "signature": "if (sym.limitations) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 675,
+          "signature": "if (sym.usedBy?.length) {"
+        },
+        {
+          "name": "sleep",
+          "kind": "function",
+          "line": 687,
+          "signature": "function sleep(ms: number): Promise<void> {"
+        }
+      ],
+      "imports": [
+        "src/llm/types.ts",
+        "src/core/analyzer/graphBuilder.ts",
+        "src/utils/fileUtils.ts",
+        "src/llm/rateLimiter.ts",
+        "src/core/stats/usageStats.ts",
+        "src/utils/logger.ts"
+      ],
+      "importedBy": [
+        "src/core/analyzer/indexer.ts",
+        "src/core/cache/contextCache.ts",
+        "src/test/suite/indexer.test.ts"
+      ]
+    },
+    "src/core/analyzer/graphBuilder.ts": {
+      "path": "src/core/analyzer/graphBuilder.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/core/analyzer/graphBuilder.ts",
+      "language": "typescript",
+      "sizeBytes": 14041,
+      "symbols": [
+        {
+          "name": "SymbolEntry",
+          "kind": "interface",
+          "line": 7,
+          "signature": "export interface SymbolEntry {"
+        },
+        {
+          "name": "FileNode",
+          "kind": "interface",
+          "line": 14,
+          "signature": "export interface FileNode {"
+        },
+        {
+          "name": "DependencyGraph",
+          "kind": "interface",
+          "line": 24,
+          "signature": "export interface DependencyGraph {"
+        },
+        {
+          "name": "buildDependencyGraph",
+          "kind": "function",
+          "line": 36,
+          "signature": "export async function buildDependencyGraph(sourceFiles: string[]): Promise<DependencyGraph> {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 43,
+          "signature": "for (const absPath of sourceFiles) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 59,
+          "signature": "if (ctagsAvailable) {"
+        },
+        {
+          "name": "isCtagsAvailable",
+          "kind": "function",
+          "line": 88,
+          "signature": "async function isCtagsAvailable(): Promise<boolean> {"
+        },
+        {
+          "name": "extractSymbolsWithCtags",
+          "kind": "function",
+          "line": 96,
+          "signature": "async function extractSymbolsWithCtags("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 127,
+          "signature": "if (code !== 0 && stderr) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 143,
+          "signature": "if (relPath && files[relPath]) {"
+        },
+        {
+          "name": "extractSymbolsWithRegex",
+          "kind": "function",
+          "line": 167,
+          "signature": "function extractSymbolsWithRegex(files: Record<string, FileNode>): void {"
+        },
+        {
+          "name": "extractSymbolsFromContent",
+          "kind": "function",
+          "line": 178,
+          "signature": "export function extractSymbolsFromContent(content: string, filePath: string): SymbolEntry[] {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 222,
+          "signature": "for (let i = 0; i < lines.length; i++) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 224,
+          "signature": "for (const { kind, regex } of patterns) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 226,
+          "signature": "if (isJava) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 232,
+          "signature": "if (!isJavaPattern) { continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 238,
+          "signature": "if (!isPythonPattern) { continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 242,
+          "signature": "if (!isGoPattern) { continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 245,
+          "signature": "if (!isRustPattern) { continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 255,
+          "signature": "if (isNonTsJsPattern) { continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 259,
+          "signature": "if (match) {"
+        },
+        {
+          "name": "buildImportGraph",
+          "kind": "function",
+          "line": 274,
+          "signature": "function buildImportGraph(files: Record<string, FileNode>, workspaceRoot: string): void {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 281,
+          "signature": "for (const dep of importedPaths) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 282,
+          "signature": "if (files[dep]) {"
+        },
+        {
+          "name": "extractImports",
+          "kind": "function",
+          "line": 292,
+          "signature": "export function extractImports("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 304,
+          "signature": "if (ext === '.java') {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 346,
+          "signature": "for (const pattern of importPatterns) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 370,
+          "signature": "for (const candidate of candidates) {"
+        },
+        {
+          "name": "normalizeKind",
+          "kind": "function",
+          "line": 384,
+          "signature": "function normalizeKind(kind: string): string {"
+        },
+        {
+          "name": "getLanguageFromPath",
+          "kind": "function",
+          "line": 403,
+          "signature": "function getLanguageFromPath(filePath: string): string {"
+        }
+      ],
+      "imports": [
+        "src/utils/fileUtils.ts",
+        "src/utils/logger.ts"
+      ],
+      "importedBy": [
+        "src/core/analyzer/fileAnalyzer.ts",
+        "src/core/analyzer/indexer.ts",
+        "src/core/workflow/runner.ts",
+        "src/test/suite/fileAnalyzer.test.ts",
+        "src/test/suite/graphBuilder.test.ts",
+        "src/test/suite/indexer.test.ts"
+      ]
+    },
+    "src/core/analyzer/indexer.ts": {
+      "path": "src/core/analyzer/indexer.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/core/analyzer/indexer.ts",
+      "language": "typescript",
+      "sizeBytes": 8605,
+      "symbols": [
+        {
+          "name": "SymbolIndexEntry",
+          "kind": "interface",
+          "line": 14,
+          "signature": "export interface SymbolIndexEntry {"
+        },
+        {
+          "name": "FileIndexEntry",
+          "kind": "interface",
+          "line": 25,
+          "signature": "export interface FileIndexEntry {"
+        },
+        {
+          "name": "SemanticIndex",
+          "kind": "interface",
+          "line": 36,
+          "signature": "export interface SemanticIndex {"
+        },
+        {
+          "name": "buildIndex",
+          "kind": "function",
+          "line": 57,
+          "signature": "export function buildIndex("
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 67,
+          "signature": "for (const ctx of fileContexts) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 85,
+          "signature": "for (const sym of ctx.symbols) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 97,
+          "signature": "if (!symbols[sym.name]) {"
+        },
+        {
+          "name": "indexKeywords",
+          "kind": "function",
+          "line": 121,
+          "signature": "function indexKeywords("
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 129,
+          "signature": "for (const word of words) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 130,
+          "signature": "if (!keywords[word]) {"
+        },
+        {
+          "name": "extractMeaningfulWords",
+          "kind": "function",
+          "line": 140,
+          "signature": "export function extractMeaningfulWords(text: string): string[] {"
+        },
+        {
+          "name": "persistIndex",
+          "kind": "function",
+          "line": 165,
+          "signature": "export function persistIndex(index: SemanticIndex): void {"
+        },
+        {
+          "name": "persistContextOverview",
+          "kind": "function",
+          "line": 170,
+          "signature": "export function persistContextOverview("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 207,
+          "signature": "if (!byDir[dir]) { byDir[dir] = []; }"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 231,
+          "signature": "for (const sym of topSymbols) {"
+        },
+        {
+          "name": "inlineOverview",
+          "kind": "function",
+          "line": 245,
+          "signature": "export function inlineOverview(overview: string | undefined): string {"
+        }
+      ],
+      "imports": [
+        "src/core/analyzer/fileAnalyzer.ts",
+        "src/core/analyzer/graphBuilder.ts",
+        "src/utils/logger.ts"
+      ],
+      "importedBy": [
+        "src/core/workflow/runner.ts",
+        "src/test/suite/indexer.test.ts"
+      ]
+    },
+    "src/core/cache/contextCache.ts": {
+      "path": "src/core/cache/contextCache.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/core/cache/contextCache.ts",
+      "language": "typescript",
+      "sizeBytes": 5926,
+      "symbols": [
+        {
+          "name": "CacheEntry",
+          "kind": "interface",
+          "line": 17,
+          "signature": "interface CacheEntry {"
+        },
+        {
+          "name": "getCacheEntryPath",
+          "kind": "function",
+          "line": 23,
+          "signature": "function getCacheEntryPath(contentHash: string): string {"
+        },
+        {
+          "name": "cacheFileContext",
+          "kind": "function",
+          "line": 32,
+          "signature": "export function cacheFileContext(contentHash: string, ctx: FileContext): void {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 33,
+          "signature": "if (!contentHash) {"
+        },
+        {
+          "name": "getCachedFileContext",
+          "kind": "function",
+          "line": 49,
+          "signature": "export function getCachedFileContext(contentHash: string): FileContext | null {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 50,
+          "signature": "if (!contentHash) {"
+        },
+        {
+          "name": "hasCachedContext",
+          "kind": "function",
+          "line": 61,
+          "signature": "export function hasCachedContext(contentHash: string): boolean {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 62,
+          "signature": "if (!contentHash) {"
+        },
+        {
+          "name": "BranchState",
+          "kind": "interface",
+          "line": 72,
+          "signature": "export interface BranchState {"
+        },
+        {
+          "name": "loadBranchState",
+          "kind": "function",
+          "line": 88,
+          "signature": "export function loadBranchState(branch: string): BranchState | null {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 91,
+          "signature": "if (existing?.version === '1.0' && existing.branch === branch) {"
+        },
+        {
+          "name": "saveBranchState",
+          "kind": "function",
+          "line": 100,
+          "signature": "export function saveBranchState(state: BranchState): void {"
+        },
+        {
+          "name": "updateBranchState",
+          "kind": "function",
+          "line": 109,
+          "signature": "export function updateBranchState("
+        },
+        {
+          "name": "removeFromBranchState",
+          "kind": "function",
+          "line": 136,
+          "signature": "export function removeFromBranchState("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 141,
+          "signature": "if (!state) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 144,
+          "signature": "for (const p of filePaths) {"
+        },
+        {
+          "name": "hasBranchIndex",
+          "kind": "function",
+          "line": 153,
+          "signature": "export function hasBranchIndex(branch: string): boolean {"
+        },
+        {
+          "name": "batchCacheContexts",
+          "kind": "function",
+          "line": 162,
+          "signature": "export function batchCacheContexts("
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 171,
+          "signature": "for (const { contentHash, ctx } of contexts) {"
+        },
+        {
+          "name": "partitionByCacheHit",
+          "kind": "function",
+          "line": 184,
+          "signature": "export function partitionByCacheHit("
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 193,
+          "signature": "for (const { relativePath, contentHash } of files) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 195,
+          "signature": "if (ctx) {"
+        }
+      ],
+      "imports": [
+        "src/core/analyzer/fileAnalyzer.ts",
+        "src/utils/logger.ts"
+      ],
+      "importedBy": [
+        "src/extension.ts"
+      ]
+    },
+    "src/core/git/gitService.ts": {
+      "path": "src/core/git/gitService.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/core/git/gitService.ts",
+      "language": "typescript",
+      "sizeBytes": 7780,
+      "symbols": [
+        {
+          "name": "git",
+          "kind": "function",
+          "line": 10,
+          "signature": "function git(args: string, cwd?: string): string {"
+        },
+        {
+          "name": "gitLines",
+          "kind": "function",
+          "line": 21,
+          "signature": "function gitLines(args: string, cwd?: string): string[] {"
+        },
+        {
+          "name": "getCurrentBranch",
+          "kind": "function",
+          "line": 34,
+          "signature": "export function getCurrentBranch(): string {"
+        },
+        {
+          "name": "getHeadCommit",
+          "kind": "function",
+          "line": 48,
+          "signature": "export function getHeadCommit(): string {"
+        },
+        {
+          "name": "getChangedFilesBetweenRefs",
+          "kind": "function",
+          "line": 62,
+          "signature": "export function getChangedFilesBetweenRefs("
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 72,
+          "signature": "for (const line of lines) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 75,
+          "signature": "if (!filePath) {"
+        },
+        {
+          "name": "switch",
+          "kind": "method",
+          "line": 79,
+          "signature": "switch (status?.[0]) {"
+        },
+        {
+          "name": "getUncommittedChanges",
+          "kind": "function",
+          "line": 105,
+          "signature": "export function getUncommittedChanges(): {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 117,
+          "signature": "for (const line of lines) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 120,
+          "signature": "if (!filePath) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 124,
+          "signature": "if (status?.[0] === 'D') {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 133,
+          "signature": "for (const line of stagedLines) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 136,
+          "signature": "if (!filePath) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 140,
+          "signature": "if (status?.[0] === 'D') {"
+        },
+        {
+          "name": "getAllChangedFiles",
+          "kind": "function",
+          "line": 165,
+          "signature": "export function getAllChangedFiles(lastIndexedRef?: string): {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 173,
+          "signature": "if (lastIndexedRef) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 176,
+          "signature": "if (headCommit && headCommit !== lastIndexedRef) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 178,
+          "signature": "for (const f of committed.added) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 181,
+          "signature": "for (const f of committed.modified) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 184,
+          "signature": "for (const f of committed.deleted) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 199,
+          "signature": "for (const f of uncommitted.modified) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 203,
+          "signature": "for (const f of uncommitted.untracked) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 206,
+          "signature": "for (const f of uncommitted.deleted) {"
+        },
+        {
+          "name": "getFileContentHash",
+          "kind": "function",
+          "line": 224,
+          "signature": "export function getFileContentHash(absolutePath: string): string {"
+        },
+        {
+          "name": "getFileHashAtRef",
+          "kind": "function",
+          "line": 243,
+          "signature": "export function getFileHashAtRef(relPath: string, ref: string): string {"
+        },
+        {
+          "name": "GitState",
+          "kind": "interface",
+          "line": 253,
+          "signature": "export interface GitState {"
+        },
+        {
+          "name": "captureGitState",
+          "kind": "function",
+          "line": 259,
+          "signature": "export function captureGitState(): GitState {"
+        }
+      ],
+      "imports": [
+        "src/utils/fileUtils.ts",
+        "src/utils/logger.ts"
+      ],
+      "importedBy": [
+        "src/extension.ts"
+      ]
+    },
+    "src/core/stats/usageStats.ts": {
+      "path": "src/core/stats/usageStats.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/core/stats/usageStats.ts",
+      "language": "typescript",
+      "sizeBytes": 6710,
+      "symbols": [
+        {
+          "name": "ProviderStats",
+          "kind": "interface",
+          "line": 9,
+          "signature": "export interface ProviderStats {"
+        },
+        {
+          "name": "UsageStatsData",
+          "kind": "interface",
+          "line": 22,
+          "signature": "export interface UsageStatsData {"
+        },
+        {
+          "name": "StatsDisplay",
+          "kind": "interface",
+          "line": 34,
+          "signature": "export interface StatsDisplay {"
+        },
+        {
+          "name": "getStatsDisplay",
+          "kind": "function",
+          "line": 58,
+          "signature": "export function getStatsDisplay(data: UsageStatsData): StatsDisplay {"
+        },
+        {
+          "name": "UsageTracker",
+          "kind": "class",
+          "line": 90,
+          "signature": "export class UsageTracker {"
+        },
+        {
+          "name": "recordCall",
+          "kind": "method",
+          "line": 101,
+          "signature": "recordCall(response: LLMResponse, durationMs: number): void {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 105,
+          "signature": "if (response.inputTokens != null || response.outputTokens != null) {"
+        },
+        {
+          "name": "statsFilePath",
+          "kind": "function",
+          "line": 123,
+          "signature": "function statsFilePath(): string {"
+        },
+        {
+          "name": "emptyStats",
+          "kind": "function",
+          "line": 127,
+          "signature": "function emptyStats(): UsageStatsData {"
+        },
+        {
+          "name": "emptyProviderStats",
+          "kind": "function",
+          "line": 136,
+          "signature": "function emptyProviderStats(): ProviderStats {"
+        },
+        {
+          "name": "loadUsageStats",
+          "kind": "function",
+          "line": 150,
+          "signature": "export function loadUsageStats(): UsageStatsData {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 154,
+          "signature": "if (data.version !== 1) { return emptyStats(); }"
+        },
+        {
+          "name": "saveUsageStats",
+          "kind": "function",
+          "line": 161,
+          "signature": "function saveUsageStats(data: UsageStatsData): void {"
+        },
+        {
+          "name": "persistWorkflowUsage",
+          "kind": "function",
+          "line": 175,
+          "signature": "export function persistWorkflowUsage("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 186,
+          "signature": "if (!data.providers[providerName]) {"
+        },
+        {
+          "name": "resetUsageStats",
+          "kind": "function",
+          "line": 216,
+          "signature": "export function resetUsageStats(): void {"
+        }
+      ],
+      "imports": [
+        "src/llm/types.ts",
+        "src/utils/fileUtils.ts",
+        "src/utils/logger.ts"
+      ],
+      "importedBy": [
+        "src/core/analyzer/fileAnalyzer.ts",
+        "src/core/workflow/runner.ts",
+        "src/test/suite/usageStats.test.ts",
+        "src/vscode/activityBar.ts",
+        "src/vscode/panel/mainPanel.ts"
+      ]
+    },
+    "src/core/workflow/runner.ts": {
+      "path": "src/core/workflow/runner.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/core/workflow/runner.ts",
+      "language": "typescript",
+      "sizeBytes": 27795,
+      "symbols": [
+        {
+          "name": "WorkflowOptions",
+          "kind": "interface",
+          "line": 48,
+          "signature": "export interface WorkflowOptions {"
+        },
+        {
+          "name": "WorkflowResult",
+          "kind": "interface",
+          "line": 59,
+          "signature": "export interface WorkflowResult {"
+        },
+        {
+          "name": "isWorkflowRunning",
+          "kind": "function",
+          "line": 69,
+          "signature": "export function isWorkflowRunning(): boolean {"
+        },
+        {
+          "name": "cancelWorkflow",
+          "kind": "function",
+          "line": 73,
+          "signature": "export function cancelWorkflow(): void {"
+        },
+        {
+          "name": "activateBranch",
+          "kind": "function",
+          "line": 81,
+          "signature": "function activateBranch(): { branch: string; headCommit: string } {"
+        },
+        {
+          "name": "runFullWorkflow",
+          "kind": "function",
+          "line": 90,
+          "signature": "export async function runFullWorkflow("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 94,
+          "signature": "if (_currentWorkflow) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 124,
+          "signature": "if (sourceFiles.length === 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 160,
+          "signature": "for (const { ctx } of cached) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 175,
+          "signature": "if (estimatedRequests > 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 183,
+          "signature": "if (!isUnlimitedRpm) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 198,
+          "signature": "if (concurrency > 1) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 213,
+          "signature": "for (let i = 0; i < batchOutcomes.length; i++) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 215,
+          "signature": "if (outcome.error) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 223,
+          "signature": "for (const ctx of outcome.result!) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 227,
+          "signature": "if (hash) { newCacheEntries.push({ contentHash: hash, ctx }); }"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 241,
+          "signature": "for (let i = 0; i < largeOutcomes.length; i++) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 243,
+          "signature": "if (outcome.error) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 254,
+          "signature": "if (hash) { newCacheEntries.push({ contentHash: hash, ctx }); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 260,
+          "signature": "if (newCacheEntries.length > 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 266,
+          "signature": "for (const fh of filesWithHashes) { allFileHashes[fh.relativePath] = fh.contentHash; }"
+        },
+        {
+          "name": "runIncrementalUpdate",
+          "kind": "function",
+          "line": 302,
+          "signature": "export async function runIncrementalUpdate("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 306,
+          "signature": "if (_currentWorkflow) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 334,
+          "signature": "if (!existingIndex) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 341,
+          "signature": "if (!branchState) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 353,
+          "signature": "if (changedRelPaths.length === 0 && deletedRelPaths.length === 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 391,
+          "signature": "if (relevantChanged.length === 0 && relevantDeleted.length === 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 415,
+          "signature": "for (const { ctx } of cached) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 433,
+          "signature": "if (concurrency > 1 && total > 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 446,
+          "signature": "for (let i = 0; i < uncachedOutcomes.length; i++) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 448,
+          "signature": "if (outcome.error) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 459,
+          "signature": "if (hash) { newCacheEntries.push({ contentHash: hash, ctx }); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 465,
+          "signature": "if (relevantDeleted.length > 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 467,
+          "signature": "for (const relPath of relevantDeleted) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 475,
+          "signature": "if (newCacheEntries.length > 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 481,
+          "signature": "for (const fh of filesWithHashes) { fileHashMap[fh.relativePath] = fh.contentHash; }"
+        },
+        {
+          "name": "runSingleFileAnalysis",
+          "kind": "function",
+          "line": 552,
+          "signature": "export async function runSingleFileAnalysis("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 566,
+          "signature": "if (!fileNode) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 581,
+          "signature": "if (cachedCtx) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 595,
+          "signature": "if (contentHash) {"
+        },
+        {
+          "name": "topologicalSort",
+          "kind": "function",
+          "line": 611,
+          "signature": "function topologicalSort(graph: DependencyGraph): string[] {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 619,
+          "signature": "if (node) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 620,
+          "signature": "for (const dep of node.imports) { visit(dep); }"
+        },
+        {
+          "name": "checkCancellation",
+          "kind": "function",
+          "line": 629,
+          "signature": "function checkCancellation(token: vscode.CancellationToken): void {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 630,
+          "signature": "if (token.isCancellationRequested) {"
+        },
+        {
+          "name": "runConcurrent",
+          "kind": "function",
+          "line": 638,
+          "signature": "async function runConcurrent<T>("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 644,
+          "signature": "if (concurrency <= 1) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 645,
+          "signature": "for (let i = 0; i < tasks.length; i++) {"
+        },
+        {
+          "name": "while",
+          "kind": "method",
+          "line": 658,
+          "signature": "while (next < tasks.length) {"
+        }
+      ],
+      "imports": [
+        "src/llm/types.ts",
+        "src/core/analyzer/graphBuilder.ts",
+        "src/core/analyzer/indexer.ts",
+        "src/llm/rateLimiter.ts",
+        "src/core/stats/usageStats.ts",
+        "src/utils/logger.ts"
+      ],
+      "importedBy": [
+        "src/vscode/activityBar.ts",
+        "src/vscode/statusBar.ts"
+      ]
+    },
+    "src/extension.ts": {
+      "path": "src/extension.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/extension.ts",
+      "language": "typescript",
+      "sizeBytes": 18599,
+      "symbols": [
+        {
+          "name": "activate",
+          "kind": "function",
+          "line": 32,
+          "signature": "export function activate(context: vscode.ExtensionContext): void {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 80,
+          "signature": "if (!vscode.workspace.workspaceFolders?.length) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 92,
+          "signature": "if (choice === 'Configure') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 96,
+          "signature": "if (choice !== 'Continue Anyway') { return; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 103,
+          "signature": "if (!keySet) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 108,
+          "signature": "if (choice === 'Configure Now') { await mainPanel.show(); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 134,
+          "signature": "if (choice === 'View Log') { logger.show(); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 151,
+          "signature": "if (!vscode.workspace.workspaceFolders?.length) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 160,
+          "signature": "if (!keySet) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 165,
+          "signature": "if (choice === 'Configure Now') { await mainPanel.show(); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 191,
+          "signature": "if (choice === 'View Log') { logger.show(); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 213,
+          "signature": "if (!editor) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 222,
+          "signature": "if (!keySet) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 227,
+          "signature": "if (choice === 'Configure Now') { await mainPanel.show(); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 267,
+          "signature": "if (choice === 'Run Analysis') {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 282,
+          "signature": "for (const p of providers) { await deleteApiKey(p); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 309,
+          "signature": "if (!hasShownWelcome) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 315,
+          "signature": "if (choice === 'Open Panel') { mainPanel.show(); }"
+        },
+        {
+          "name": "deactivate",
+          "kind": "function",
+          "line": 322,
+          "signature": "export function deactivate(): void {"
+        },
+        {
+          "name": "setupAutoUpdate",
+          "kind": "function",
+          "line": 330,
+          "signature": "function setupAutoUpdate("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 337,
+          "signature": "if (!autoUpdate) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 342,
+          "signature": "if (!vscode.workspace.workspaceFolders?.length) { return; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 350,
+          "signature": "if (isBranchSwitch) { _branchSwitchPending = true; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 354,
+          "signature": "if (updateTimer) { clearTimeout(updateTimer); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 362,
+          "signature": "if (includedExtensions.length > 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 386,
+          "signature": "if (_lastKnownBranch && currentBranch !== _lastKnownBranch) {"
+        },
+        {
+          "name": "disposeAutoUpdate",
+          "kind": "function",
+          "line": 415,
+          "signature": "function disposeAutoUpdate(): void {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 416,
+          "signature": "if (_branchPollInterval) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 420,
+          "signature": "if (_fileWatcher) {"
+        },
+        {
+          "name": "buildWorkflowOptions",
+          "kind": "function",
+          "line": 430,
+          "signature": "function buildWorkflowOptions("
+        },
+        {
+          "name": "handleWorkflowError",
+          "kind": "function",
+          "line": 452,
+          "signature": "function handleWorkflowError(e: unknown, statusBar: CodeAtlasStatusBar): void {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 453,
+          "signature": "if (e instanceof vscode.CancellationError) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 463,
+          "signature": "if (choice === 'View Log') { logger.show(); }"
+        }
+      ],
+      "imports": [
+        "src/llm/factory.ts",
+        "src/server/serverManager.ts",
+        "src/vscode/panel/mainPanel.ts",
+        "src/vscode/statusBar.ts",
+        "src/vscode/activityBar.ts",
+        "src/utils/logger.ts",
+        "src/llm/types.ts",
+        "src/core/git/gitService.ts",
+        "src/core/cache/contextCache.ts"
+      ],
+      "importedBy": []
+    },
+    "src/llm/factory.ts": {
+      "path": "src/llm/factory.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/llm/factory.ts",
+      "language": "typescript",
+      "sizeBytes": 4338,
+      "symbols": [
+        {
+          "name": "createLLMProvider",
+          "kind": "function",
+          "line": 10,
+          "signature": "export async function createLLMProvider(): Promise<ILLMProvider> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 14,
+          "signature": "if (providerType === 'local') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 18,
+          "signature": "if (!model) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 24,
+          "signature": "if (apiType === 'ollama') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 32,
+          "signature": "if (providerType === 'openai-compat') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 35,
+          "signature": "if (!baseUrl) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 41,
+          "signature": "if (!model) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 53,
+          "signature": "if (!apiKey) {"
+        },
+        {
+          "name": "switch",
+          "kind": "method",
+          "line": 60,
+          "signature": "switch (providerType) {"
+        },
+        {
+          "name": "getStoredApiKey",
+          "kind": "function",
+          "line": 78,
+          "signature": "export async function getStoredApiKey(provider: LLMProviderType): Promise<string | undefined> {"
+        },
+        {
+          "name": "storeApiKey",
+          "kind": "function",
+          "line": 82,
+          "signature": "export async function storeApiKey(provider: LLMProviderType, apiKey: string): Promise<void> {"
+        },
+        {
+          "name": "deleteApiKey",
+          "kind": "function",
+          "line": 86,
+          "signature": "export async function deleteApiKey(provider: LLMProviderType): Promise<void> {"
+        },
+        {
+          "name": "initializeSecretStorage",
+          "kind": "function",
+          "line": 92,
+          "signature": "export function initializeSecretStorage(storage: vscode.SecretStorage): void {"
+        },
+        {
+          "name": "hasApiKey",
+          "kind": "function",
+          "line": 96,
+          "signature": "export async function hasApiKey(provider: LLMProviderType): Promise<boolean> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 97,
+          "signature": "if (provider === 'local') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 102,
+          "signature": "if (provider === 'openai-compat') {"
+        }
+      ],
+      "imports": [
+        "src/llm/types.ts",
+        "src/llm/providers/openai.ts",
+        "src/llm/providers/gemini.ts",
+        "src/llm/providers/claude.ts",
+        "src/llm/providers/local.ts",
+        "src/llm/providers/ollama.ts",
+        "src/llm/providers/openaiCompat.ts"
+      ],
+      "importedBy": [
+        "src/extension.ts",
+        "src/vscode/activityBar.ts",
+        "src/vscode/panel/mainPanel.ts"
+      ]
+    },
+    "src/llm/providers/claude.ts": {
+      "path": "src/llm/providers/claude.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/llm/providers/claude.ts",
+      "language": "typescript",
+      "sizeBytes": 2329,
+      "symbols": [
+        {
+          "name": "ClaudeProvider",
+          "kind": "class",
+          "line": 3,
+          "signature": "export class ClaudeProvider implements ILLMProvider {"
+        },
+        {
+          "name": "complete",
+          "kind": "method",
+          "line": 11,
+          "signature": "async complete(messages: LLMMessage[], maxTokens = 4096, signal?: AbortSignal): Promise<LLMResponse> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 25,
+          "signature": "if (systemMessage) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 40,
+          "signature": "if (!response.ok) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 42,
+          "signature": "if (response.status === 429) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 63,
+          "signature": "if (!content) {"
+        }
+      ],
+      "imports": [
+        "src/llm/types.ts"
+      ],
+      "importedBy": [
+        "src/llm/factory.ts"
+      ]
+    },
+    "src/llm/providers/gemini.ts": {
+      "path": "src/llm/providers/gemini.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/llm/providers/gemini.ts",
+      "language": "typescript",
+      "sizeBytes": 3062,
+      "symbols": [
+        {
+          "name": "GeminiProvider",
+          "kind": "class",
+          "line": 3,
+          "signature": "export class GeminiProvider implements ILLMProvider {"
+        },
+        {
+          "name": "complete",
+          "kind": "method",
+          "line": 11,
+          "signature": "async complete(messages: LLMMessage[], maxTokens = 4096, signal?: AbortSignal): Promise<LLMResponse> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 29,
+          "signature": "if (systemMessage) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 44,
+          "signature": "if (!response.ok) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 46,
+          "signature": "if (response.status === 429) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 65,
+          "signature": "if (!content) {"
+        },
+        {
+          "name": "parseRetryDelay",
+          "kind": "function",
+          "line": 80,
+          "signature": "function parseRetryDelay(body: string): number {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 85,
+          "signature": "for (const detail of details) {"
+        }
+      ],
+      "imports": [
+        "src/llm/types.ts"
+      ],
+      "importedBy": [
+        "src/llm/factory.ts"
+      ]
+    },
+    "src/llm/providers/local.ts": {
+      "path": "src/llm/providers/local.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/llm/providers/local.ts",
+      "language": "typescript",
+      "sizeBytes": 7255,
+      "symbols": [
+        {
+          "name": "LocalProvider",
+          "kind": "class",
+          "line": 19,
+          "signature": "export class LocalProvider implements ILLMProvider {"
+        },
+        {
+          "name": "complete",
+          "kind": "method",
+          "line": 34,
+          "signature": "async complete(messages: LLMMessage[], maxTokens = 4096, signal?: AbortSignal): Promise<LLMResponse> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 63,
+          "signature": "if (!response.ok) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 65,
+          "signature": "if (response.status === 429) { throw new RateLimitError(this.name, 5_000); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 73,
+          "signature": "if (!response.body) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 103,
+          "signature": "if (signal?.aborted) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 109,
+          "signature": "if (done) { break; }"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 116,
+          "signature": "for (const line of lines) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 120,
+          "signature": "if (data === '[DONE]') { break outer; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 126,
+          "signature": "if (!token) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 127,
+          "signature": "if (parsed.choices?.[0]?.finish_reason) { break outer; }"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 135,
+          "signature": "for (const ch of token) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 136,
+          "signature": "if (escape)              { escape = false; continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 137,
+          "signature": "if (ch === '\\\\' && inString) { escape = true;  continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 138,
+          "signature": "if (ch === '\"')          { inString = !inString; continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 139,
+          "signature": "if (inString)            { continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 140,
+          "signature": "if (ch === '{')          { jsonStarted = true; depth++; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 143,
+          "signature": "if (depth === 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 168,
+          "signature": "if (!text) {"
+        }
+      ],
+      "imports": [
+        "src/llm/types.ts"
+      ],
+      "importedBy": [
+        "src/llm/factory.ts"
+      ]
+    },
+    "src/llm/providers/ollama.ts": {
+      "path": "src/llm/providers/ollama.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/llm/providers/ollama.ts",
+      "language": "typescript",
+      "sizeBytes": 5092,
+      "symbols": [
+        {
+          "name": "OllamaProvider",
+          "kind": "class",
+          "line": 15,
+          "signature": "export class OllamaProvider implements ILLMProvider {"
+        },
+        {
+          "name": "complete",
+          "kind": "method",
+          "line": 24,
+          "signature": "async complete(messages: LLMMessage[], maxTokens = 4096, signal?: AbortSignal): Promise<LLMResponse> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 52,
+          "signature": "if (!response.ok) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 54,
+          "signature": "if (response.status === 429) { throw new RateLimitError('local', 5_000); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 62,
+          "signature": "if (!response.body) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 89,
+          "signature": "if (signal?.aborted) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 95,
+          "signature": "if (done) { break; }"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 101,
+          "signature": "for (const line of lines) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 103,
+          "signature": "if (!trimmed) { continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 112,
+          "signature": "if (parsed.error) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 116,
+          "signature": "if (parsed.done) { break outer; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 119,
+          "signature": "if (!token) { continue; }"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 124,
+          "signature": "for (const ch of token) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 125,
+          "signature": "if (escape)               { escape = false; continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 126,
+          "signature": "if (ch === '\\\\' && inString) { escape = true;  continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 127,
+          "signature": "if (ch === '\"')           { inString = !inString; continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 128,
+          "signature": "if (inString)             { continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 129,
+          "signature": "if (ch === '{')           { jsonStarted = true; depth++; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 132,
+          "signature": "if (depth === 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 144,
+          "signature": "if (!content) {"
+        }
+      ],
+      "imports": [
+        "src/llm/types.ts"
+      ],
+      "importedBy": [
+        "src/llm/factory.ts"
+      ]
+    },
+    "src/llm/providers/openai.ts": {
+      "path": "src/llm/providers/openai.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/llm/providers/openai.ts",
+      "language": "typescript",
+      "sizeBytes": 1937,
+      "symbols": [
+        {
+          "name": "OpenAIProvider",
+          "kind": "class",
+          "line": 3,
+          "signature": "export class OpenAIProvider implements ILLMProvider {"
+        },
+        {
+          "name": "complete",
+          "kind": "method",
+          "line": 11,
+          "signature": "async complete(messages: LLMMessage[], maxTokens = 4096, signal?: AbortSignal): Promise<LLMResponse> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 27,
+          "signature": "if (!response.ok) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 29,
+          "signature": "if (response.status === 429) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 50,
+          "signature": "if (!content) {"
+        }
+      ],
+      "imports": [
+        "src/llm/types.ts"
+      ],
+      "importedBy": [
+        "src/llm/factory.ts"
+      ]
+    },
+    "src/llm/providers/openaiCompat.ts": {
+      "path": "src/llm/providers/openaiCompat.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/llm/providers/openaiCompat.ts",
+      "language": "typescript",
+      "sizeBytes": 2944,
+      "symbols": [
+        {
+          "name": "OpenAICompatProvider",
+          "kind": "class",
+          "line": 14,
+          "signature": "export class OpenAICompatProvider implements ILLMProvider {"
+        },
+        {
+          "name": "complete",
+          "kind": "method",
+          "line": 23,
+          "signature": "async complete(messages: LLMMessage[], maxTokens = 4096, signal?: AbortSignal): Promise<LLMResponse> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 52,
+          "signature": "if (!response.ok) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 54,
+          "signature": "if (response.status === 429) { throw new RateLimitError(this.name, 5_000); }"
+        }
+      ],
+      "imports": [
+        "src/llm/types.ts",
+        "src/utils/logger.ts"
+      ],
+      "importedBy": [
+        "src/llm/factory.ts"
+      ]
+    },
+    "src/llm/rateLimiter.ts": {
+      "path": "src/llm/rateLimiter.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/llm/rateLimiter.ts",
+      "language": "typescript",
+      "sizeBytes": 1619,
+      "symbols": [
+        {
+          "name": "RateLimiter",
+          "kind": "class",
+          "line": 9,
+          "signature": "export class RateLimiter {"
+        },
+        {
+          "name": "constructor",
+          "kind": "method",
+          "line": 13,
+          "signature": "constructor(private readonly maxRequestsPerMinute: number) {}"
+        },
+        {
+          "name": "acquire",
+          "kind": "method",
+          "line": 19,
+          "signature": "async acquire(): Promise<void> {"
+        },
+        {
+          "name": "while",
+          "kind": "method",
+          "line": 20,
+          "signature": "while (true) {"
+        },
+        {
+          "name": "while",
+          "kind": "method",
+          "line": 24,
+          "signature": "while (this.timestamps.length > 0 && now - this.timestamps[0] >= this.windowMs) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 28,
+          "signature": "if (this.timestamps.length < this.maxRequestsPerMinute) {"
+        },
+        {
+          "name": "sleep",
+          "kind": "function",
+          "line": 50,
+          "signature": "function sleep(ms: number): Promise<void> {"
+        }
+      ],
+      "imports": [
+        "src/utils/logger.ts"
+      ],
+      "importedBy": [
+        "src/core/analyzer/fileAnalyzer.ts",
+        "src/core/workflow/runner.ts",
+        "src/test/suite/rateLimiter.test.ts"
+      ]
+    },
+    "src/llm/types.ts": {
+      "path": "src/llm/types.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/llm/types.ts",
+      "language": "typescript",
+      "sizeBytes": 1082,
+      "symbols": [
+        {
+          "name": "LLMMessage",
+          "kind": "interface",
+          "line": 1,
+          "signature": "export interface LLMMessage {"
+        },
+        {
+          "name": "LLMResponse",
+          "kind": "interface",
+          "line": 6,
+          "signature": "export interface LLMResponse {"
+        },
+        {
+          "name": "ILLMProvider",
+          "kind": "interface",
+          "line": 13,
+          "signature": "export interface ILLMProvider {"
+        },
+        {
+          "name": "LLMProviderType",
+          "kind": "type",
+          "line": 18,
+          "signature": "export type LLMProviderType = 'openai' | 'gemini' | 'claude' | 'local' | 'openai-compat';"
+        },
+        {
+          "name": "LLMConfig",
+          "kind": "interface",
+          "line": 20,
+          "signature": "export interface LLMConfig {"
+        },
+        {
+          "name": "LLMError",
+          "kind": "class",
+          "line": 26,
+          "signature": "export class LLMError extends Error {"
+        },
+        {
+          "name": "RateLimitError",
+          "kind": "class",
+          "line": 37,
+          "signature": "export class RateLimitError extends LLMError {"
+        }
+      ],
+      "imports": [],
+      "importedBy": [
+        "src/core/analyzer/fileAnalyzer.ts",
+        "src/core/stats/usageStats.ts",
+        "src/core/workflow/runner.ts",
+        "src/extension.ts",
+        "src/llm/factory.ts",
+        "src/llm/providers/claude.ts",
+        "src/llm/providers/gemini.ts",
+        "src/llm/providers/local.ts",
+        "src/llm/providers/ollama.ts",
+        "src/llm/providers/openai.ts",
+        "src/llm/providers/openaiCompat.ts",
+        "src/test/suite/usageStats.test.ts",
+        "src/vscode/activityBar.ts",
+        "src/vscode/panel/mainPanel.ts"
+      ]
+    },
+    "src/server/serverManager.ts": {
+      "path": "src/server/serverManager.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/server/serverManager.ts",
+      "language": "typescript",
+      "sizeBytes": 8426,
+      "symbols": [
+        {
+          "name": "ServerStatus",
+          "kind": "type",
+          "line": 6,
+          "signature": "export type ServerStatus = 'stopped' | 'starting' | 'running' | 'error';"
+        },
+        {
+          "name": "ServerOptions",
+          "kind": "interface",
+          "line": 8,
+          "signature": "export interface ServerOptions {"
+        },
+        {
+          "name": "ServerState",
+          "kind": "interface",
+          "line": 16,
+          "signature": "export interface ServerState {"
+        },
+        {
+          "name": "StatusCallback",
+          "kind": "type",
+          "line": 23,
+          "signature": "type StatusCallback = (state: ServerState) => void;"
+        },
+        {
+          "name": "ServerManager",
+          "kind": "class",
+          "line": 29,
+          "signature": "export class ServerManager {"
+        },
+        {
+          "name": "start",
+          "kind": "method",
+          "line": 60,
+          "signature": "async start(options: ServerOptions): Promise<void> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 61,
+          "signature": "if (this.proc) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 76,
+          "signature": "if (!binary) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 123,
+          "signature": "for (const line of lines) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 128,
+          "signature": "if (this._status !== 'running') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 148,
+          "signature": "if (this.healthTimer) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 162,
+          "signature": "if (!wasRunning) {"
+        },
+        {
+          "name": "stop",
+          "kind": "method",
+          "line": 181,
+          "signature": "async stop(): Promise<void> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 182,
+          "signature": "if (this.healthTimer) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 186,
+          "signature": "if (!this.proc) {"
+        },
+        {
+          "name": "dispose",
+          "kind": "method",
+          "line": 205,
+          "signature": "dispose(): void {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 208,
+          "signature": "if (this.healthTimer) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 232,
+          "signature": "if (r.ok || r.status === 503 /* loading */) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 233,
+          "signature": "if (r.ok) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 247,
+          "signature": "if (attempts < MAX && this._status === 'starting') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 257,
+          "signature": "if (this._logs.length > 200) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 277,
+          "signature": "if (logLine) {"
+        },
+        {
+          "name": "detectBinary",
+          "kind": "function",
+          "line": 287,
+          "signature": "export async function detectBinary(): Promise<string | null> {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 296,
+          "signature": "for (const bin of candidates) {"
+        },
+        {
+          "name": "commandExists",
+          "kind": "function",
+          "line": 304,
+          "signature": "function commandExists(bin: string): Promise<boolean> {"
+        },
+        {
+          "name": "serverManager",
+          "kind": "const",
+          "line": 313,
+          "signature": "export const serverManager = new ServerManager();"
+        }
+      ],
+      "imports": [
+        "src/utils/logger.ts"
+      ],
+      "importedBy": [
+        "src/extension.ts",
+        "src/vscode/panel/mainPanel.ts"
+      ]
+    },
+    "src/test/index.ts": {
+      "path": "src/test/index.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/test/index.ts",
+      "language": "typescript",
+      "sizeBytes": 448,
+      "symbols": [
+        {
+          "name": "main",
+          "kind": "function",
+          "line": 4,
+          "signature": "async function main(): Promise<void> {"
+        }
+      ],
+      "imports": [],
+      "importedBy": []
+    },
+    "src/test/suite/fileAnalyzer.test.ts": {
+      "path": "src/test/suite/fileAnalyzer.test.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/test/suite/fileAnalyzer.test.ts",
+      "language": "typescript",
+      "sizeBytes": 10699,
+      "symbols": [],
+      "imports": [
+        "src/core/analyzer/graphBuilder.ts"
+      ],
+      "importedBy": []
+    },
+    "src/test/suite/fileUtils.test.ts": {
+      "path": "src/test/suite/fileUtils.test.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/test/suite/fileUtils.test.ts",
+      "language": "typescript",
+      "sizeBytes": 4250,
+      "symbols": [
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 47,
+          "signature": "for (const chunk of chunks) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 65,
+          "signature": "if (chunks.length === 1) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 73,
+          "signature": "for (const chunk of chunks) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 97,
+          "signature": "for (const [filePath, expected] of cases) {"
+        }
+      ],
+      "imports": [
+        "src/utils/fileUtils.ts"
+      ],
+      "importedBy": []
+    },
+    "src/test/suite/graphBuilder.test.ts": {
+      "path": "src/test/suite/graphBuilder.test.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/test/suite/graphBuilder.test.ts",
+      "language": "typescript",
+      "sizeBytes": 13355,
+      "symbols": [
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 198,
+          "signature": "for (const p of paths) {"
+        }
+      ],
+      "imports": [
+        "src/core/analyzer/graphBuilder.ts"
+      ],
+      "importedBy": []
+    },
+    "src/test/suite/index.ts": {
+      "path": "src/test/suite/index.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/test/suite/index.ts",
+      "language": "typescript",
+      "sizeBytes": 798,
+      "symbols": [
+        {
+          "name": "run",
+          "kind": "function",
+          "line": 5,
+          "signature": "export function run(): Promise<void> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 20,
+          "signature": "if (failures > 0) {"
+        }
+      ],
+      "imports": [],
+      "importedBy": []
+    },
+    "src/test/suite/indexer.test.ts": {
+      "path": "src/test/suite/indexer.test.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/test/suite/indexer.test.ts",
+      "language": "typescript",
+      "sizeBytes": 8479,
+      "symbols": [
+        {
+          "name": "makeContext",
+          "kind": "function",
+          "line": 10,
+          "signature": "function makeContext(relativePath: string, overrides: Partial<FileContext> = {}): FileContext {"
+        },
+        {
+          "name": "makeGraph",
+          "kind": "function",
+          "line": 23,
+          "signature": "function makeGraph(files: string[], workspaceRoot = '/workspace'): DependencyGraph {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 25,
+          "signature": "for (const f of files) {"
+        }
+      ],
+      "imports": [
+        "src/core/analyzer/indexer.ts",
+        "src/core/analyzer/fileAnalyzer.ts",
+        "src/core/analyzer/graphBuilder.ts"
+      ],
+      "importedBy": []
+    },
+    "src/test/suite/rateLimiter.test.ts": {
+      "path": "src/test/suite/rateLimiter.test.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/test/suite/rateLimiter.test.ts",
+      "language": "typescript",
+      "sizeBytes": 1867,
+      "symbols": [
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 9,
+          "signature": "for (let i = 0; i < 5; i++) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 27,
+          "signature": "for (let i = 0; i < 8; i++) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 37,
+          "signature": "for (let i = 0; i < max; i++) {"
+        }
+      ],
+      "imports": [
+        "src/llm/rateLimiter.ts"
+      ],
+      "importedBy": []
+    },
+    "src/test/suite/usageStats.test.ts": {
+      "path": "src/test/suite/usageStats.test.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/test/suite/usageStats.test.ts",
+      "language": "typescript",
+      "sizeBytes": 7815,
+      "symbols": [],
+      "imports": [
+        "src/core/stats/usageStats.ts",
+        "src/llm/types.ts"
+      ],
+      "importedBy": []
+    },
+    "src/utils/fileUtils.ts": {
+      "path": "src/utils/fileUtils.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/utils/fileUtils.ts",
+      "language": "typescript",
+      "sizeBytes": 12698,
+      "symbols": [
+        {
+          "name": "CODEATLAS_DIR",
+          "kind": "const",
+          "line": 6,
+          "signature": "export const CODEATLAS_DIR = '.codeatlas';"
+        },
+        {
+          "name": "BRANCHES_DIR",
+          "kind": "const",
+          "line": 7,
+          "signature": "export const BRANCHES_DIR = 'branches';"
+        },
+        {
+          "name": "CACHE_DIR",
+          "kind": "const",
+          "line": 8,
+          "signature": "export const CACHE_DIR = 'cache';"
+        },
+        {
+          "name": "CURRENT_DIR",
+          "kind": "const",
+          "line": 9,
+          "signature": "export const CURRENT_DIR = 'current';"
+        },
+        {
+          "name": "CONTEXT_DIR",
+          "kind": "const",
+          "line": 10,
+          "signature": "export const CONTEXT_DIR = 'context';"
+        },
+        {
+          "name": "GRAPH_FILE",
+          "kind": "const",
+          "line": 11,
+          "signature": "export const GRAPH_FILE = 'graph.json';"
+        },
+        {
+          "name": "INDEX_FILE",
+          "kind": "const",
+          "line": 12,
+          "signature": "export const INDEX_FILE = 'index.json';"
+        },
+        {
+          "name": "CONTEXT_OVERVIEW_FILE",
+          "kind": "const",
+          "line": 13,
+          "signature": "export const CONTEXT_OVERVIEW_FILE = 'CONTEXT.md';"
+        },
+        {
+          "name": "BRANCH_STATE_FILE",
+          "kind": "const",
+          "line": 14,
+          "signature": "export const BRANCH_STATE_FILE = 'branch-state.json';"
+        },
+        {
+          "name": "WORKSPACE_ROOT_NOT_SET",
+          "kind": "const",
+          "line": 17,
+          "signature": "export const WORKSPACE_ROOT_NOT_SET = '__WORKSPACE_ROOT_NOT_SET__';"
+        },
+        {
+          "name": "getWorkspaceRoot",
+          "kind": "function",
+          "line": 19,
+          "signature": "export function getWorkspaceRoot(): string {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 21,
+          "signature": "if (!folders || folders.length === 0) {"
+        },
+        {
+          "name": "getCodeAtlasDir",
+          "kind": "function",
+          "line": 27,
+          "signature": "export function getCodeAtlasDir(): string {"
+        },
+        {
+          "name": "getCodeAtlasDirForRoot",
+          "kind": "function",
+          "line": 36,
+          "signature": "export function getCodeAtlasDirForRoot(workspaceRoot: string): string {"
+        },
+        {
+          "name": "sanitizeBranchName",
+          "kind": "function",
+          "line": 44,
+          "signature": "export function sanitizeBranchName(branch: string): string {"
+        },
+        {
+          "name": "getBranchDir",
+          "kind": "function",
+          "line": 51,
+          "signature": "export function getBranchDir(branch: string): string {"
+        },
+        {
+          "name": "getSharedCacheDir",
+          "kind": "function",
+          "line": 58,
+          "signature": "export function getSharedCacheDir(): string {"
+        },
+        {
+          "name": "setActiveBranch",
+          "kind": "function",
+          "line": 70,
+          "signature": "export function setActiveBranch(branch: string): void {"
+        },
+        {
+          "name": "getActiveBranch",
+          "kind": "function",
+          "line": 77,
+          "signature": "export function getActiveBranch(): string {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 78,
+          "signature": "if (!_activeBranch) {"
+        },
+        {
+          "name": "getActiveBranchDir",
+          "kind": "function",
+          "line": 87,
+          "signature": "function getActiveBranchDir(): string {"
+        },
+        {
+          "name": "getContextDir",
+          "kind": "function",
+          "line": 93,
+          "signature": "export function getContextDir(): string {"
+        },
+        {
+          "name": "getGraphFilePath",
+          "kind": "function",
+          "line": 97,
+          "signature": "export function getGraphFilePath(): string {"
+        },
+        {
+          "name": "getIndexFilePath",
+          "kind": "function",
+          "line": 101,
+          "signature": "export function getIndexFilePath(): string {"
+        },
+        {
+          "name": "getContextOverviewPath",
+          "kind": "function",
+          "line": 105,
+          "signature": "export function getContextOverviewPath(): string {"
+        },
+        {
+          "name": "getBranchStatePath",
+          "kind": "function",
+          "line": 109,
+          "signature": "export function getBranchStatePath(branch?: string): string {"
+        },
+        {
+          "name": "getContextFilePath",
+          "kind": "function",
+          "line": 114,
+          "signature": "export function getContextFilePath(relativeFilePath: string): string {"
+        },
+        {
+          "name": "getCurrentIndexDir",
+          "kind": "function",
+          "line": 124,
+          "signature": "export function getCurrentIndexDir(): string {"
+        },
+        {
+          "name": "publishCurrentIndex",
+          "kind": "function",
+          "line": 133,
+          "signature": "export function publishCurrentIndex(): void {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 142,
+          "signature": "for (const file of [INDEX_FILE, CONTEXT_OVERVIEW_FILE, GRAPH_FILE]) {"
+        },
+        {
+          "name": "copyDirRecursive",
+          "kind": "function",
+          "line": 156,
+          "signature": "function copyDirRecursive(src: string, dst: string): void {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 159,
+          "signature": "for (const entry of entries) {"
+        },
+        {
+          "name": "ensureDir",
+          "kind": "function",
+          "line": 170,
+          "signature": "export function ensureDir(dirPath: string): void {"
+        },
+        {
+          "name": "ensureCodeAtlasDirs",
+          "kind": "function",
+          "line": 174,
+          "signature": "export function ensureCodeAtlasDirs(): void {"
+        },
+        {
+          "name": "writeJson",
+          "kind": "function",
+          "line": 181,
+          "signature": "export function writeJson(filePath: string, data: unknown): void {"
+        },
+        {
+          "name": "readJson",
+          "kind": "function",
+          "line": 186,
+          "signature": "export function readJson<T>(filePath: string): T | null {"
+        },
+        {
+          "name": "writeText",
+          "kind": "function",
+          "line": 195,
+          "signature": "export function writeText(filePath: string, content: string): void {"
+        },
+        {
+          "name": "readText",
+          "kind": "function",
+          "line": 200,
+          "signature": "export function readText(filePath: string): string | null {"
+        },
+        {
+          "name": "fileExists",
+          "kind": "function",
+          "line": 208,
+          "signature": "export function fileExists(filePath: string): boolean {"
+        },
+        {
+          "name": "getFileSizeKB",
+          "kind": "function",
+          "line": 212,
+          "signature": "export function getFileSizeKB(filePath: string): number {"
+        },
+        {
+          "name": "toRelativePath",
+          "kind": "function",
+          "line": 221,
+          "signature": "export function toRelativePath(absolutePath: string): string {"
+        },
+        {
+          "name": "toAbsolutePath",
+          "kind": "function",
+          "line": 226,
+          "signature": "export function toAbsolutePath(relativePath: string): string {"
+        },
+        {
+          "name": "INCLUDE_FILE",
+          "kind": "const",
+          "line": 230,
+          "signature": "export const INCLUDE_FILE = '.include.codeatlas';"
+        },
+        {
+          "name": "isGitRepo",
+          "kind": "function",
+          "line": 235,
+          "signature": "export function isGitRepo(): boolean {"
+        },
+        {
+          "name": "getIncludeFilePath",
+          "kind": "function",
+          "line": 251,
+          "signature": "export function getIncludeFilePath(): string {"
+        },
+        {
+          "name": "hasIncludeFile",
+          "kind": "function",
+          "line": 258,
+          "signature": "export function hasIncludeFile(): boolean {"
+        },
+        {
+          "name": "parseIncludeFile",
+          "kind": "function",
+          "line": 267,
+          "signature": "function parseIncludeFile(): string[] {"
+        },
+        {
+          "name": "collectSourceFiles",
+          "kind": "function",
+          "line": 283,
+          "signature": "export async function collectSourceFiles(): Promise<string[]> {"
+        },
+        {
+          "name": "collectSourceFilesViaInclude",
+          "kind": "function",
+          "line": 302,
+          "signature": "function collectSourceFilesViaInclude("
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 315,
+          "signature": "for (const pat of minimatchPatterns) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 327,
+          "signature": "for (const item of items) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 345,
+          "signature": "for (const entry of entries) {"
+        },
+        {
+          "name": "collectSourceFilesViaGlob",
+          "kind": "function",
+          "line": 369,
+          "signature": "async function collectSourceFilesViaGlob("
+        },
+        {
+          "name": "chunkText",
+          "kind": "function",
+          "line": 388,
+          "signature": "export function chunkText(text: string, maxChars: number): string[] {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 389,
+          "signature": "if (text.length <= maxChars) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 397,
+          "signature": "for (const line of lines) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 398,
+          "signature": "if (current.length + line.length + 1 > maxChars && current.length > 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 406,
+          "signature": "if (current) {"
+        },
+        {
+          "name": "detectLanguage",
+          "kind": "function",
+          "line": 413,
+          "signature": "export function detectLanguage(filePath: string): string {"
+        }
+      ],
+      "imports": [],
+      "importedBy": [
+        "src/core/analyzer/fileAnalyzer.ts",
+        "src/core/analyzer/graphBuilder.ts",
+        "src/core/git/gitService.ts",
+        "src/core/stats/usageStats.ts",
+        "src/test/suite/fileUtils.test.ts",
+        "src/vscode/panel/mainPanel.ts"
+      ]
+    },
+    "src/utils/logger.ts": {
+      "path": "src/utils/logger.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/utils/logger.ts",
+      "language": "typescript",
+      "sizeBytes": 1445,
+      "symbols": [
+        {
+          "name": "Logger",
+          "kind": "class",
+          "line": 3,
+          "signature": "class Logger {"
+        },
+        {
+          "name": "constructor",
+          "kind": "method",
+          "line": 7,
+          "signature": "constructor() {"
+        },
+        {
+          "name": "info",
+          "kind": "method",
+          "line": 16,
+          "signature": "info(message: string): void {"
+        },
+        {
+          "name": "warn",
+          "kind": "method",
+          "line": 20,
+          "signature": "warn(message: string): void {"
+        },
+        {
+          "name": "error",
+          "kind": "method",
+          "line": 24,
+          "signature": "error(message: string, error?: unknown): void {"
+        },
+        {
+          "name": "debug",
+          "kind": "method",
+          "line": 31,
+          "signature": "debug(message: string): void {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 32,
+          "signature": "if (!this._debugEnabled) { return; }"
+        },
+        {
+          "name": "section",
+          "kind": "method",
+          "line": 36,
+          "signature": "section(title: string): void {"
+        },
+        {
+          "name": "show",
+          "kind": "method",
+          "line": 42,
+          "signature": "show(): void { this.outputChannel.show(true); }"
+        },
+        {
+          "name": "dispose",
+          "kind": "method",
+          "line": 43,
+          "signature": "dispose(): void { this.outputChannel.dispose(); }"
+        },
+        {
+          "name": "logger",
+          "kind": "const",
+          "line": 46,
+          "signature": "export const logger = new Logger();"
+        }
+      ],
+      "imports": [],
+      "importedBy": [
+        "src/core/analyzer/fileAnalyzer.ts",
+        "src/core/analyzer/graphBuilder.ts",
+        "src/core/analyzer/indexer.ts",
+        "src/core/cache/contextCache.ts",
+        "src/core/git/gitService.ts",
+        "src/core/stats/usageStats.ts",
+        "src/core/workflow/runner.ts",
+        "src/extension.ts",
+        "src/llm/providers/openaiCompat.ts",
+        "src/llm/rateLimiter.ts",
+        "src/server/serverManager.ts",
+        "src/vscode/panel/mainPanel.ts"
+      ]
+    },
+    "src/vscode/activityBar.ts": {
+      "path": "src/vscode/activityBar.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/vscode/activityBar.ts",
+      "language": "typescript",
+      "sizeBytes": 5875,
+      "symbols": [
+        {
+          "name": "CodeAtlasActivityProvider",
+          "kind": "class",
+          "line": 7,
+          "signature": "export class CodeAtlasActivityProvider implements vscode.TreeDataProvider<ActivityItem>, vscode.Disposable {"
+        },
+        {
+          "name": "constructor",
+          "kind": "method",
+          "line": 13,
+          "signature": "constructor() {"
+        },
+        {
+          "name": "refresh",
+          "kind": "method",
+          "line": 22,
+          "signature": "refresh(): void { this._onDidChangeTreeData.fire(); }"
+        },
+        {
+          "name": "getTreeItem",
+          "kind": "method",
+          "line": 24,
+          "signature": "getTreeItem(element: ActivityItem): vscode.TreeItem { return element; }"
+        },
+        {
+          "name": "getChildren",
+          "kind": "method",
+          "line": 26,
+          "signature": "async getChildren(element?: ActivityItem): Promise<ActivityItem[]> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 27,
+          "signature": "if (!element) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 39,
+          "signature": "if (running) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 107,
+          "signature": "if (stats.global.workflowRuns > 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 125,
+          "signature": "for (const p of display.providers) {"
+        },
+        {
+          "name": "dispose",
+          "kind": "method",
+          "line": 143,
+          "signature": "dispose(): void {"
+        },
+        {
+          "name": "ActivityItem",
+          "kind": "class",
+          "line": 149,
+          "signature": "class ActivityItem extends vscode.TreeItem {"
+        }
+      ],
+      "imports": [
+        "src/core/workflow/runner.ts",
+        "src/core/stats/usageStats.ts",
+        "src/llm/factory.ts",
+        "src/llm/types.ts"
+      ],
+      "importedBy": [
+        "src/extension.ts"
+      ]
+    },
+    "src/vscode/panel/mainPanel.ts": {
+      "path": "src/vscode/panel/mainPanel.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/vscode/panel/mainPanel.ts",
+      "language": "typescript",
+      "sizeBytes": 59500,
+      "symbols": [
+        {
+          "name": "WebviewMessage",
+          "kind": "interface",
+          "line": 9,
+          "signature": "interface WebviewMessage {"
+        },
+        {
+          "name": "MainPanel",
+          "kind": "class",
+          "line": 29,
+          "signature": "export class MainPanel implements vscode.Disposable {"
+        },
+        {
+          "name": "constructor",
+          "kind": "method",
+          "line": 34,
+          "signature": "constructor(private readonly extensionUri: vscode.Uri) {}"
+        },
+        {
+          "name": "show",
+          "kind": "method",
+          "line": 36,
+          "signature": "async show(): Promise<void> {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 37,
+          "signature": "if (this.panel) { this.panel.reveal(vscode.ViewColumn.One); return; }"
+        },
+        {
+          "name": "switch",
+          "kind": "method",
+          "line": 58,
+          "signature": "switch (msg.type) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 87,
+          "signature": "if (!this.panel) { return; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 103,
+          "signature": "if (!this.panel) { return; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 115,
+          "signature": "if (msg.model) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 119,
+          "signature": "if (hasKey) { await storeApiKey(provider, msg.apiKey!.trim()); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 128,
+          "signature": "if (msg.baseUrl)    { await config.update('localBaseUrl',     msg.baseUrl,               vscode.ConfigurationTarget.Glob"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 129,
+          "signature": "if (msg.model)      { await config.update('localModel',       msg.model,                 vscode.ConfigurationTarget.Glob"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 130,
+          "signature": "if (msg.apiType)    { await config.update('localApiType',     msg.apiType,               vscode.ConfigurationTarget.Glob"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 131,
+          "signature": "if (msg.contextSize){ await config.update('localContextSize', Number(msg.contextSize),   vscode.ConfigurationTarget.Glob"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 140,
+          "signature": "if (msg.baseUrl) { await config.update('openaiCompatBaseUrl', msg.baseUrl, vscode.ConfigurationTarget.Global); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 141,
+          "signature": "if (msg.model)   { await config.update('openaiCompatModel',   msg.model,   vscode.ConfigurationTarget.Global); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 151,
+          "signature": "if (provider === 'local') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 153,
+          "signature": "if (serverManager.isRunning) { await serverManager.stop(); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 155,
+          "signature": "if (provider === 'openai-compat') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 165,
+          "signature": "if (msg.autoUpdate !== undefined) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 168,
+          "signature": "if (msg.requestsPerMinute !== undefined) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 174,
+          "signature": "if (msg.concurrentRequests !== undefined) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 180,
+          "signature": "if (msg.maxFileSizeKB !== undefined) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 186,
+          "signature": "if (msg.includedExtensions !== undefined) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 189,
+          "signature": "if (exts.length > 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 193,
+          "signature": "if (msg.excludePatterns !== undefined) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 213,
+          "signature": "if (provider === 'local') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 215,
+          "signature": "if (baseUrl)  { await config.update('localBaseUrl',  baseUrl,  vscode.ConfigurationTarget.Global); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 216,
+          "signature": "if (model)    { await config.update('localModel',    model,    vscode.ConfigurationTarget.Global); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 217,
+          "signature": "if (apiType)  { await config.update('localApiType',  apiType,  vscode.ConfigurationTarget.Global); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 221,
+          "signature": "if (baseUrl) { await config.update('openaiCompatBaseUrl', baseUrl, vscode.ConfigurationTarget.Global); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 222,
+          "signature": "if (model)   { await config.update('openaiCompatModel',   model,   vscode.ConfigurationTarget.Global); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 264,
+          "signature": "if (uris?.[0]) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 274,
+          "signature": "if (uris?.[0]) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 367,
+          "signature": "if (usageStats.global.workflowRuns === 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 385,
+          "signature": "for (const p of statsDisplay.providers) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 993,
+          "signature": "if (content) { content.classList.add('active'); }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1007,
+          "signature": "if (_apiType === 'ollama') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1008,
+          "signature": "if (hint)     { hint.textContent = 'Uses Ollama native /api/chat \\u2014 URL should NOT include /v1'; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1009,
+          "signature": "if (urlEl)    { urlEl.placeholder = 'http://localhost:11434'; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1010,
+          "signature": "if (keyField) { keyField.style.display = 'none'; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1012,
+          "signature": "if (hint)     { hint.textContent = 'LM Studio, llama.cpp server, Jan.ai, text-generation-webui\\u2026'; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1013,
+          "signature": "if (urlEl)    { urlEl.placeholder = 'http://localhost:8080/v1'; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1014,
+          "signature": "if (keyField) { keyField.style.display = ''; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1025,
+          "signature": "if (!body || !card || !radio) { return; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1035,
+          "signature": "if (e.target.tagName === 'INPUT') { return; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1047,
+          "signature": "if (!btn) { return; }"
+        },
+        {
+          "name": "switch",
+          "kind": "method",
+          "line": 1051,
+          "signature": "switch (action) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1071,
+          "signature": "if (!keyEl || !modelEl) { return; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1077,
+          "signature": "if (statusEl) { statusEl.innerHTML = '<div class=\"msg info\">Testing\\u2026</div>'; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1131,
+          "signature": "if (!el) { return; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1137,
+          "signature": "if (btn) { btn.textContent = '\\u2713 Copied!'; setTimeout(function() { btn.textContent = '\\uD83D\\uDCCB Copy'; }, 2000); "
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1146,
+          "signature": "if (_serverRunning) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1168,
+          "signature": "if (el) { el.innerHTML = '<div class=\"msg ' + type + '\">' + msg + '</div>'; }"
+        },
+        {
+          "name": "switch",
+          "kind": "method",
+          "line": 1174,
+          "signature": "switch (msg.type) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1178,
+          "signature": "if (statusEl) { statusEl.innerHTML = '<div class=\"msg ok\">&#10003; Saved</div>'; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1180,
+          "signature": "if (badge) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1189,
+          "signature": "if (badge2) { badge2.className = 'badge missing'; badge2.textContent = 'Not configured'; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1191,
+          "signature": "if (wrap) { wrap.innerHTML = ''; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1197,
+          "signature": "if (el) { el.innerHTML = '<div class=\"msg info\">Testing connection\\u2026</div>'; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1203,
+          "signature": "if (el2) { el2.innerHTML = '<div class=\"msg ok\">&#10003; Connection successful!</div>'; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1209,
+          "signature": "if (el3) { el3.innerHTML = '<div class=\"msg err\">&#10007; ' + escHtml(msg.error) + '</div>'; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1220,
+          "signature": "if (statsContent) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1234,
+          "signature": "if (mp) { mp.value = msg.path; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1240,
+          "signature": "if (bp) { bp.value = msg.path; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1258,
+          "signature": "if (dot) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1261,
+          "signature": "if (text) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1265,
+          "signature": "if (btn) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1266,
+          "signature": "if (state.status === 'running') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1274,
+          "signature": "if (logBox && state.logLine) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1279,
+          "signature": "if (wasAtBottom) { logBox.scrollTop = logBox.scrollHeight; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1281,
+          "signature": "if (logBox && state.logs && state.logs.length > 0) {"
+        },
+        {
+          "name": "showStats",
+          "kind": "method",
+          "line": 1303,
+          "signature": "async showStats(): Promise<void> {"
+        },
+        {
+          "name": "dispose",
+          "kind": "method",
+          "line": 1312,
+          "signature": "dispose(): void {"
+        }
+      ],
+      "imports": [
+        "src/llm/types.ts",
+        "src/llm/factory.ts",
+        "src/server/serverManager.ts",
+        "src/utils/fileUtils.ts",
+        "src/core/stats/usageStats.ts",
+        "src/utils/logger.ts"
+      ],
+      "importedBy": [
+        "src/extension.ts"
+      ]
+    },
+    "src/vscode/statusBar.ts": {
+      "path": "src/vscode/statusBar.ts",
+      "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/vscode/statusBar.ts",
+      "language": "typescript",
+      "sizeBytes": 1973,
+      "symbols": [
+        {
+          "name": "CodeAtlasStatusBar",
+          "kind": "class",
+          "line": 4,
+          "signature": "export class CodeAtlasStatusBar implements vscode.Disposable {"
+        },
+        {
+          "name": "constructor",
+          "kind": "method",
+          "line": 7,
+          "signature": "constructor() {"
+        },
+        {
+          "name": "setIdle",
+          "kind": "method",
+          "line": 17,
+          "signature": "setIdle(): void {"
+        },
+        {
+          "name": "setRunning",
+          "kind": "method",
+          "line": 25,
+          "signature": "setRunning(): void {"
+        },
+        {
+          "name": "setError",
+          "kind": "method",
+          "line": 32,
+          "signature": "setError(): void {"
+        },
+        {
+          "name": "setSuccess",
+          "kind": "method",
+          "line": 46,
+          "signature": "setSuccess(filesAnalyzed: number, symbolsIndexed: number): void {"
+        },
+        {
+          "name": "dispose",
+          "kind": "method",
+          "line": 61,
+          "signature": "dispose(): void {"
+        }
+      ],
+      "imports": [
+        "src/core/workflow/runner.ts"
+      ],
+      "importedBy": [
+        "src/extension.ts"
+      ]
+    }
+  }
+}

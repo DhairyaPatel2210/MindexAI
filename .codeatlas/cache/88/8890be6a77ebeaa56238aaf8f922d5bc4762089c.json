@@ -1,0 +1,32 @@
+{
+  "contentHash": "8890be6a77ebeaa56238aaf8f922d5bc4762089c",
+  "fileContext": {
+    "relativePath": "src/vscode/statusBar.ts",
+    "language": "typescript",
+    "overview": "CodeAtlasStatusBar class that displays the CodeAtlas status bar item in the VS Code status bar.",
+    "symbols": [
+      {
+        "name": "CodeAtlasStatusBar",
+        "kind": "class",
+        "line": 0,
+        "purpose": "Display the CodeAtlas status bar item.",
+        "behavior": "Creates a status bar item and updates its text and tooltip based on the CodeAtlas workflow status.",
+        "parameters": "",
+        "returns": "void",
+        "limitations": "Requires VS Code and may throw errors if VS Code is not available.",
+        "uses": [
+          "src/core/workflow/runner.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/core/workflow/runner.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:15.512Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.638Z"
+}

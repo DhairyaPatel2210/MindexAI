@@ -1,0 +1,7 @@
+node_modules/
+.mindexai/
+.vscode-test/
+out/
+*.vsix
+.include.mindexai
+demo/

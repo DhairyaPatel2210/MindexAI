@@ -1,0 +1,32 @@
+{
+  "contentHash": "6ab0ed7e7b71aea6cf7018890fa6e92db9e0eee5",
+  "fileContext": {
+    "relativePath": "src/llm/providers/openai.ts",
+    "language": "typescript",
+    "overview": "Provides an OpenAI LLM provider.",
+    "symbols": [
+      {
+        "name": "OpenAIProvider",
+        "kind": "class",
+        "line": 0,
+        "purpose": "Represents an OpenAI LLM provider.",
+        "behavior": "Provides a complete method for generating text.",
+        "parameters": "apiKey: string; model: string;",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "None",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/llm/types.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:16.383Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.637Z"
+}

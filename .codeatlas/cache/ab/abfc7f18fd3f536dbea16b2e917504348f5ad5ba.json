@@ -1,0 +1,34 @@
+{
+  "contentHash": "abfc7f18fd3f536dbea16b2e917504348f5ad5ba",
+  "fileContext": {
+    "relativePath": "src/llm/providers/openaiCompat.ts",
+    "language": "typescript",
+    "overview": "OpenAICompatProvider connects to a remote server that exposes the OpenAI /v1/chat/completions API.",
+    "symbols": [
+      {
+        "name": "complete",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Generate text based on user input.",
+        "behavior": "Makes a POST request to the OpenAI-compatible server with the user input and returns the generated text.",
+        "parameters": "messages: LLMMessage[], maxTokens: number, signal?: AbortSignal",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "Requires an API key and may be rate-limited.",
+        "uses": [
+          "src/llm/types.ts",
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      }
+    ],
+    "dependencies": [
+      "src/llm/types.ts",
+      "src/utils/logger.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:15.512Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.638Z"
+}

@@ -1,0 +1,156 @@
+{
+  "contentHash": "52486ac3a5426f8dc077c1d4f21d66c51a43a590",
+  "fileContext": {
+    "relativePath": "src/extension.ts",
+    "language": "typescript",
+    "overview": "This file is the main entry point for the CodeAtlas extension, responsible for initializing and managing the extension's functionality, including setting up the UI, handling user interactions, and performing analysis tasks.",
+    "symbols": [
+      {
+        "name": "activate",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Initializes the CodeAtlas extension and sets up its functionality",
+        "behavior": "Creates and configures the main panel, status bar, and activity bar, and registers commands for user interactions",
+        "parameters": "vscode.ExtensionContext",
+        "returns": "void",
+        "limitations": "Must be called once when the extension is activated",
+        "uses": [
+          "src/llm/factory.ts",
+          "src/server/serverManager.ts",
+          "src/vscode/panel/mainPanel.ts",
+          "src/vscode/statusBar.ts",
+          "src/vscode/activityBar.ts",
+          "src/utils/logger.ts",
+          "src/llm/types.ts",
+          "src/core/git/gitService.ts",
+          "src/core/cache/contextCache.ts"
+        ],
+        "usedBy": []
+      },
+      {
+        "name": "deactivate",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Cleans up and disposes of the CodeAtlas extension's resources",
+        "behavior": "Disposes of the auto-update timer, server manager, and logger",
+        "parameters": "void",
+        "returns": "void",
+        "limitations": "Must be called when the extension is deactivated",
+        "uses": [
+          "src/llm/factory.ts",
+          "src/server/serverManager.ts",
+          "src/vscode/panel/mainPanel.ts",
+          "src/vscode/statusBar.ts",
+          "src/vscode/activityBar.ts",
+          "src/utils/logger.ts",
+          "src/llm/types.ts",
+          "src/core/git/gitService.ts",
+          "src/core/cache/contextCache.ts"
+        ],
+        "usedBy": []
+      },
+      {
+        "name": "setupAutoUpdate",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Sets up the auto-update functionality for the CodeAtlas extension",
+        "behavior": "Configures the file watcher and branch polling, and registers commands for user interactions",
+        "parameters": "vscode.ExtensionContext, CodeAtlasActivityProvider",
+        "returns": "void",
+        "limitations": "Must be called once when the extension is activated",
+        "uses": [
+          "src/llm/factory.ts",
+          "src/server/serverManager.ts",
+          "src/vscode/panel/mainPanel.ts",
+          "src/vscode/statusBar.ts",
+          "src/vscode/activityBar.ts",
+          "src/utils/logger.ts",
+          "src/llm/types.ts",
+          "src/core/git/gitService.ts",
+          "src/core/cache/contextCache.ts"
+        ],
+        "usedBy": []
+      },
+      {
+        "name": "disposeAutoUpdate",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Cleans up and disposes of the auto-update resources",
+        "behavior": "Clears the branch polling interval and file watcher",
+        "parameters": "void",
+        "returns": "void",
+        "limitations": "Must be called when the extension is deactivated",
+        "uses": [
+          "src/llm/factory.ts",
+          "src/server/serverManager.ts",
+          "src/vscode/panel/mainPanel.ts",
+          "src/vscode/statusBar.ts",
+          "src/vscode/activityBar.ts",
+          "src/utils/logger.ts",
+          "src/llm/types.ts",
+          "src/core/git/gitService.ts",
+          "src/core/cache/contextCache.ts"
+        ],
+        "usedBy": []
+      },
+      {
+        "name": "buildWorkflowOptions",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Builds the workflow options for the CodeAtlas extension",
+        "behavior": "Configures the workflow options based on the user's configuration",
+        "parameters": "vscode.WorkspaceConfiguration, LLMProviderType",
+        "returns": "WorkflowOptions",
+        "limitations": "Must be called when running a workflow",
+        "uses": [
+          "src/llm/factory.ts",
+          "src/server/serverManager.ts",
+          "src/vscode/panel/mainPanel.ts",
+          "src/vscode/statusBar.ts",
+          "src/vscode/activityBar.ts",
+          "src/utils/logger.ts",
+          "src/llm/types.ts",
+          "src/core/git/gitService.ts",
+          "src/core/cache/contextCache.ts"
+        ],
+        "usedBy": []
+      },
+      {
+        "name": "handleWorkflowError",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Handles errors that occur during workflow execution",
+        "behavior": "Displays an error message to the user and logs the error",
+        "parameters": "unknown, CodeAtlasStatusBar",
+        "returns": "void",
+        "limitations": "Must be called when an error occurs during workflow execution",
+        "uses": [
+          "src/llm/factory.ts",
+          "src/server/serverManager.ts",
+          "src/vscode/panel/mainPanel.ts",
+          "src/vscode/statusBar.ts",
+          "src/vscode/activityBar.ts",
+          "src/utils/logger.ts",
+          "src/llm/types.ts",
+          "src/core/git/gitService.ts",
+          "src/core/cache/contextCache.ts"
+        ],
+        "usedBy": []
+      }
+    ],
+    "dependencies": [
+      "src/llm/factory.ts",
+      "src/server/serverManager.ts",
+      "src/vscode/panel/mainPanel.ts",
+      "src/vscode/statusBar.ts",
+      "src/vscode/activityBar.ts",
+      "src/utils/logger.ts",
+      "src/llm/types.ts",
+      "src/core/git/gitService.ts",
+      "src/core/cache/contextCache.ts"
+    ],
+    "analyzedAt": "2026-03-30T19:56:21.540Z",
+    "chunkCount": 1
+  },
+  "cachedAt": "2026-03-30T19:56:42.643Z"
+}

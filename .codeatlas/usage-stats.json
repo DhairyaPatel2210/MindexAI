@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "providers": {
+    "openai-compat": {
+      "inputTokens": 56850,
+      "outputTokens": 15287,
+      "unsplitTokens": 0,
+      "requestCount": 16,
+      "filesAnalyzed": 30,
+      "filesFromCache": 0,
+      "errors": 1,
+      "totalDurationMs": 14675,
+      "lastUsed": "2026-03-30T19:56:42.664Z"
+    }
+  },
+  "global": {
+    "workflowRuns": 1,
+    "firstUsed": "2026-03-30T19:56:42.664Z",
+    "lastUsed": "2026-03-30T19:56:42.664Z"
+  }
+}
