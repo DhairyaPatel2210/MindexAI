@@ -3,17 +3,97 @@
   "fileContext": {
     "relativePath": "src/vscode/statusBar.ts",
     "language": "typescript",
-    "overview": "CodeAtlasStatusBar class that displays the CodeAtlas status bar item in the VS Code status bar.",
+    "overview": "CodeAtlasStatusBar is a VS Code status bar item that displays the CodeAtlas status.",
     "symbols": [
       {
         "name": "CodeAtlasStatusBar",
         "kind": "class",
         "line": 0,
-        "purpose": "Display the CodeAtlas status bar item.",
-        "behavior": "Creates a status bar item and updates its text and tooltip based on the CodeAtlas workflow status.",
-        "parameters": "",
-        "returns": "void",
-        "limitations": "Requires VS Code and may throw errors if VS Code is not available.",
+        "purpose": "VS Code status bar item for CodeAtlas",
+        "behavior": "Displays the CodeAtlas status and handles user interactions",
+        "parameters": "None",
+        "returns": "None",
+        "limitations": "Requires VS Code to be running",
+        "uses": [
+          "src/core/workflow/runner.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "setIdle",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Sets the status bar item to idle",
+        "behavior": "Updates the status bar item to display the idle state",
+        "parameters": "None",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [
+          "src/core/workflow/runner.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "setRunning",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Sets the status bar item to running",
+        "behavior": "Updates the status bar item to display the running state",
+        "parameters": "None",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [
+          "src/core/workflow/runner.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "setError",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Sets the status bar item to error",
+        "behavior": "Updates the status bar item to display the error state",
+        "parameters": "None",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [
+          "src/core/workflow/runner.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "setSuccess",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Sets the status bar item to success",
+        "behavior": "Updates the status bar item to display the success state",
+        "parameters": "filesAnalyzed, symbolsIndexed",
+        "returns": "None",
+        "limitations": "None",
+        "uses": [
+          "src/core/workflow/runner.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts"
+        ]
+      },
+      {
+        "name": "dispose",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Disposes the status bar item",
+        "behavior": "Removes the status bar item",
+        "parameters": "None",
+        "returns": "None",
+        "limitations": "None",
         "uses": [
           "src/core/workflow/runner.ts"
         ],
@@ -25,8 +105,8 @@
     "dependencies": [
       "src/core/workflow/runner.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:15.512Z",
+    "analyzedAt": "2026-03-30T21:28:26.305Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.638Z"
+  "cachedAt": "2026-03-30T21:28:59.070Z"
 }

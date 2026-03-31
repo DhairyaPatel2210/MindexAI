@@ -1,175 +1,166 @@
 # src/utils/fileUtils.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T19:56:18.060Z  
+**Analyzed:** 2026-03-30T21:28:29.232Z  
 
 ## Overview
-This file provides utility functions for file system operations, branch management, and workspace configuration. It exports constants, functions, and variables for working with the CodeAtlas directory structure, branch tracking, and file path manipulation.
+This file provides utility functions for file system operations, path manipulation, and workspace management, primarily for use in a code analysis and AI code editor context.
 
 ## Symbols
 
 ### `CODEATLAS_DIR` *(constant)*
-**Purpose:** Directory path for CodeAtlas  
+**Purpose:** Directory path for CodeAtlas configuration  
 
-**Behavior:** Returns the absolute path to the CodeAtlas directory
+**Behavior:** Returns the path to the .codeatlas directory
 
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getWorkspaceRoot` *(function)*
-**Purpose:** Get the workspace root directory  
+**Purpose:** Returns the path to the workspace root directory  
 
-**Behavior:** Returns the absolute path to the workspace root directory
+**Behavior:** Checks if a workspace folder is open and returns its path
 
 **Returns:** string  
 **Limitations:** Throws an error if no workspace folder is open  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getCodeAtlasDir` *(function)*
-**Purpose:** Get the CodeAtlas directory path  
+**Purpose:** Returns the path to the .codeatlas directory  
 
-**Behavior:** Returns the absolute path to the CodeAtlas directory
+**Behavior:** Joins the workspace root and CODEATLAS_DIR to get the path
 
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getCodeAtlasDirForRoot` *(function)*
-**Purpose:** Get the CodeAtlas directory path for a given workspace root  
+**Purpose:** Returns the path to the .codeatlas directory for a given workspace root  
 
-**Behavior:** Returns the absolute path to the CodeAtlas directory
+**Behavior:** Joins the workspace root and CODEATLAS_DIR to get the path
 
 **Parameters:** workspaceRoot: string  
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `sanitizeBranchName` *(function)*
-**Purpose:** Sanitize a git branch name for use as a filesystem directory name  
+**Purpose:** Sanitizes a git branch name for use as a filesystem directory name  
 
-**Behavior:** Replaces '/' with '--' in the branch name
+**Behavior:** Replaces / with -- in the branch name
 
 **Parameters:** branch: string  
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getBranchDir` *(function)*
-**Purpose:** Get the per-branch directory under `.codeatlas/branches/{sanitized-branch}/`  
+**Purpose:** Returns the path to the per-branch directory  
 
-**Behavior:** Returns the absolute path to the branch directory
+**Behavior:** Joins the .codeatlas directory, branches directory, and sanitized branch name to get the path
 
 **Parameters:** branch: string  
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getSharedCacheDir` *(function)*
-**Purpose:** Get the shared content-hash cache directory (`.codeatlas/cache/`)  
+**Purpose:** Returns the path to the shared content-hash cache directory  
 
-**Behavior:** Returns the absolute path to the cache directory
+**Behavior:** Joins the .codeatlas directory and cache directory to get the path
 
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `setActiveBranch` *(function)*
-**Purpose:** Set the active branch  
+**Purpose:** Sets the active branch  
 
-**Behavior:** Sets the active branch for branch-aware path helpers
+**Behavior:** Stores the branch name in the _activeBranch variable
 
 **Parameters:** branch: string  
 **Returns:** void  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getActiveBranch` *(function)*
-**Purpose:** Get the currently active branch name  
+**Purpose:** Returns the currently active branch name  
 
-**Behavior:** Returns the active branch name
+**Behavior:** Returns the _activeBranch variable
 
 **Returns:** string  
 **Limitations:** Throws an error if no active branch is set  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getActiveBranchDir` *(function)*
-**Purpose:** Get the directory for the currently active branch  
+**Purpose:** Returns the path to the currently active branch directory  
 
-**Behavior:** Returns the absolute path to the active branch directory
+**Behavior:** Joins the .codeatlas directory, branches directory, and active branch name to get the path
 
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getContextDir` *(function)*
-**Purpose:** Get the context directory  
+**Purpose:** Returns the path to the context directory  
 
-**Behavior:** Returns the absolute path to the context directory
+**Behavior:** Joins the active branch directory and context directory to get the path
 
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getGraphFilePath` *(function)*
-**Purpose:** Get the graph file path  
+**Purpose:** Returns the path to the graph file  
 
-**Behavior:** Returns the absolute path to the graph file
+**Behavior:** Joins the active branch directory and graph file to get the path
 
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getIndexFilePath` *(function)*
-**Purpose:** Get the index file path  
+**Purpose:** Returns the path to the index file  
 
-**Behavior:** Returns the absolute path to the index file
+**Behavior:** Joins the active branch directory and index file to get the path
 
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getContextOverviewPath` *(function)*
-**Purpose:** Get the context overview file path  
+**Purpose:** Returns the path to the context overview file  
 
-**Behavior:** Returns the absolute path to the context overview file
+**Behavior:** Joins the active branch directory and context overview file to get the path
 
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getBranchStatePath` *(function)*
-**Purpose:** Get the branch state file path  
+**Purpose:** Returns the path to the branch state file  
 
-**Behavior:** Returns the absolute path to the branch state file
+**Behavior:** Joins the branch directory and branch state file to get the path
 
-**Parameters:** branch?: string  
+**Parameters:** branch: string  
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getContextFilePath` *(function)*
-**Purpose:** Get the context file path  
+**Purpose:** Returns the path to the context file  
 
-**Behavior:** Returns the absolute path to the context file
+**Behavior:** Joins the context directory and relative file path to get the path
 
 **Parameters:** relativeFilePath: string  
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getCurrentIndexDir` *(function)*
-**Purpose:** Get the stable `.codeatlas/current/` directory path  
+**Purpose:** Returns the path to the current index directory  
 
-**Behavior:** Returns the absolute path to the current index directory
+**Behavior:** Joins the .codeatlas directory and current directory to get the path
 
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `publishCurrentIndex` *(function)*
-**Purpose:** Copy the active branch's output files to `.codeatlas/current/`  
+**Purpose:** Copies the active branch's output files to the current index directory  
 
-**Behavior:** Copies the index file, context overview file, graph file, and context directory
+**Behavior:** Removes the old current index directory and recreates it with the latest output files
 
-**Returns:** void  
-**Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
-
-### `copyDirRecursive` *(function)*
-**Purpose:** Copy a directory recursively  
-
-**Behavior:** Copies the directory and its contents
-
-**Parameters:** src: string, dst: string  
 **Returns:** void  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `ensureDir` *(function)*
-**Purpose:** Ensure a directory exists  
+**Purpose:** Ensures a directory exists  
 
 **Behavior:** Creates the directory if it does not exist
 
@@ -178,80 +169,80 @@ This file provides utility functions for file system operations, branch manageme
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `ensureCodeAtlasDirs` *(function)*
-**Purpose:** Ensure the CodeAtlas directory structure exists  
+**Purpose:** Ensures the .codeatlas directory and its subdirectories exist  
 
-**Behavior:** Creates the CodeAtlas directory and its subdirectories
+**Behavior:** Calls ensureDir for each required directory
 
 **Returns:** void  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `writeJson` *(function)*
-**Purpose:** Write JSON data to a file  
+**Purpose:** Writes JSON data to a file  
 
-**Behavior:** Writes the JSON data to the file
+**Behavior:** Creates the directory if it does not exist and writes the JSON data to the file
 
 **Parameters:** filePath: string, data: unknown  
 **Returns:** void  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `readJson` *(function)*
-**Purpose:** Read JSON data from a file  
+**Purpose:** Reads JSON data from a file  
 
-**Behavior:** Returns the JSON data
+**Behavior:** Returns the JSON data if the file exists, otherwise returns null
 
 **Parameters:** filePath: string  
 **Returns:** T | null  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `writeText` *(function)*
-**Purpose:** Write text to a file  
+**Purpose:** Writes text to a file  
 
-**Behavior:** Writes the text to the file
+**Behavior:** Creates the directory if it does not exist and writes the text to the file
 
 **Parameters:** filePath: string, content: string  
 **Returns:** void  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `readText` *(function)*
-**Purpose:** Read text from a file  
+**Purpose:** Reads text from a file  
 
-**Behavior:** Returns the text
+**Behavior:** Returns the text if the file exists, otherwise returns null
 
 **Parameters:** filePath: string  
 **Returns:** string | null  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `fileExists` *(function)*
-**Purpose:** Check if a file exists  
+**Purpose:** Checks if a file exists  
 
-**Behavior:** Returns true if the file exists
+**Behavior:** Returns true if the file exists, otherwise returns false
 
 **Parameters:** filePath: string  
 **Returns:** boolean  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getFileSizeKB` *(function)*
-**Purpose:** Get the file size in KB  
+**Purpose:** Gets the size of a file in KB  
 
-**Behavior:** Returns the file size in KB
+**Behavior:** Returns the file size in KB if the file exists, otherwise returns 0
 
 **Parameters:** filePath: string  
 **Returns:** number  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `toRelativePath` *(function)*
-**Purpose:** Get the relative path from the workspace root  
+**Purpose:** Converts an absolute path to a relative path  
 
-**Behavior:** Returns the relative path
+**Behavior:** Returns the relative path from the workspace root
 
 **Parameters:** absolutePath: string  
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `toAbsolutePath` *(function)*
-**Purpose:** Get the absolute path from a relative path  
+**Purpose:** Converts a relative path to an absolute path  
 
-**Behavior:** Returns the absolute path
+**Behavior:** Joins the workspace root and relative path to get the absolute path
 
 **Parameters:** relativePath: string  
 **Returns:** string  
@@ -260,73 +251,72 @@ This file provides utility functions for file system operations, branch manageme
 ### `INCLUDE_FILE` *(constant)*
 **Purpose:** File path for the .include.codeatlas file  
 
-**Behavior:** Returns the absolute path to the .include.codeatlas file
+**Behavior:** Returns the path to the .include.codeatlas file
 
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `isGitRepo` *(function)*
-**Purpose:** Check if the workspace root is inside a git repository  
+**Purpose:** Checks if the workspace root is inside a git repository  
 
-**Behavior:** Returns true if the workspace root is inside a git repository
+**Behavior:** Executes the git rev-parse command to check if the workspace root is inside a git repository
 
 **Returns:** boolean  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getIncludeFilePath` *(function)*
-**Purpose:** Get the path to the .include.codeatlas file  
+**Purpose:** Returns the path to the .include.codeatlas file  
 
-**Behavior:** Returns the absolute path to the .include.codeatlas file
+**Behavior:** Joins the workspace root and INCLUDE_FILE to get the path
 
 **Returns:** string  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `hasIncludeFile` *(function)*
-**Purpose:** Check if a .include.codeatlas file exists in the workspace root  
+**Purpose:** Checks if the .include.codeatlas file exists  
 
-**Behavior:** Returns true if the .include.codeatlas file exists
+**Behavior:** Returns true if the file exists, otherwise returns false
 
 **Returns:** boolean  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `parseIncludeFile` *(function)*
-**Purpose:** Parse the .include.codeatlas file  
+**Purpose:** Parses the .include.codeatlas file  
 
-**Behavior:** Returns the list of resolved entries
+**Behavior:** Returns a list of resolved entries
 
 **Returns:** string[]  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `collectSourceFiles` *(function)*
-**Purpose:** Collect source files using the .include.codeatlas file  
+**Purpose:** Collects source files using the .include.codeatlas file  
 
-**Behavior:** Returns the list of source files
+**Behavior:** Returns a list of source file paths
 
 **Returns:** string[]  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `collectSourceFilesViaGlob` *(function)*
-**Purpose:** Collect files based on glob patterns  
+**Purpose:** Collects source files using VS Code glob-based collection  
 
-**Behavior:** Returns the list of files
+**Behavior:** Returns a list of source file paths
 
-**Parameters:** includedExtensions: string[], excludePatterns: string[]  
 **Returns:** string[]  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `chunkText` *(function)*
-**Purpose:** Chunk text into smaller pieces  
+**Purpose:** Chunks text into smaller pieces  
 
-**Behavior:** Returns the list of chunks
+**Behavior:** Returns a list of text chunks
 
 **Parameters:** text: string, maxChars: number  
 **Returns:** string[]  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/graphBuilder.ts`, `src/core/git/gitService.ts`, `src/core/stats/usageStats.ts`, `src/test/suite/fileUtils.test.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `detectLanguage` *(function)*
-**Purpose:** Detect the language of a file  
+**Purpose:** Detects the language of a file  
 
-**Behavior:** Returns the language
+**Behavior:** Returns the language name
 
 **Parameters:** filePath: string  
 **Returns:** string  

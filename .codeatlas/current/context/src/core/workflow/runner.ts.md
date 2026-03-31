@@ -1,9 +1,9 @@
 # src/core/workflow/runner.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T19:56:20.105Z  
+**Analyzed:** 2026-03-30T21:28:30.994Z  
 
 ## Overview
-This file contains the core logic for the CodeAtlas workflow, which analyzes source files and builds a semantic index for code understanding and navigation.
+This file contains the core logic for running workflows in the Codeatlas project, including full analysis, incremental updates, and single-file analysis. It utilizes dependency graphs, caching, and rate limiting to optimize the analysis process.
 
 ## Dependencies
 - `src/llm/types.ts`
@@ -15,92 +15,32 @@ This file contains the core logic for the CodeAtlas workflow, which analyzes sou
 
 ## Symbols
 
-### `WorkflowOptions` *(interface)*
-**Purpose:** Configuration options for the CodeAtlas workflow  
-
-**Behavior:** Defines the settings for the workflow, including rate limits, file size limits, and concurrency options
-
-**Parameters:** requestsPerMinute, maxFileSizeKB, maxChunkChars, batchFiles, concurrentRequests  
-**Returns:** None  
-**Limitations:** Must be an object with the specified properties  
-**Used by:** `src/vscode/activityBar.ts`, `src/vscode/statusBar.ts`  
-
-### `WorkflowResult` *(interface)*
-**Purpose:** Result object for the CodeAtlas workflow  
-
-**Behavior:** Contains information about the workflow's progress and outcome
-
-**Parameters:** filesAnalyzed, filesFromCache, symbolsIndexed, errors, duration  
-**Returns:** None  
-**Limitations:** Must be an object with the specified properties  
-**Used by:** `src/vscode/activityBar.ts`, `src/vscode/statusBar.ts`  
-
-### `activateBranch` *(function)*
-**Purpose:** Activate the current branch before running the workflow  
-
-**Behavior:** Resolves and sets the active branch, returning the branch name and current HEAD commit
-
-**Parameters:** None  
-**Returns:** Object with branch name and HEAD commit  
-**Limitations:** Must be called before running the workflow  
-**Used by:** `src/vscode/activityBar.ts`, `src/vscode/statusBar.ts`  
-
 ### `runFullWorkflow` *(function)*
-**Purpose:** Run the full CodeAtlas workflow  
+**Purpose:** Runs a full analysis workflow on the current branch, including collecting source files, building dependency graphs, and analyzing files with the LLM.  
 
-**Behavior:** Analyzes all source files, builds a dependency graph, and creates a semantic index
+**Behavior:** Iterates through the workflow steps, performing tasks such as collecting source files, building dependency graphs, checking the shared cache, analyzing files with the LLM, caching new results, and updating the branch state.
 
-**Parameters:** llm, options  
-**Returns:** WorkflowResult  
-**Limitations:** Must be called with a valid LLM provider and workflow options  
+**Parameters:** llm: ILLMProvider, options: WorkflowOptions  
+**Returns:** Promise<WorkflowResult>  
+**Limitations:** Requires a valid ILLMProvider instance and WorkflowOptions object. May throw errors if the workflow is already running or if there are issues with the LLM or caching.  
 **Used by:** `src/vscode/activityBar.ts`, `src/vscode/statusBar.ts`  
 
 ### `runIncrementalUpdate` *(function)*
-**Purpose:** Run an incremental update of the CodeAtlas workflow  
+**Purpose:** Runs an incremental update workflow on the current branch, including detecting changes, rebuilding dependency graphs, and analyzing updated files with the LLM.  
 
-**Behavior:** Updates the semantic index with changes to source files
+**Behavior:** Iterates through the workflow steps, performing tasks such as detecting changes, rebuilding dependency graphs, checking the shared cache, analyzing updated files with the LLM, caching new results, and updating the branch state.
 
-**Parameters:** llm, options  
-**Returns:** WorkflowResult  
-**Limitations:** Must be called with a valid LLM provider and workflow options  
+**Parameters:** llm: ILLMProvider, options: WorkflowOptions  
+**Returns:** Promise<WorkflowResult>  
+**Limitations:** Requires a valid ILLMProvider instance and WorkflowOptions object. May throw errors if the workflow is already running or if there are issues with the LLM or caching.  
 **Used by:** `src/vscode/activityBar.ts`, `src/vscode/statusBar.ts`  
 
 ### `runSingleFileAnalysis` *(function)*
-**Purpose:** Run a single-file analysis of the CodeAtlas workflow  
+**Purpose:** Analyzes a single file with the LLM, including checking the shared cache and caching the result.  
 
-**Behavior:** Analyzes a single source file and creates a semantic index for it
+**Behavior:** Checks the shared cache for the file, and if it's not cached, analyzes the file with the LLM, caches the result, and updates the branch state.
 
-**Parameters:** filePath, llm, options  
-**Returns:** None  
-**Limitations:** Must be called with a valid file path, LLM provider, and workflow options  
-**Used by:** `src/vscode/activityBar.ts`, `src/vscode/statusBar.ts`  
-
-### `topologicalSort` *(function)*
-**Purpose:** Perform a topological sort on a dependency graph  
-
-**Behavior:** Returns a list of nodes in topological order
-
-**Parameters:** graph  
-**Returns:** List of node names  
-**Limitations:** Must be called with a valid dependency graph  
-**Used by:** `src/vscode/activityBar.ts`, `src/vscode/statusBar.ts`  
-
-### `checkCancellation` *(function)*
-**Purpose:** Check if a cancellation request has been made  
-
-**Behavior:** Throws a cancellation error if the token is cancelled
-
-**Parameters:** token  
-**Returns:** None  
-**Limitations:** Must be called with a valid cancellation token  
-**Used by:** `src/vscode/activityBar.ts`, `src/vscode/statusBar.ts`  
-
-### `runConcurrent` *(function)*
-**Purpose:** Run an array of async tasks with concurrency  
-
-**Behavior:** Returns a list of task outcomes
-
-**Parameters:** tasks, concurrency  
-**Returns:** List of task outcomes  
-**Limitations:** Must be called with a valid array of tasks and concurrency level  
+**Parameters:** filePath: string, llm: ILLMProvider, options: Pick<WorkflowOptions, 'requestsPerMinute' | 'maxFileSizeKB' | 'maxChunkChars'>  
+**Returns:** Promise<void>  
+**Limitations:** Requires a valid filePath, ILLMProvider instance, and WorkflowOptions object. May throw errors if the file is not in the workspace source files or if there are issues with the LLM or caching.  
 **Used by:** `src/vscode/activityBar.ts`, `src/vscode/statusBar.ts`  

@@ -3,17 +3,33 @@
   "fileContext": {
     "relativePath": "src/llm/providers/claude.ts",
     "language": "typescript",
-    "overview": "ClaudeProvider connects to the Anthropic API to generate text based on user input.",
+    "overview": "ClaudeProvider is an LLM provider that connects to the Anthropic API.",
     "symbols": [
+      {
+        "name": "ClaudeProvider",
+        "kind": "class",
+        "line": 0,
+        "purpose": "LLM provider for Anthropic API",
+        "behavior": "Handles API requests and responses to provide LLM functionality",
+        "parameters": "apiKey, model",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "Requires Anthropic API key and model name",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      },
       {
         "name": "complete",
         "kind": "function",
         "line": 0,
-        "purpose": "Generate text based on user input.",
-        "behavior": "Makes a POST request to the Anthropic API with the user input and returns the generated text.",
-        "parameters": "messages: LLMMessage[], maxTokens: number, signal?: AbortSignal",
+        "purpose": "Completes a conversation with the LLM",
+        "behavior": "Sends a request to the Anthropic API and returns the response",
+        "parameters": "messages, maxTokens, signal",
         "returns": "Promise<LLMResponse>",
-        "limitations": "Requires an API key and may be rate-limited.",
+        "limitations": "May throw errors if API request fails",
         "uses": [
           "src/llm/types.ts"
         ],
@@ -25,8 +41,8 @@
     "dependencies": [
       "src/llm/types.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:15.512Z",
+    "analyzedAt": "2026-03-30T21:28:26.305Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.637Z"
+  "cachedAt": "2026-03-30T21:28:59.068Z"
 }

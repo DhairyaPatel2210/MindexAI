@@ -3,17 +3,17 @@
   "fileContext": {
     "relativePath": "src/llm/rateLimiter.ts",
     "language": "typescript",
-    "overview": "Provides a rate limiter for the LLM module.",
+    "overview": "Defines a rate limiter utility for the LLM module.",
     "symbols": [
       {
         "name": "RateLimiter",
         "kind": "class",
         "line": 0,
         "purpose": "Represents a rate limiter that tracks timestamps of recent requests.",
-        "behavior": "Provides an acquire method that blocks until it is safe to proceed.",
-        "parameters": "maxRequestsPerMinute: number;",
-        "returns": "Promise<void>",
-        "limitations": "None",
+        "behavior": "Has two properties: windowMs and timestamps.",
+        "parameters": "None",
+        "returns": "None",
+        "limitations": "Must have windowMs and timestamps properties.",
         "uses": [
           "src/utils/logger.ts"
         ],
@@ -24,14 +24,32 @@
         ]
       },
       {
-        "name": "sleep",
-        "kind": "function",
+        "name": "acquire",
+        "kind": "method",
         "line": 0,
-        "purpose": "Provides a function that sleeps for a specified amount of time.",
-        "behavior": "Returns a promise that resolves after the specified time.",
-        "parameters": "ms: number;",
-        "returns": "Promise<void>",
-        "limitations": "None",
+        "purpose": "Acquires a rate limiter slot.",
+        "behavior": "Blocks until a slot is available.",
+        "parameters": "None",
+        "returns": "None",
+        "limitations": "Must block until a slot is available.",
+        "uses": [
+          "src/utils/logger.ts"
+        ],
+        "usedBy": [
+          "src/core/analyzer/fileAnalyzer.ts",
+          "src/core/workflow/runner.ts",
+          "src/test/suite/rateLimiter.test.ts"
+        ]
+      },
+      {
+        "name": "usedInWindow",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Gets the number of requests used in the current window.",
+        "behavior": "Returns the number of requests used in the current window.",
+        "parameters": "None",
+        "returns": "number",
+        "limitations": "Must return the number of requests used in the current window.",
         "uses": [
           "src/utils/logger.ts"
         ],
@@ -45,8 +63,8 @@
     "dependencies": [
       "src/utils/logger.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:16.383Z",
+    "analyzedAt": "2026-03-30T21:28:26.117Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.636Z"
+  "cachedAt": "2026-03-30T21:28:59.066Z"
 }

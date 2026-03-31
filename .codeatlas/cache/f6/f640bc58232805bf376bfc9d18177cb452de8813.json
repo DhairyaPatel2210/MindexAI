@@ -3,17 +3,89 @@
   "fileContext": {
     "relativePath": "src/llm/factory.ts",
     "language": "typescript",
-    "overview": "LLM factory function that creates an instance of a language model provider based on the user's configuration.",
+    "overview": "LLM factory that creates instances of LLM providers based on configuration.",
     "symbols": [
       {
         "name": "createLLMProvider",
         "kind": "function",
         "line": 0,
-        "purpose": "Create a language model provider instance.",
-        "behavior": "Creates an instance of a language model provider based on the user's configuration and returns it.",
-        "parameters": "",
+        "purpose": "Creates an instance of an LLM provider",
+        "behavior": "Determines the provider type based on configuration and returns an instance",
+        "parameters": "None",
         "returns": "Promise<ILLMProvider>",
-        "limitations": "Requires user configuration and may throw errors if configuration is invalid.",
+        "limitations": "Requires configuration to be set up",
+        "uses": [
+          "src/llm/types.ts",
+          "src/llm/providers/openai.ts",
+          "src/llm/providers/gemini.ts",
+          "src/llm/providers/claude.ts",
+          "src/llm/providers/local.ts",
+          "src/llm/providers/ollama.ts",
+          "src/llm/providers/openaiCompat.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/activityBar.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "getStoredApiKey",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Retrieves a stored API key for a given provider",
+        "behavior": "Uses the secret storage to retrieve the API key",
+        "parameters": "provider",
+        "returns": "Promise<string | undefined>",
+        "limitations": "Requires secret storage to be set up",
+        "uses": [
+          "src/llm/types.ts",
+          "src/llm/providers/openai.ts",
+          "src/llm/providers/gemini.ts",
+          "src/llm/providers/claude.ts",
+          "src/llm/providers/local.ts",
+          "src/llm/providers/ollama.ts",
+          "src/llm/providers/openaiCompat.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/activityBar.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "storeApiKey",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Stores an API key for a given provider",
+        "behavior": "Uses the secret storage to store the API key",
+        "parameters": "provider, apiKey",
+        "returns": "Promise<void>",
+        "limitations": "Requires secret storage to be set up",
+        "uses": [
+          "src/llm/types.ts",
+          "src/llm/providers/openai.ts",
+          "src/llm/providers/gemini.ts",
+          "src/llm/providers/claude.ts",
+          "src/llm/providers/local.ts",
+          "src/llm/providers/ollama.ts",
+          "src/llm/providers/openaiCompat.ts"
+        ],
+        "usedBy": [
+          "src/extension.ts",
+          "src/vscode/activityBar.ts",
+          "src/vscode/panel/mainPanel.ts"
+        ]
+      },
+      {
+        "name": "deleteApiKey",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Deletes an API key for a given provider",
+        "behavior": "Uses the secret storage to delete the API key",
+        "parameters": "provider",
+        "returns": "Promise<void>",
+        "limitations": "Requires secret storage to be set up",
         "uses": [
           "src/llm/types.ts",
           "src/llm/providers/openai.ts",
@@ -39,8 +111,8 @@
       "src/llm/providers/ollama.ts",
       "src/llm/providers/openaiCompat.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:15.512Z",
+    "analyzedAt": "2026-03-30T21:28:26.305Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.638Z"
+  "cachedAt": "2026-03-30T21:28:59.070Z"
 }

@@ -3,17 +3,17 @@
   "fileContext": {
     "relativePath": "src/extension.ts",
     "language": "typescript",
-    "overview": "This file is the main entry point for the CodeAtlas extension, responsible for initializing and managing the extension's functionality, including setting up the UI, handling user interactions, and performing analysis tasks.",
+    "overview": "This file is the main entry point for the CodeAtlas VS Code extension, responsible for activating and deactivating the extension, handling user interactions, and managing the workflow of analyzing and indexing code.",
     "symbols": [
       {
         "name": "activate",
         "kind": "function",
         "line": 0,
-        "purpose": "Initializes the CodeAtlas extension and sets up its functionality",
-        "behavior": "Creates and configures the main panel, status bar, and activity bar, and registers commands for user interactions",
+        "purpose": "Activates the CodeAtlas extension, initializing secure secret storage, setting up the status bar, main panel, and activity bar, and registering commands.",
+        "behavior": "Called when the extension is activated, it sets up the necessary components and registers commands for user interactions.",
         "parameters": "vscode.ExtensionContext",
         "returns": "void",
-        "limitations": "Must be called once when the extension is activated",
+        "limitations": "Must be called when the extension is activated.",
         "uses": [
           "src/llm/factory.ts",
           "src/server/serverManager.ts",
@@ -31,11 +31,11 @@
         "name": "deactivate",
         "kind": "function",
         "line": 0,
-        "purpose": "Cleans up and disposes of the CodeAtlas extension's resources",
-        "behavior": "Disposes of the auto-update timer, server manager, and logger",
+        "purpose": "Deactivates the CodeAtlas extension, disposing of auto-update and server manager resources.",
+        "behavior": "Called when the extension is deactivated, it disposes of resources and stops any ongoing workflows.",
         "parameters": "void",
         "returns": "void",
-        "limitations": "Must be called when the extension is deactivated",
+        "limitations": "Must be called when the extension is deactivated.",
         "uses": [
           "src/llm/factory.ts",
           "src/server/serverManager.ts",
@@ -53,11 +53,11 @@
         "name": "setupAutoUpdate",
         "kind": "function",
         "line": 0,
-        "purpose": "Sets up the auto-update functionality for the CodeAtlas extension",
-        "behavior": "Configures the file watcher and branch polling, and registers commands for user interactions",
+        "purpose": "Sets up auto-update functionality, watching for changes in the workspace and triggering incremental updates.",
+        "behavior": "Called when auto-update is enabled, it sets up a file watcher and branch polling to trigger incremental updates.",
         "parameters": "vscode.ExtensionContext, CodeAtlasActivityProvider",
         "returns": "void",
-        "limitations": "Must be called once when the extension is activated",
+        "limitations": "Must be called when auto-update is enabled.",
         "uses": [
           "src/llm/factory.ts",
           "src/server/serverManager.ts",
@@ -75,11 +75,11 @@
         "name": "disposeAutoUpdate",
         "kind": "function",
         "line": 0,
-        "purpose": "Cleans up and disposes of the auto-update resources",
-        "behavior": "Clears the branch polling interval and file watcher",
+        "purpose": "Disposes of auto-update resources, stopping file watching and branch polling.",
+        "behavior": "Called when auto-update is disabled, it disposes of resources and stops any ongoing workflows.",
         "parameters": "void",
         "returns": "void",
-        "limitations": "Must be called when the extension is deactivated",
+        "limitations": "Must be called when auto-update is disabled.",
         "uses": [
           "src/llm/factory.ts",
           "src/server/serverManager.ts",
@@ -97,11 +97,11 @@
         "name": "buildWorkflowOptions",
         "kind": "function",
         "line": 0,
-        "purpose": "Builds the workflow options for the CodeAtlas extension",
-        "behavior": "Configures the workflow options based on the user's configuration",
+        "purpose": "Builds workflow options based on user configuration and provider settings.",
+        "behavior": "Called when building workflow options, it extracts relevant settings from the user configuration and provider settings.",
         "parameters": "vscode.WorkspaceConfiguration, LLMProviderType",
         "returns": "WorkflowOptions",
-        "limitations": "Must be called when running a workflow",
+        "limitations": "Must be called when building workflow options.",
         "uses": [
           "src/llm/factory.ts",
           "src/server/serverManager.ts",
@@ -119,11 +119,11 @@
         "name": "handleWorkflowError",
         "kind": "function",
         "line": 0,
-        "purpose": "Handles errors that occur during workflow execution",
-        "behavior": "Displays an error message to the user and logs the error",
+        "purpose": "Handles workflow errors, displaying error messages and logging exceptions.",
+        "behavior": "Called when a workflow error occurs, it displays an error message and logs the exception.",
         "parameters": "unknown, CodeAtlasStatusBar",
         "returns": "void",
-        "limitations": "Must be called when an error occurs during workflow execution",
+        "limitations": "Must be called when a workflow error occurs.",
         "uses": [
           "src/llm/factory.ts",
           "src/server/serverManager.ts",
@@ -149,8 +149,8 @@
       "src/core/git/gitService.ts",
       "src/core/cache/contextCache.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:21.540Z",
+    "analyzedAt": "2026-03-30T21:28:43.081Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.643Z"
+  "cachedAt": "2026-03-30T21:28:59.076Z"
 }

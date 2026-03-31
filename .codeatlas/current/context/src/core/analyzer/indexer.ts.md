@@ -1,9 +1,9 @@
 # src/core/analyzer/indexer.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T19:56:19.184Z  
+**Analyzed:** 2026-03-30T21:28:29.976Z  
 
 ## Overview
-This file, `indexer.ts`, is responsible for building a semantic index of a codebase, which includes a flat symbol index, a file index, and an inverted keyword index. It aggregates data from individual file analyses and dependency graphs to provide a comprehensive understanding of the codebase.
+This file is responsible for building a semantic index of a codebase, which includes a flat symbol index, a file index, and an inverted keyword index. The index is built by analyzing file contexts and dependency graphs, and is persisted to disk in JSON format.
 
 ## Dependencies
 - `src/core/analyzer/fileAnalyzer.ts`
@@ -13,61 +13,41 @@ This file, `indexer.ts`, is responsible for building a semantic index of a codeb
 ## Symbols
 
 ### `buildIndex` *(function)*
-**Purpose:** Builds a semantic index from file contexts and dependency graphs.  
+**Purpose:** Builds a semantic index of a codebase  
 
-**Behavior:** Iterates over file contexts, extracts symbol information, and constructs the index.
+**Behavior:** Analyzes file contexts and dependency graphs to create a flat symbol index, a file index, and an inverted keyword index
 
 **Parameters:** fileContexts: FileContext[], graph: DependencyGraph  
 **Returns:** SemanticIndex  
-**Limitations:** Requires file contexts and dependency graphs as input.  
+**Limitations:** Requires file contexts and dependency graphs to be available  
 **Used by:** `src/core/workflow/runner.ts`, `src/test/suite/indexer.test.ts`  
 
 ### `persistIndex` *(function)*
-**Purpose:** Persists the semantic index to a file.  
+**Purpose:** Persists a semantic index to disk in JSON format  
 
-**Behavior:** Writes the index to a JSON file.
+**Behavior:** Writes the index to a file at the specified path
 
 **Parameters:** index: SemanticIndex  
 **Returns:** void  
-**Limitations:** Requires a valid semantic index as input.  
+**Limitations:** Requires a valid index object  
 **Used by:** `src/core/workflow/runner.ts`, `src/test/suite/indexer.test.ts`  
 
 ### `persistContextOverview` *(function)*
-**Purpose:** Generates a context overview file from the semantic index and dependency graph.  
+**Purpose:** Persists a context overview to disk in Markdown format  
 
-**Behavior:** Constructs a markdown file with codebase statistics, usage instructions, and file overviews.
+**Behavior:** Writes a Markdown file containing a summary of the codebase and its symbols
 
 **Parameters:** index: SemanticIndex, graph: DependencyGraph  
 **Returns:** void  
-**Limitations:** Requires a valid semantic index and dependency graph as input.  
-**Used by:** `src/core/workflow/runner.ts`, `src/test/suite/indexer.test.ts`  
-
-### `indexKeywords` *(function)*
-**Purpose:** Indexes keywords from symbol purposes and behaviors.  
-
-**Behavior:** Extracts meaningful words from text and stores them in a keyword index.
-
-**Parameters:** sym: SymbolContext, filePath: string, keywords: Record<string, string[]>  
-**Returns:** void  
-**Limitations:** Requires a symbol context, file path, and keyword index as input.  
-**Used by:** `src/core/workflow/runner.ts`, `src/test/suite/indexer.test.ts`  
-
-### `extractMeaningfulWords` *(function)*
-**Purpose:** Extracts meaningful words from text.  
-
-**Behavior:** Removes stop words, punctuation, and short words from text.
-
-**Parameters:** text: string  
-**Returns:** string[]  
-**Limitations:** Requires a string as input.  
+**Limitations:** Requires a valid index object and dependency graph  
 **Used by:** `src/core/workflow/runner.ts`, `src/test/suite/indexer.test.ts`  
 
 ### `inlineOverview` *(function)*
-**Purpose:** Formats an overview string for inline use in a markdown list item.  
+**Purpose:** Formats an overview string for inline use in a Markdown list item  
 
-**Behavior:** Collapses newlines, truncates text, and falls back to a placeholder if empty.
+**Behavior:** Collapses embedded newlines, truncates with … at 200 chars, and falls back to italicised placeholder if empty
 
 **Parameters:** overview: string | undefined  
 **Returns:** string  
-**Limitations:** Requires a string or undefined as input.  
+**Limitations:** Requires a valid overview string  
 **Used by:** `src/core/workflow/runner.ts`, `src/test/suite/indexer.test.ts`  

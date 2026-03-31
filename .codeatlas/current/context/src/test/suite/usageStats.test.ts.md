@@ -1,9 +1,9 @@
 # src/test/suite/usageStats.test.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T19:56:42.631Z  
+**Analyzed:** 2026-03-30T21:28:54.355Z  
 
 ## Overview
-This file contains unit tests for the UsageTracker class and the getStatsDisplay function, which are used to track and display usage statistics for language models.
+This file contains unit tests for the usage statistics functionality, specifically for the UsageTracker class and the getStatsDisplay function.
 
 ## Dependencies
 - `src/core/stats/usageStats.ts`
@@ -12,37 +12,19 @@ This file contains unit tests for the UsageTracker class and the getStatsDisplay
 ## Symbols
 
 ### `UsageTracker` *(class)*
-**Purpose:** Tracks usage statistics for language models, including input tokens, output tokens, unsplit tokens, request count, and total duration.  
+**Purpose:** Tracks usage statistics for a workflow, including input tokens, output tokens, unsplit tokens, request count, and total duration.  
 
-**Behavior:** Accumulates statistics across multiple calls to the recordCall method, which updates the tracker's state based on the provided response and duration.
+**Behavior:** Accumulates statistics across multiple calls to recordCall, handles responses with and without token information, and prefers split tokens over combined totals.
 
-**Parameters:** LLMResponse, duration  
+**Parameters:** LLMResponse, durationMs  
 **Returns:** void  
-**Limitations:** Does not handle responses with missing token information.  
+**Limitations:** Does not handle cases where response contains both split and total token information.  
 
 ### `getStatsDisplay` *(function)*
-**Purpose:** Computes and formats usage statistics for display, including total tokens, average input tokens per run, average output tokens per run, and average files per run.  
+**Purpose:** Computes a displayable representation of usage statistics from a UsageStatsData object.  
 
-**Behavior:** Takes a UsageStatsData object as input and returns a StatsDisplay object, which contains the formatted statistics.
+**Behavior:** Calculates total tokens, average input tokens per run, average output tokens per run, average files per run, and duration in minutes, and rounds averages to nearest integer.
 
 **Parameters:** UsageStatsData  
 **Returns:** StatsDisplay  
-**Limitations:** Does not handle cases where workflow runs is 0.  
-
-### `recordCall` *(method)*
-**Purpose:** Updates the UsageTracker's state based on the provided response and duration.  
-
-**Behavior:** Accumulates statistics across multiple calls, including input tokens, output tokens, unsplit tokens, request count, and total duration.
-
-**Parameters:** LLMResponse, duration  
-**Returns:** void  
-**Limitations:** Does not handle responses with missing token information.  
-
-### `makeStats` *(function)*
-**Purpose:** Creates a UsageStatsData object with default values and optional overrides.  
-
-**Behavior:** Returns a UsageStatsData object with the specified provider name and overrides.
-
-**Parameters:** string, Partial<{inputTokens: number, outputTokens: number, unsplitTokens: number, requestCount: number, filesAnalyzed: number, filesFromCache: number, errors: number, totalDurationMs: number, workflowRuns: number}>  
-**Returns:** UsageStatsData  
-**Limitations:** None  
+**Limitations:** Does not handle cases where UsageStatsData object is invalid or missing required information.  

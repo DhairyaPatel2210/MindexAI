@@ -1,0 +1,239 @@
+{
+  "name": "codeatlas",
+  "displayName": "CodeAtlas",
+  "description": "Generate semantic English-language context of your codebase for LLM tools",
+  "version": "0.1.0",
+  "publisher": "codeatlas",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other", "Programming Languages"],
+  "keywords": ["llm", "ai", "context", "semantic", "codebase"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codeatlas.runWorkflow",
+        "title": "CodeAtlas: Run Full Analysis",
+        "icon": "$(circuit-board)"
+      },
+      {
+        "command": "codeatlas.openSetup",
+        "title": "CodeAtlas: Configure LLM Provider",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "codeatlas.analyzeFile",
+        "title": "CodeAtlas: Analyze Current File",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "codeatlas.showIndex",
+        "title": "CodeAtlas: Show Semantic Index",
+        "icon": "$(book)"
+      },
+      {
+        "command": "codeatlas.cancelWorkflow",
+        "title": "CodeAtlas: Cancel Running Analysis",
+        "icon": "$(stop-circle)"
+      },
+      {
+        "command": "codeatlas.clearApiKeys",
+        "title": "CodeAtlas: Clear All API Keys"
+      },
+      {
+        "command": "codeatlas.updateIndex",
+        "title": "CodeAtlas: Update Index (Incremental)",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "codeatlas.showStats",
+        "title": "CodeAtlas: Show Usage Statistics",
+        "icon": "$(pulse)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codeatlasBar",
+          "title": "CodeAtlas",
+          "icon": "$(circuit-board)"
+        }
+      ]
+    },
+    "views": {
+      "codeatlasBar": [
+        {
+          "id": "codeatlas.activityView",
+          "name": "CodeAtlas"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "codeatlas.runWorkflow",
+          "when": "view == codeatlas.activityView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "codeatlas.updateIndex",
+          "when": "view == codeatlas.activityView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "codeatlas.openSetup",
+          "when": "view == codeatlas.activityView",
+          "group": "navigation@3"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "codeatlas.analyzeFile",
+          "group": "codeatlas"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CodeAtlas",
+      "properties": {
+        "codeatlas.llmProvider": {
+          "type": "string",
+          "enum": ["openai", "gemini", "claude", "local", "openai-compat"],
+          "enumDescriptions": [
+            "OpenAI (GPT-4o, GPT-3.5-turbo)",
+            "Google Gemini (2.5 Flash)",
+            "Anthropic Claude (Opus, Sonnet, Haiku)",
+            "Local model via Ollama, LM Studio, llama.cpp, or any OpenAI-compatible server",
+            "Remote OpenAI API-compatible server (vLLM, LiteLLM, Together AI, Anyscale, etc.)"
+          ],
+          "default": "openai",
+          "description": "LLM provider to use for code analysis"
+        },
+        "codeatlas.openaiModel": {
+          "type": "string",
+          "default": "gpt-4o",
+          "description": "OpenAI model to use"
+        },
+        "codeatlas.geminiModel": {
+          "type": "string",
+          "default": "gemini-2.5-flash",
+          "description": "Gemini model to use"
+        },
+        "codeatlas.claudeModel": {
+          "type": "string",
+          "default": "claude-opus-4-6",
+          "description": "Claude model to use"
+        },
+        "codeatlas.excludePatterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [
+            "**/node_modules/**",
+            "**/.git/**",
+            "**/.codeatlas/**",
+            "**/dist/**",
+            "**/build/**",
+            "**/out/**",
+            "**/*.min.js",
+            "**/*.lock",
+            "**/package-lock.json",
+            "**/yarn.lock"
+          ],
+          "description": "Glob patterns to exclude from analysis"
+        },
+        "codeatlas.maxFileSizeKB": {
+          "type": "number",
+          "default": 200,
+          "description": "Maximum file size in KB to analyze (larger files are chunked)"
+        },
+        "codeatlas.localBaseUrl": {
+          "type": "string",
+          "default": "http://localhost:11434/v1",
+          "description": "Base URL for your local inference server"
+        },
+        "codeatlas.localApiType": {
+          "type": "string",
+          "enum": ["openai-compat", "ollama"],
+          "enumDescriptions": [
+            "OpenAI-compatible /v1/chat/completions (LM Studio, llama.cpp server, Jan.ai, text-generation-webui)",
+            "Ollama native /api/chat (use when running Ollama directly)"
+          ],
+          "default": "openai-compat",
+          "description": "API protocol used by the local inference server"
+        },
+        "codeatlas.localModel": {
+          "type": "string",
+          "default": "",
+          "description": "Model name to pass to the local server (e.g. mistral, llama3, codellama, phi3)"
+        },
+        "codeatlas.requestsPerMinute": {
+          "type": "number",
+          "default": 12,
+          "description": "Max LLM API calls per minute. Gemini free tier = 15 RPM, paid = 60+. Default 12 leaves a safety buffer for the free tier."
+        },
+        "codeatlas.localContextSize": {
+          "type": "number",
+          "default": 4096,
+          "description": "Token context window of the local inference server (set automatically when starting the built-in server). Used to compute safe file chunk sizes."
+        },
+        "codeatlas.openaiCompatBaseUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Base URL of the remote OpenAI API-compatible server, including /v1 (e.g. http://192.168.1.100:8000/v1)"
+        },
+        "codeatlas.openaiCompatModel": {
+          "type": "string",
+          "default": "",
+          "description": "Model name to pass to the remote OpenAI-compatible server (e.g. mistral-7b, llama-3-8b)"
+        },
+        "codeatlas.openaiCompatContextSize": {
+          "type": "number",
+          "default": 8192,
+          "description": "Token context window of the remote OpenAI-compatible server. Used to compute safe file chunk sizes so requests never exceed the model's limit."
+        },
+        "codeatlas.includedExtensions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [
+            ".ts", ".tsx", ".js", ".jsx", ".py", ".go", ".rs", ".java",
+            ".cs", ".cpp", ".c", ".h", ".hpp", ".rb", ".php", ".swift",
+            ".kt", ".scala", ".vue", ".svelte"
+          ],
+          "description": "File extensions to include in analysis"
+        },
+        "codeatlas.autoUpdate": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically update the semantic index when files change or branches switch. Requires an existing index (run full analysis first). Uses incremental updates with caching to minimize LLM calls."
+        },
+        "codeatlas.concurrentRequests": {
+          "type": "number",
+          "default": 1,
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Number of parallel LLM requests during analysis. 1 = sequential (safe default). Increase for faster indexing — ensure your provider's rate limit and concurrency quota can handle the load."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/index.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^2.22.0",
+    "glob": "^10.3.10",
+    "mocha": "^10.3.0",
+    "typescript": "^5.3.0"
+  }
+}

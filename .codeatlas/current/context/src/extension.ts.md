@@ -1,9 +1,9 @@
 # src/extension.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T19:56:21.540Z  
+**Analyzed:** 2026-03-30T22:02:45.378Z  
 
 ## Overview
-This file is the main entry point for the CodeAtlas extension, responsible for initializing and managing the extension's functionality, including setting up the UI, handling user interactions, and performing analysis tasks.
+This file is the main entry point for the CodeAtlas extension, responsible for initializing and managing the extension's functionality, including status bar, main panel, activity bar, and auto-update features.
 
 ## Dependencies
 - `src/llm/factory.ts`
@@ -19,55 +19,63 @@ This file is the main entry point for the CodeAtlas extension, responsible for i
 ## Symbols
 
 ### `activate` *(function)*
-**Purpose:** Initializes the CodeAtlas extension and sets up its functionality  
+**Purpose:** Initialize and activate the CodeAtlas extension  
 
-**Behavior:** Creates and configures the main panel, status bar, and activity bar, and registers commands for user interactions
+**Behavior:** Sets up the extension's UI components, command handlers, and auto-update features
 
 **Parameters:** vscode.ExtensionContext  
 **Returns:** void  
-**Limitations:** Must be called once when the extension is activated  
+**Limitations:** Must be called once to initialize the extension  
 
 ### `deactivate` *(function)*
-**Purpose:** Cleans up and disposes of the CodeAtlas extension's resources  
+**Purpose:** Deactivate and clean up the CodeAtlas extension  
 
-**Behavior:** Disposes of the auto-update timer, server manager, and logger
+**Behavior:** Disposes of auto-update and server manager resources
 
 **Parameters:** void  
 **Returns:** void  
 **Limitations:** Must be called when the extension is deactivated  
 
 ### `setupAutoUpdate` *(function)*
-**Purpose:** Sets up the auto-update functionality for the CodeAtlas extension  
+**Purpose:** Set up auto-update features for the CodeAtlas extension  
 
-**Behavior:** Configures the file watcher and branch polling, and registers commands for user interactions
+**Behavior:** Configures file watcher and branch polling
 
 **Parameters:** vscode.ExtensionContext, CodeAtlasActivityProvider  
 **Returns:** void  
-**Limitations:** Must be called once when the extension is activated  
+**Limitations:** Must be called once to set up auto-update  
 
 ### `disposeAutoUpdate` *(function)*
-**Purpose:** Cleans up and disposes of the auto-update resources  
+**Purpose:** Dispose of auto-update resources  
 
-**Behavior:** Clears the branch polling interval and file watcher
+**Behavior:** Clears file watcher and branch polling
 
 **Parameters:** void  
 **Returns:** void  
-**Limitations:** Must be called when the extension is deactivated  
+**Limitations:** Must be called when auto-update is disabled  
+
+### `disposeAutoUpdate` *(function)*
+**Purpose:** Dispose of auto-update resources, including clearing intervals and file watchers.  
+
+**Behavior:** Clears the branch poll interval and file watcher, and resets the last known branch and head.
+
+**Returns:** void  
+**Limitations:** Must be called when the extension is being disposed of to prevent memory leaks.  
 
 ### `buildWorkflowOptions` *(function)*
-**Purpose:** Builds the workflow options for the CodeAtlas extension  
+**Purpose:** Builds workflow options based on the VSCode workspace configuration and the LLM provider type.  
 
-**Behavior:** Configures the workflow options based on the user's configuration
+**Behavior:** Calculates workflow options such as requests per minute, max file size, and concurrent requests based on the configuration and provider type.
 
-**Parameters:** vscode.WorkspaceConfiguration, LLMProviderType  
+**Parameters:** config: vscode.WorkspaceConfiguration, provider: LLMProviderType  
 **Returns:** WorkflowOptions  
-**Limitations:** Must be called when running a workflow  
+**Limitations:** Requires a valid VSCode workspace configuration and LLM provider type.  
 
 ### `handleWorkflowError` *(function)*
-**Purpose:** Handles errors that occur during workflow execution  
+**Purpose:** Handles workflow errors by displaying error messages and logging the error.  
 
-**Behavior:** Displays an error message to the user and logs the error
+**Behavior:** Displays an error message to the user and logs the error, depending on the type of error.
 
-**Parameters:** unknown, CodeAtlasStatusBar  
+**Parameters:** e: unknown, statusBar: CodeAtlasStatusBar  
 **Returns:** void  
-**Limitations:** Must be called when an error occurs during workflow execution  
+**Limitations:** Must be called when a workflow error occurs to display the error message and log the error.  

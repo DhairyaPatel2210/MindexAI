@@ -3,17 +3,49 @@
   "fileContext": {
     "relativePath": "src/llm/providers/ollama.ts",
     "language": "typescript",
-    "overview": "OllamaProvider connects to a locally-running Ollama instance using its native NDJSON streaming API.",
+    "overview": "OllamaProvider is an LLM provider that connects to a locally-running Ollama instance.",
     "symbols": [
+      {
+        "name": "OllamaProvider",
+        "kind": "class",
+        "line": 0,
+        "purpose": "LLM provider for locally-running Ollama instance",
+        "behavior": "Handles API requests and responses to provide LLM functionality",
+        "parameters": "baseUrl, model",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "Requires Ollama instance to be running",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      },
       {
         "name": "complete",
         "kind": "function",
         "line": 0,
-        "purpose": "Generate text based on user input.",
-        "behavior": "Makes a POST request to the Ollama API with the user input and returns the generated text.",
-        "parameters": "messages: LLMMessage[], maxTokens: number, signal?: AbortSignal",
+        "purpose": "Completes a conversation with the LLM",
+        "behavior": "Sends a request to the Ollama API and returns the response",
+        "parameters": "messages, maxTokens, signal",
         "returns": "Promise<LLMResponse>",
-        "limitations": "Requires a locally-running Ollama instance and may be rate-limited.",
+        "limitations": "May throw errors if API request fails",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      },
+      {
+        "name": "readStream",
+        "kind": "function",
+        "line": 0,
+        "purpose": "Reads an NDJSON stream from the Ollama API",
+        "behavior": "Parses the stream and returns the LLM response",
+        "parameters": "body, signal",
+        "returns": "Promise<LLMResponse>",
+        "limitations": "May throw errors if stream parsing fails",
         "uses": [
           "src/llm/types.ts"
         ],
@@ -25,8 +57,8 @@
     "dependencies": [
       "src/llm/types.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:15.512Z",
+    "analyzedAt": "2026-03-30T21:28:26.305Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.638Z"
+  "cachedAt": "2026-03-30T21:28:59.069Z"
 }

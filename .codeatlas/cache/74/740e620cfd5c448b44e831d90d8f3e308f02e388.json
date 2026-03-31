@@ -3,17 +3,23 @@
   "fileContext": {
     "relativePath": "src/llm/providers/local.ts",
     "language": "typescript",
-    "overview": "LocalProvider is a class that connects to OpenAI-compatible local inference servers for text completion tasks, supporting early termination and cancellation.",
+    "overview": "LocalProvider is a class that connects to OpenAI-compatible local inference servers, providing a way to interact with these servers through a unified interface.",
     "symbols": [
       {
         "name": "LocalProvider",
         "kind": "class",
         "line": 0,
-        "purpose": "Connects to OpenAI-compatible local inference servers for text completion tasks",
-        "behavior": "Supports early termination and cancellation, handles different server types and error cases",
-        "parameters": "baseUrl, model, apiKey, name, serverLabel",
-        "returns": "LLMResponse",
-        "limitations": "Requires OpenAI-compatible local inference server, may not work with all server types",
+        "purpose": "Connects to OpenAI-compatible local inference servers",
+        "behavior": "Provides a unified interface to interact with local inference servers",
+        "parameters": {
+          "baseUrl": "The base URL of the local inference server",
+          "model": "The name of the model to use",
+          "apiKey": "The API key to use (defaults to 'local')",
+          "name": "The name of the provider (defaults to 'local')",
+          "serverLabel": "The label for the server (defaults to 'local LLM server')"
+        },
+        "returns": "An LLMResponse object containing the result of the request",
+        "limitations": "Does not handle cases where the server returns an error or does not respond with a JSON body",
         "uses": [
           "src/llm/types.ts"
         ],
@@ -23,13 +29,17 @@
       },
       {
         "name": "complete",
-        "kind": "method",
+        "kind": "function",
         "line": 0,
-        "purpose": "Completes text based on input messages",
-        "behavior": "Makes a POST request to the server, handles errors and cancellation, returns LLMResponse",
-        "parameters": "messages, maxTokens, signal",
-        "returns": "Promise<LLMResponse>",
-        "limitations": "May throw LLMError or RateLimitError, requires OpenAI-compatible local inference server",
+        "purpose": "Makes a request to the local inference server to complete a task",
+        "behavior": "Sends a POST request to the server with the provided messages and options",
+        "parameters": {
+          "messages": "An array of LLMMessage objects to send to the server",
+          "maxTokens": "The maximum number of tokens to return (defaults to 4096)",
+          "signal": "An AbortSignal object to cancel the request if needed"
+        },
+        "returns": "An LLMResponse object containing the result of the request",
+        "limitations": "Does not handle cases where the server returns an error or does not respond with a JSON body",
         "uses": [
           "src/llm/types.ts"
         ],
@@ -39,13 +49,16 @@
       },
       {
         "name": "readStream",
-        "kind": "method",
+        "kind": "function",
         "line": 0,
-        "purpose": "Reads an SSE stream from the server",
-        "behavior": "Tracks JSON brace depth, handles early termination and cancellation, returns LLMResponse",
-        "parameters": "body, signal",
-        "returns": "Promise<LLMResponse>",
-        "limitations": "May throw DOMException or LLMError, requires SSE stream from server",
+        "purpose": "Reads a stream of tokens from the server",
+        "behavior": "Uses a TextDecoder to decode the stream and a JSON parser to extract the tokens",
+        "parameters": {
+          "body": "A ReadableStream object containing the stream of tokens",
+          "signal": "An AbortSignal object to cancel the request if needed"
+        },
+        "returns": "An LLMResponse object containing the result of the request",
+        "limitations": "Does not handle cases where the server returns an error or does not respond with a JSON body",
         "uses": [
           "src/llm/types.ts"
         ],
@@ -55,13 +68,15 @@
       },
       {
         "name": "readNonStreamingResponse",
-        "kind": "method",
+        "kind": "function",
         "line": 0,
         "purpose": "Reads a non-streaming response from the server",
-        "behavior": "Handles different response formats, returns LLMResponse",
-        "parameters": "response",
-        "returns": "Promise<LLMResponse>",
-        "limitations": "May throw LLMError, requires non-streaming response from server",
+        "behavior": "Uses a JSON parser to extract the tokens from the response",
+        "parameters": {
+          "response": "A Response object containing the non-streaming response"
+        },
+        "returns": "An LLMResponse object containing the result of the request",
+        "limitations": "Does not handle cases where the server returns an error or does not respond with a JSON body",
         "uses": [
           "src/llm/types.ts"
         ],
@@ -73,8 +88,8 @@
     "dependencies": [
       "src/llm/types.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:20.171Z",
+    "analyzedAt": "2026-03-30T21:28:31.510Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.643Z"
+  "cachedAt": "2026-03-30T21:28:59.075Z"
 }

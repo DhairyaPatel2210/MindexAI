@@ -1,21 +1,41 @@
 # src/llm/providers/ollama.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T19:56:15.512Z  
+**Analyzed:** 2026-03-30T21:28:26.305Z  
 
 ## Overview
-OllamaProvider connects to a locally-running Ollama instance using its native NDJSON streaming API.
+OllamaProvider is an LLM provider that connects to a locally-running Ollama instance.
 
 ## Dependencies
 - `src/llm/types.ts`
 
 ## Symbols
 
-### `complete` *(function)*
-**Purpose:** Generate text based on user input.  
+### `OllamaProvider` *(class)*
+**Purpose:** LLM provider for locally-running Ollama instance  
 
-**Behavior:** Makes a POST request to the Ollama API with the user input and returns the generated text.
+**Behavior:** Handles API requests and responses to provide LLM functionality
 
-**Parameters:** messages: LLMMessage[], maxTokens: number, signal?: AbortSignal  
+**Parameters:** baseUrl, model  
 **Returns:** Promise<LLMResponse>  
-**Limitations:** Requires a locally-running Ollama instance and may be rate-limited.  
+**Limitations:** Requires Ollama instance to be running  
+**Used by:** `src/llm/factory.ts`  
+
+### `complete` *(function)*
+**Purpose:** Completes a conversation with the LLM  
+
+**Behavior:** Sends a request to the Ollama API and returns the response
+
+**Parameters:** messages, maxTokens, signal  
+**Returns:** Promise<LLMResponse>  
+**Limitations:** May throw errors if API request fails  
+**Used by:** `src/llm/factory.ts`  
+
+### `readStream` *(function)*
+**Purpose:** Reads an NDJSON stream from the Ollama API  
+
+**Behavior:** Parses the stream and returns the LLM response
+
+**Parameters:** body, signal  
+**Returns:** Promise<LLMResponse>  
+**Limitations:** May throw errors if stream parsing fails  
 **Used by:** `src/llm/factory.ts`  

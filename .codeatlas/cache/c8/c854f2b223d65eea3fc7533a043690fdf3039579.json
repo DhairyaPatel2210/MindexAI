@@ -3,24 +3,24 @@
   "fileContext": {
     "relativePath": "src/test/index.ts",
     "language": "typescript",
-    "overview": "Runs tests for the extension using the test-electron module.",
+    "overview": "Test suite for CodeAtlas.",
     "symbols": [
       {
         "name": "main",
         "kind": "function",
         "line": 0,
-        "purpose": "Entrypoint for running tests.",
-        "behavior": "Resolves extension development path and tests path, then runs tests using test-electron.",
+        "purpose": "Runs the test suite",
+        "behavior": "Uses the test-electron library to run the tests",
         "parameters": "None",
         "returns": "Promise<void>",
-        "limitations": "Assumes test-electron is installed and configured correctly.",
+        "limitations": "Requires test-electron library to be installed",
         "uses": [],
         "usedBy": []
       }
     ],
     "dependencies": [],
-    "analyzedAt": "2026-03-30T19:56:16.237Z",
+    "analyzedAt": "2026-03-30T21:28:26.305Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.639Z"
+  "cachedAt": "2026-03-30T21:28:59.070Z"
 }

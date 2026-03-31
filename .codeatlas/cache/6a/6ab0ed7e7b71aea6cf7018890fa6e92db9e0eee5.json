@@ -3,17 +3,33 @@
   "fileContext": {
     "relativePath": "src/llm/providers/openai.ts",
     "language": "typescript",
-    "overview": "Provides an OpenAI LLM provider.",
+    "overview": "Defines an OpenAI LLM provider.",
     "symbols": [
       {
         "name": "OpenAIProvider",
         "kind": "class",
         "line": 0,
         "purpose": "Represents an OpenAI LLM provider.",
-        "behavior": "Provides a complete method for generating text.",
-        "parameters": "apiKey: string; model: string;",
+        "behavior": "Has two properties: name and apiKey.",
+        "parameters": "None",
+        "returns": "None",
+        "limitations": "Must have name and apiKey properties.",
+        "uses": [
+          "src/llm/types.ts"
+        ],
+        "usedBy": [
+          "src/llm/factory.ts"
+        ]
+      },
+      {
+        "name": "complete",
+        "kind": "method",
+        "line": 0,
+        "purpose": "Completes an LLM request.",
+        "behavior": "Sends a request to the OpenAI API and returns the response.",
+        "parameters": "messages: LLMMessage[], maxTokens?: number, signal?: AbortSignal",
         "returns": "Promise<LLMResponse>",
-        "limitations": "None",
+        "limitations": "Must send a request to the OpenAI API and return the response.",
         "uses": [
           "src/llm/types.ts"
         ],
@@ -25,8 +41,8 @@
     "dependencies": [
       "src/llm/types.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:16.383Z",
+    "analyzedAt": "2026-03-30T21:28:26.117Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.637Z"
+  "cachedAt": "2026-03-30T21:28:59.067Z"
 }

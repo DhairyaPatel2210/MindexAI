@@ -1,9 +1,9 @@
 # src/core/analyzer/graphBuilder.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T19:56:17.650Z  
+**Analyzed:** 2026-03-30T21:28:28.438Z  
 
 ## Overview
-This file is responsible for building a dependency graph of source files, including their symbols and import relationships. It uses a combination of ctags and regex-based parsing to extract symbols and import statements.
+This file is responsible for building a dependency graph of source files, including their symbols, imports, and relationships.
 
 ## Dependencies
 - `src/utils/fileUtils.ts`
@@ -12,81 +12,81 @@ This file is responsible for building a dependency graph of source files, includ
 ## Symbols
 
 ### `buildDependencyGraph` *(function)*
-**Purpose:** Builds a dependency graph of source files  
+**Purpose:** Builds a dependency graph of source files, including their symbols, imports, and relationships.  
 
-**Behavior:** Takes an array of source file paths, extracts symbols and import relationships, and returns a dependency graph object
+**Behavior:** Takes an array of source file paths as input, extracts symbols and imports from each file, and constructs a graph data structure to represent the relationships between files.
 
 **Parameters:** sourceFiles: string[]  
 **Returns:** Promise<DependencyGraph>  
-**Limitations:** Requires ctags to be installed and configured properly  
+**Limitations:** Assumes that the source files are in a directory structure that can be traversed by the file system API.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/indexer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/fileAnalyzer.test.ts`, `src/test/suite/graphBuilder.test.ts`, `src/test/suite/indexer.test.ts`  
 
 ### `isCtagsAvailable` *(function)*
-**Purpose:** Checks if ctags is available on the system  
+**Purpose:** Checks if the ctags command is available on the system.  
 
-**Behavior:** Runs a ctags command with the --version flag and checks for errors
+**Behavior:** Executes the ctags command with the --version option and checks the exit code to determine if it is available.
 
 **Parameters:** None  
 **Returns:** Promise<boolean>  
-**Limitations:** May return false positives if ctags is not properly installed or configured  
+**Limitations:** Assumes that the ctags command is installed and available on the system.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/indexer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/fileAnalyzer.test.ts`, `src/test/suite/graphBuilder.test.ts`, `src/test/suite/indexer.test.ts`  
 
 ### `extractSymbolsWithCtags` *(function)*
-**Purpose:** Extracts symbols from source files using ctags  
+**Purpose:** Extracts symbols from source files using the ctags command.  
 
-**Behavior:** Runs ctags with the --output-format=json flag and parses the output to extract symbols
+**Behavior:** Runs the ctags command with the --output-format=json and --fields=+nkzS options to generate a JSON output that contains the symbols extracted from the source files.
 
 **Parameters:** workspaceRoot: string, files: Record<string, FileNode>  
 **Returns:** Promise<void>  
-**Limitations:** Requires ctags to be installed and configured properly  
+**Limitations:** Assumes that the ctags command is available and correctly configured on the system.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/indexer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/fileAnalyzer.test.ts`, `src/test/suite/graphBuilder.test.ts`, `src/test/suite/indexer.test.ts`  
 
 ### `extractSymbolsWithRegex` *(function)*
-**Purpose:** Extracts symbols from source files using regex-based parsing  
+**Purpose:** Extracts symbols from source files using regular expressions.  
 
-**Behavior:** Parses source files to extract symbols based on language-specific patterns
+**Behavior:** Iterates over the lines of each source file and applies a set of regular expressions to extract symbols, such as functions, classes, and variables.
 
 **Parameters:** files: Record<string, FileNode>  
 **Returns:** void  
-**Limitations:** May not cover all possible symbol types or languages  
-**Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/indexer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/fileAnalyzer.test.ts`, `src/test/suite/graphBuilder.test.ts`, `src/test/suite/indexer.test.ts`  
-
-### `extractImports` *(function)*
-**Purpose:** Extracts import relationships from source files  
-
-**Behavior:** Parses source files to extract import statements based on language-specific patterns
-
-**Parameters:** content: string, currentFile: string, workspaceRoot: string, allFiles: Record<string, FileNode>  
-**Returns:** string[]  
-**Limitations:** May not cover all possible import types or languages  
+**Limitations:** May not be as accurate as using the ctags command, especially for complex or custom symbol definitions.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/indexer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/fileAnalyzer.test.ts`, `src/test/suite/graphBuilder.test.ts`, `src/test/suite/indexer.test.ts`  
 
 ### `buildImportGraph` *(function)*
-**Purpose:** Builds the import graph of source files  
+**Purpose:** Builds an import graph of source files.  
 
-**Behavior:** Parses source files to extract import relationships and updates the import graph
+**Behavior:** Iterates over the source files and extracts import statements, which are then used to construct a graph data structure that represents the relationships between files.
 
 **Parameters:** files: Record<string, FileNode>, workspaceRoot: string  
 **Returns:** void  
-**Limitations:** May not cover all possible import types or languages  
+**Limitations:** Assumes that the source files are in a directory structure that can be traversed by the file system API.  
+**Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/indexer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/fileAnalyzer.test.ts`, `src/test/suite/graphBuilder.test.ts`, `src/test/suite/indexer.test.ts`  
+
+### `extractImports` *(function)*
+**Purpose:** Extracts import statements from source files.  
+
+**Behavior:** Iterates over the lines of each source file and applies a set of regular expressions to extract import statements, such as import statements in JavaScript or import statements in Python.
+
+**Parameters:** content: string, currentFile: string, workspaceRoot: string, allFiles: Record<string, FileNode>  
+**Returns:** string[]  
+**Limitations:** May not be able to handle complex or custom import statements.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/indexer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/fileAnalyzer.test.ts`, `src/test/suite/graphBuilder.test.ts`, `src/test/suite/indexer.test.ts`  
 
 ### `normalizeKind` *(function)*
-**Purpose:** Normalizes the kind of a symbol  
+**Purpose:** Normalizes the kind of a symbol.  
 
-**Behavior:** Maps ctags kind codes to human-readable symbol types
+**Behavior:** Takes a symbol kind as input and returns a normalized version of the kind, such as 'function' instead of 'f'.
 
 **Parameters:** kind: string  
 **Returns:** string  
-**Limitations:** May not cover all possible kind codes  
+**Limitations:** Assumes that the input kind is a valid symbol kind.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/indexer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/fileAnalyzer.test.ts`, `src/test/suite/graphBuilder.test.ts`, `src/test/suite/indexer.test.ts`  
 
 ### `getLanguageFromPath` *(function)*
-**Purpose:** Determines the language of a source file  
+**Purpose:** Determines the language of a source file based on its file extension.  
 
-**Behavior:** Parses the file extension to determine the language
+**Behavior:** Takes a file path as input and returns the language of the file, such as 'typescript' or 'python'.
 
 **Parameters:** filePath: string  
 **Returns:** string  
-**Limitations:** May not cover all possible file extensions  
+**Limitations:** Assumes that the file extension is a valid language extension.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/analyzer/indexer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/fileAnalyzer.test.ts`, `src/test/suite/graphBuilder.test.ts`, `src/test/suite/indexer.test.ts`  

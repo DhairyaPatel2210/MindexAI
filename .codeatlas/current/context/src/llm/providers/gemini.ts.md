@@ -1,9 +1,9 @@
 # src/llm/providers/gemini.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T19:56:16.383Z  
+**Analyzed:** 2026-03-30T21:28:26.117Z  
 
 ## Overview
-Provides a Gemini LLM provider.
+Defines a Gemini LLM provider.
 
 ## Dependencies
 - `src/llm/types.ts`
@@ -13,19 +13,19 @@ Provides a Gemini LLM provider.
 ### `GeminiProvider` *(class)*
 **Purpose:** Represents a Gemini LLM provider.  
 
-**Behavior:** Provides a complete method for generating text.
+**Behavior:** Has two properties: name and apiKey.
 
-**Parameters:** apiKey: string; model: string;  
-**Returns:** Promise<LLMResponse>  
-**Limitations:** None  
+**Parameters:** None  
+**Returns:** None  
+**Limitations:** Must have name and apiKey properties.  
 **Used by:** `src/llm/factory.ts`  
 
-### `parseRetryDelay` *(function)*
-**Purpose:** Parses the retry delay from a 429 response.  
+### `complete` *(method)*
+**Purpose:** Completes an LLM request.  
 
-**Behavior:** Returns the retry delay in milliseconds.
+**Behavior:** Sends a request to the Gemini API and returns the response.
 
-**Parameters:** body: string;  
-**Returns:** number  
-**Limitations:** None  
+**Parameters:** messages: LLMMessage[], maxTokens?: number, signal?: AbortSignal  
+**Returns:** Promise<LLMResponse>  
+**Limitations:** Must send a request to the Gemini API and return the response.  
 **Used by:** `src/llm/factory.ts`  

@@ -2,20 +2,72 @@
   "version": 1,
   "providers": {
     "openai-compat": {
-      "inputTokens": 56850,
-      "outputTokens": 15287,
+      "inputTokens": 84116,
+      "outputTokens": 21808,
       "unsplitTokens": 0,
-      "requestCount": 16,
-      "filesAnalyzed": 30,
-      "filesFromCache": 0,
-      "errors": 1,
-      "totalDurationMs": 14675,
-      "lastUsed": "2026-03-30T19:56:42.664Z"
+      "requestCount": 25,
+      "filesAnalyzed": 32,
+      "filesFromCache": 120,
+      "errors": 3,
+      "totalDurationMs": 21564,
+      "lastUsed": "2026-03-31T02:20:52.313Z"
     }
   },
   "global": {
-    "workflowRuns": 1,
-    "firstUsed": "2026-03-30T19:56:42.664Z",
-    "lastUsed": "2026-03-30T19:56:42.664Z"
-  }
+    "workflowRuns": 5,
+    "firstUsed": "2026-03-30T21:28:59.102Z",
+    "lastUsed": "2026-03-31T02:20:52.313Z"
+  },
+  "runHistory": [
+    {
+      "timestamp": "2026-03-30T21:28:59.102Z",
+      "provider": "openai-compat",
+      "inputTokens": 60916,
+      "outputTokens": 16043,
+      "filesAnalyzed": 30,
+      "filesFromCache": 0,
+      "durationMs": 16047,
+      "errors": 1
+    },
+    {
+      "timestamp": "2026-03-30T21:29:58.075Z",
+      "provider": "openai-compat",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "filesAnalyzed": 0,
+      "filesFromCache": 30,
+      "durationMs": 0,
+      "errors": 1
+    },
+    {
+      "timestamp": "2026-03-30T21:37:33.191Z",
+      "provider": "openai-compat",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "filesAnalyzed": 0,
+      "filesFromCache": 30,
+      "durationMs": 0,
+      "errors": 1
+    },
+    {
+      "timestamp": "2026-03-30T22:02:48.870Z",
+      "provider": "openai-compat",
+      "inputTokens": 23200,
+      "outputTokens": 5765,
+      "filesAnalyzed": 2,
+      "filesFromCache": 29,
+      "durationMs": 5517,
+      "errors": 0
+    },
+    {
+      "timestamp": "2026-03-31T02:20:52.313Z",
+      "provider": "openai-compat",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "filesAnalyzed": 0,
+      "filesFromCache": 31,
+      "durationMs": 0,
+      "errors": 0
+    }
+  ]
 }

@@ -1,9 +1,9 @@
 # src/llm/providers/local.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T19:56:20.171Z  
+**Analyzed:** 2026-03-30T21:28:31.510Z  
 
 ## Overview
-LocalProvider is a class that connects to OpenAI-compatible local inference servers for text completion tasks, supporting early termination and cancellation.
+LocalProvider is a class that connects to OpenAI-compatible local inference servers, providing a way to interact with these servers through a unified interface.
 
 ## Dependencies
 - `src/llm/types.ts`
@@ -11,41 +11,41 @@ LocalProvider is a class that connects to OpenAI-compatible local inference serv
 ## Symbols
 
 ### `LocalProvider` *(class)*
-**Purpose:** Connects to OpenAI-compatible local inference servers for text completion tasks  
+**Purpose:** Connects to OpenAI-compatible local inference servers  
 
-**Behavior:** Supports early termination and cancellation, handles different server types and error cases
+**Behavior:** Provides a unified interface to interact with local inference servers
 
-**Parameters:** baseUrl, model, apiKey, name, serverLabel  
-**Returns:** LLMResponse  
-**Limitations:** Requires OpenAI-compatible local inference server, may not work with all server types  
+**Parameters:** [object Object]  
+**Returns:** An LLMResponse object containing the result of the request  
+**Limitations:** Does not handle cases where the server returns an error or does not respond with a JSON body  
 **Used by:** `src/llm/factory.ts`  
 
-### `complete` *(method)*
-**Purpose:** Completes text based on input messages  
+### `complete` *(function)*
+**Purpose:** Makes a request to the local inference server to complete a task  
 
-**Behavior:** Makes a POST request to the server, handles errors and cancellation, returns LLMResponse
+**Behavior:** Sends a POST request to the server with the provided messages and options
 
-**Parameters:** messages, maxTokens, signal  
-**Returns:** Promise<LLMResponse>  
-**Limitations:** May throw LLMError or RateLimitError, requires OpenAI-compatible local inference server  
+**Parameters:** [object Object]  
+**Returns:** An LLMResponse object containing the result of the request  
+**Limitations:** Does not handle cases where the server returns an error or does not respond with a JSON body  
 **Used by:** `src/llm/factory.ts`  
 
-### `readStream` *(method)*
-**Purpose:** Reads an SSE stream from the server  
+### `readStream` *(function)*
+**Purpose:** Reads a stream of tokens from the server  
 
-**Behavior:** Tracks JSON brace depth, handles early termination and cancellation, returns LLMResponse
+**Behavior:** Uses a TextDecoder to decode the stream and a JSON parser to extract the tokens
 
-**Parameters:** body, signal  
-**Returns:** Promise<LLMResponse>  
-**Limitations:** May throw DOMException or LLMError, requires SSE stream from server  
+**Parameters:** [object Object]  
+**Returns:** An LLMResponse object containing the result of the request  
+**Limitations:** Does not handle cases where the server returns an error or does not respond with a JSON body  
 **Used by:** `src/llm/factory.ts`  
 
-### `readNonStreamingResponse` *(method)*
+### `readNonStreamingResponse` *(function)*
 **Purpose:** Reads a non-streaming response from the server  
 
-**Behavior:** Handles different response formats, returns LLMResponse
+**Behavior:** Uses a JSON parser to extract the tokens from the response
 
-**Parameters:** response  
-**Returns:** Promise<LLMResponse>  
-**Limitations:** May throw LLMError, requires non-streaming response from server  
+**Parameters:** [object Object]  
+**Returns:** An LLMResponse object containing the result of the request  
+**Limitations:** Does not handle cases where the server returns an error or does not respond with a JSON body  
 **Used by:** `src/llm/factory.ts`  

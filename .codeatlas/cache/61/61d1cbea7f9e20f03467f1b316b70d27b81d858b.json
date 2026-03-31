@@ -3,24 +3,24 @@
   "fileContext": {
     "relativePath": "src/test/suite/index.ts",
     "language": "typescript",
-    "overview": "Runs tests for the extension using Mocha.",
+    "overview": "Entry point for running tests",
     "symbols": [
       {
         "name": "run",
         "kind": "function",
         "line": 0,
-        "purpose": "Runs tests using Mocha.",
-        "behavior": "Creates a Mocha instance, adds test files, and runs tests.",
+        "purpose": "Runs the tests",
+        "behavior": "Creates a Mocha instance, adds test files, runs the tests, handles test failures",
         "parameters": "None",
         "returns": "Promise<void>",
-        "limitations": "Assumes test files are in the correct format and location.",
+        "limitations": "Does not handle test failures with special characters",
         "uses": [],
         "usedBy": []
       }
     ],
     "dependencies": [],
-    "analyzedAt": "2026-03-30T19:56:16.237Z",
+    "analyzedAt": "2026-03-30T21:28:27.515Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.639Z"
+  "cachedAt": "2026-03-30T21:28:59.071Z"
 }

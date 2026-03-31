@@ -3,17 +3,17 @@
   "fileContext": {
     "relativePath": "src/core/cache/contextCache.ts",
     "language": "typescript",
-    "overview": "Provides a cache for file contexts.",
+    "overview": "Defines a cache for file contexts.",
     "symbols": [
       {
         "name": "CacheEntry",
         "kind": "interface",
         "line": 0,
-        "purpose": "Represents a cache entry that contains a file context and its content hash.",
-        "behavior": "Contains contentHash, fileContext, and cachedAt.",
-        "parameters": "contentHash: string; fileContext: FileContext; cachedAt: string;",
+        "purpose": "Represents a cache entry.",
+        "behavior": "Has three properties: contentHash, fileContext, and cachedAt.",
+        "parameters": "None",
         "returns": "None",
-        "limitations": "None",
+        "limitations": "Must have contentHash, fileContext, and cachedAt properties.",
         "uses": [
           "src/core/analyzer/fileAnalyzer.ts",
           "src/utils/logger.ts"
@@ -26,11 +26,11 @@
         "name": "cacheFileContext",
         "kind": "function",
         "line": 0,
-        "purpose": "Caches a file context in the shared cache.",
-        "behavior": "Stores the file context in the cache with its content hash as the key.",
-        "parameters": "contentHash: string; ctx: FileContext;",
+        "purpose": "Caches a file context.",
+        "behavior": "Stores a file context in the cache.",
+        "parameters": "contentHash: string, ctx: FileContext",
         "returns": "None",
-        "limitations": "None",
+        "limitations": "Must store the file context in the cache.",
         "uses": [
           "src/core/analyzer/fileAnalyzer.ts",
           "src/utils/logger.ts"
@@ -43,11 +43,11 @@
         "name": "getCachedFileContext",
         "kind": "function",
         "line": 0,
-        "purpose": "Retrieves a cached file context from the shared cache.",
-        "behavior": "Returns the cached file context if it exists, otherwise returns null.",
-        "parameters": "contentHash: string;",
+        "purpose": "Gets a cached file context.",
+        "behavior": "Returns the cached file context or null if not cached.",
+        "parameters": "contentHash: string",
         "returns": "FileContext | null",
-        "limitations": "None",
+        "limitations": "Must return the cached file context or null.",
         "uses": [
           "src/core/analyzer/fileAnalyzer.ts",
           "src/utils/logger.ts"
@@ -60,130 +60,11 @@
         "name": "hasCachedContext",
         "kind": "function",
         "line": 0,
-        "purpose": "Checks if a cached context exists for a given content hash.",
-        "behavior": "Returns true if the cached context exists, otherwise returns false.",
-        "parameters": "contentHash: string;",
+        "purpose": "Checks if a cached context exists.",
+        "behavior": "Returns true if a cached context exists, false otherwise.",
+        "parameters": "contentHash: string",
         "returns": "boolean",
-        "limitations": "None",
-        "uses": [
-          "src/core/analyzer/fileAnalyzer.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/extension.ts"
-        ]
-      },
-      {
-        "name": "loadBranchState",
-        "kind": "function",
-        "line": 0,
-        "purpose": "Loads the branch state for a specific branch.",
-        "behavior": "Returns the branch state if it exists, otherwise returns null.",
-        "parameters": "branch: string;",
-        "returns": "BranchState | null",
-        "limitations": "None",
-        "uses": [
-          "src/core/analyzer/fileAnalyzer.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/extension.ts"
-        ]
-      },
-      {
-        "name": "saveBranchState",
-        "kind": "function",
-        "line": 0,
-        "purpose": "Saves the branch state for the active branch.",
-        "behavior": "Stores the branch state in the branch-state.json file.",
-        "parameters": "state: BranchState;",
-        "returns": "None",
-        "limitations": "None",
-        "uses": [
-          "src/core/analyzer/fileAnalyzer.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/extension.ts"
-        ]
-      },
-      {
-        "name": "updateBranchState",
-        "kind": "function",
-        "line": 0,
-        "purpose": "Updates the branch state after a workflow run.",
-        "behavior": "Merges new file hashes and updates the headCommit.",
-        "parameters": "branch: string; headCommit: string; fileHashes: Record<string, string>;",
-        "returns": "None",
-        "limitations": "None",
-        "uses": [
-          "src/core/analyzer/fileAnalyzer.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/extension.ts"
-        ]
-      },
-      {
-        "name": "removeFromBranchState",
-        "kind": "function",
-        "line": 0,
-        "purpose": "Removes deleted files from the branch state.",
-        "behavior": "Deletes the file hashes of the deleted files.",
-        "parameters": "branch: string; filePaths: string[];",
-        "returns": "None",
-        "limitations": "None",
-        "uses": [
-          "src/core/analyzer/fileAnalyzer.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/extension.ts"
-        ]
-      },
-      {
-        "name": "hasBranchIndex",
-        "kind": "function",
-        "line": 0,
-        "purpose": "Checks if a branch has been previously indexed.",
-        "behavior": "Returns true if the branch has been indexed, otherwise returns false.",
-        "parameters": "branch: string;",
-        "returns": "boolean",
-        "limitations": "None",
-        "uses": [
-          "src/core/analyzer/fileAnalyzer.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/extension.ts"
-        ]
-      },
-      {
-        "name": "batchCacheContexts",
-        "kind": "function",
-        "line": 0,
-        "purpose": "Batch-caches multiple file contexts into the shared cache and updates the branch state.",
-        "behavior": "Stores the file contexts in the cache and updates the branch state.",
-        "parameters": "contexts: Array<{ contentHash: string; ctx: FileContext }>; branch: string; headCommit: string;",
-        "returns": "None",
-        "limitations": "None",
-        "uses": [
-          "src/core/analyzer/fileAnalyzer.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/extension.ts"
-        ]
-      },
-      {
-        "name": "partitionByCacheHit",
-        "kind": "function",
-        "line": 0,
-        "purpose": "Partitions a list of files into cached and uncached files.",
-        "behavior": "Returns an object with cached and uncached files.",
-        "parameters": "files: Array<{ relativePath: string; contentHash: string }>",
-        "returns": "{ cached: Array<{ relativePath: string; ctx: FileContext }>; uncached: string[] }",
-        "limitations": "None",
+        "limitations": "Must return true if a cached context exists, false otherwise.",
         "uses": [
           "src/core/analyzer/fileAnalyzer.ts",
           "src/utils/logger.ts"
@@ -197,8 +78,8 @@
       "src/core/analyzer/fileAnalyzer.ts",
       "src/utils/logger.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:16.383Z",
+    "analyzedAt": "2026-03-30T21:28:26.117Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.637Z"
+  "cachedAt": "2026-03-30T21:28:59.067Z"
 }

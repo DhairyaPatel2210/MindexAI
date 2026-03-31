@@ -3,17 +3,17 @@
   "fileContext": {
     "relativePath": "src/test/suite/fileUtils.test.ts",
     "language": "typescript",
-    "overview": "Tests file utility functions.",
+    "overview": "Unit tests for file utilities",
     "symbols": [
       {
         "name": "sanitizeBranchName",
         "kind": "function",
         "line": 0,
-        "purpose": "Sanitizes a branch name by replacing forward slashes with double dashes.",
-        "behavior": "Replaces forward slashes with double dashes, leaving branch names without slashes unchanged.",
-        "parameters": "string",
+        "purpose": "Sanitizes a branch name by replacing forward slashes with double dashes",
+        "behavior": "Replaces forward slashes with double dashes, handles multiple slashes, leaves branch names without slashes unchanged, handles empty string, handles branch with leading slash",
+        "parameters": "branchName: string",
         "returns": "string",
-        "limitations": "Does not handle branch names with multiple consecutive slashes.",
+        "limitations": "Does not handle branch names with special characters",
         "uses": [
           "src/utils/fileUtils.ts"
         ],
@@ -23,11 +23,11 @@
         "name": "chunkText",
         "kind": "function",
         "line": 0,
-        "purpose": "Chunks text into smaller pieces based on a maximum character limit.",
-        "behavior": "Splits text into chunks of maximum length, preserving text content across chunks.",
-        "parameters": "string, number",
+        "purpose": "Chunks text into smaller pieces based on a maximum character limit",
+        "behavior": "Returns single chunk for short text, returns single chunk when text equals maxChars, splits text that exceeds maxChars, preserves text content across chunks, handles empty string, respects maxChars boundary",
+        "parameters": "text: string, maxChars: number",
         "returns": "string[]",
-        "limitations": "Does not handle text with non-ASCII characters correctly.",
+        "limitations": "Does not handle text with special characters",
         "uses": [
           "src/utils/fileUtils.ts"
         ],
@@ -37,11 +37,11 @@
         "name": "detectLanguage",
         "kind": "function",
         "line": 0,
-        "purpose": "Detects the language of a file based on its extension.",
-        "behavior": "Returns the detected language based on file extension, or 'Unknown' if unknown.",
-        "parameters": "string",
+        "purpose": "Detects the programming language of a file based on its extension",
+        "behavior": "Returns the language of the file based on its extension, handles various file extensions",
+        "parameters": "filePath: string",
         "returns": "string",
-        "limitations": "Does not handle file extensions that are not in the language mapping.",
+        "limitations": "Does not handle file extensions with special characters",
         "uses": [
           "src/utils/fileUtils.ts"
         ],
@@ -51,11 +51,11 @@
         "name": "getCodeAtlasDirForRoot",
         "kind": "function",
         "line": 0,
-        "purpose": "Returns the path to the .codeatlas directory for a given root directory.",
-        "behavior": "Returns the path to the .codeatlas directory, preserving drive letter on Windows.",
-        "parameters": "string",
+        "purpose": "Returns the .codeatlas directory path for a given root directory",
+        "behavior": "Returns the .codeatlas directory path for the given root directory, handles Windows-style paths, does not depend on VSCode workspace",
+        "parameters": "root: string",
         "returns": "string",
-        "limitations": "Does not handle root directories that are not strings.",
+        "limitations": "Does not handle root directories with special characters",
         "uses": [
           "src/utils/fileUtils.ts"
         ],
@@ -65,8 +65,8 @@
     "dependencies": [
       "src/utils/fileUtils.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:16.237Z",
+    "analyzedAt": "2026-03-30T21:28:27.515Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.639Z"
+  "cachedAt": "2026-03-30T21:28:59.071Z"
 }

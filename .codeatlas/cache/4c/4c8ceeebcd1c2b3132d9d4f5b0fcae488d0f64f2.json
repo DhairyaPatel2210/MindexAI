@@ -3,45 +3,17 @@
   "fileContext": {
     "relativePath": "src/test/suite/rateLimiter.test.ts",
     "language": "typescript",
-    "overview": "Tests the rate limiter class.",
+    "overview": "Unit tests for rate limiter",
     "symbols": [
       {
         "name": "RateLimiter",
         "kind": "class",
         "line": 0,
-        "purpose": "Rate limiter class.",
-        "behavior": "Limits the number of requests within a time window.",
-        "parameters": "number",
+        "purpose": "Rate limiter class",
+        "behavior": "Creates a rate limiter instance, acquires slots, checks usedInWindow, allows acquiring up to maxRequestsPerMinute without blocking, instantiation with different limits works independently",
+        "parameters": "maxRequestsPerMinute: number",
         "returns": "RateLimiter",
-        "limitations": "Does not handle edge cases correctly.",
-        "uses": [
-          "src/llm/rateLimiter.ts"
-        ],
-        "usedBy": []
-      },
-      {
-        "name": "acquire",
-        "kind": "method",
-        "line": 0,
-        "purpose": "Acquires a slot in the rate limiter.",
-        "behavior": "Returns a promise that resolves when a slot is acquired.",
-        "parameters": "None",
-        "returns": "Promise<void>",
-        "limitations": "Does not handle cases where the rate limiter is full.",
-        "uses": [
-          "src/llm/rateLimiter.ts"
-        ],
-        "usedBy": []
-      },
-      {
-        "name": "usedInWindow",
-        "kind": "property",
-        "line": 0,
-        "purpose": "Returns the number of slots used in the time window.",
-        "behavior": "Returns the number of slots used in the time window.",
-        "parameters": "None",
-        "returns": "number",
-        "limitations": "Does not handle cases where the time window is not set.",
+        "limitations": "Does not handle maxRequestsPerMinute with special characters",
         "uses": [
           "src/llm/rateLimiter.ts"
         ],
@@ -51,8 +23,8 @@
     "dependencies": [
       "src/llm/rateLimiter.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:16.237Z",
+    "analyzedAt": "2026-03-30T21:28:27.515Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.640Z"
+  "cachedAt": "2026-03-30T21:28:59.071Z"
 }

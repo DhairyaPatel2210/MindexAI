@@ -3,83 +3,17 @@
   "fileContext": {
     "relativePath": "src/core/workflow/runner.ts",
     "language": "typescript",
-    "overview": "This file contains the core logic for the CodeAtlas workflow, which analyzes source files and builds a semantic index for code understanding and navigation.",
+    "overview": "This file contains the core logic for running workflows in the Codeatlas project, including full analysis, incremental updates, and single-file analysis. It utilizes dependency graphs, caching, and rate limiting to optimize the analysis process.",
     "symbols": [
-      {
-        "name": "WorkflowOptions",
-        "kind": "interface",
-        "line": 0,
-        "purpose": "Configuration options for the CodeAtlas workflow",
-        "behavior": "Defines the settings for the workflow, including rate limits, file size limits, and concurrency options",
-        "parameters": "requestsPerMinute, maxFileSizeKB, maxChunkChars, batchFiles, concurrentRequests",
-        "returns": "None",
-        "limitations": "Must be an object with the specified properties",
-        "uses": [
-          "src/llm/types.ts",
-          "src/core/analyzer/graphBuilder.ts",
-          "src/core/analyzer/indexer.ts",
-          "src/llm/rateLimiter.ts",
-          "src/core/stats/usageStats.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/vscode/activityBar.ts",
-          "src/vscode/statusBar.ts"
-        ]
-      },
-      {
-        "name": "WorkflowResult",
-        "kind": "interface",
-        "line": 0,
-        "purpose": "Result object for the CodeAtlas workflow",
-        "behavior": "Contains information about the workflow's progress and outcome",
-        "parameters": "filesAnalyzed, filesFromCache, symbolsIndexed, errors, duration",
-        "returns": "None",
-        "limitations": "Must be an object with the specified properties",
-        "uses": [
-          "src/llm/types.ts",
-          "src/core/analyzer/graphBuilder.ts",
-          "src/core/analyzer/indexer.ts",
-          "src/llm/rateLimiter.ts",
-          "src/core/stats/usageStats.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/vscode/activityBar.ts",
-          "src/vscode/statusBar.ts"
-        ]
-      },
-      {
-        "name": "activateBranch",
-        "kind": "function",
-        "line": 0,
-        "purpose": "Activate the current branch before running the workflow",
-        "behavior": "Resolves and sets the active branch, returning the branch name and current HEAD commit",
-        "parameters": "None",
-        "returns": "Object with branch name and HEAD commit",
-        "limitations": "Must be called before running the workflow",
-        "uses": [
-          "src/llm/types.ts",
-          "src/core/analyzer/graphBuilder.ts",
-          "src/core/analyzer/indexer.ts",
-          "src/llm/rateLimiter.ts",
-          "src/core/stats/usageStats.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/vscode/activityBar.ts",
-          "src/vscode/statusBar.ts"
-        ]
-      },
       {
         "name": "runFullWorkflow",
         "kind": "function",
         "line": 0,
-        "purpose": "Run the full CodeAtlas workflow",
-        "behavior": "Analyzes all source files, builds a dependency graph, and creates a semantic index",
-        "parameters": "llm, options",
-        "returns": "WorkflowResult",
-        "limitations": "Must be called with a valid LLM provider and workflow options",
+        "purpose": "Runs a full analysis workflow on the current branch, including collecting source files, building dependency graphs, and analyzing files with the LLM.",
+        "behavior": "Iterates through the workflow steps, performing tasks such as collecting source files, building dependency graphs, checking the shared cache, analyzing files with the LLM, caching new results, and updating the branch state.",
+        "parameters": "llm: ILLMProvider, options: WorkflowOptions",
+        "returns": "Promise<WorkflowResult>",
+        "limitations": "Requires a valid ILLMProvider instance and WorkflowOptions object. May throw errors if the workflow is already running or if there are issues with the LLM or caching.",
         "uses": [
           "src/llm/types.ts",
           "src/core/analyzer/graphBuilder.ts",
@@ -97,11 +31,11 @@
         "name": "runIncrementalUpdate",
         "kind": "function",
         "line": 0,
-        "purpose": "Run an incremental update of the CodeAtlas workflow",
-        "behavior": "Updates the semantic index with changes to source files",
-        "parameters": "llm, options",
-        "returns": "WorkflowResult",
-        "limitations": "Must be called with a valid LLM provider and workflow options",
+        "purpose": "Runs an incremental update workflow on the current branch, including detecting changes, rebuilding dependency graphs, and analyzing updated files with the LLM.",
+        "behavior": "Iterates through the workflow steps, performing tasks such as detecting changes, rebuilding dependency graphs, checking the shared cache, analyzing updated files with the LLM, caching new results, and updating the branch state.",
+        "parameters": "llm: ILLMProvider, options: WorkflowOptions",
+        "returns": "Promise<WorkflowResult>",
+        "limitations": "Requires a valid ILLMProvider instance and WorkflowOptions object. May throw errors if the workflow is already running or if there are issues with the LLM or caching.",
         "uses": [
           "src/llm/types.ts",
           "src/core/analyzer/graphBuilder.ts",
@@ -119,77 +53,11 @@
         "name": "runSingleFileAnalysis",
         "kind": "function",
         "line": 0,
-        "purpose": "Run a single-file analysis of the CodeAtlas workflow",
-        "behavior": "Analyzes a single source file and creates a semantic index for it",
-        "parameters": "filePath, llm, options",
-        "returns": "None",
-        "limitations": "Must be called with a valid file path, LLM provider, and workflow options",
-        "uses": [
-          "src/llm/types.ts",
-          "src/core/analyzer/graphBuilder.ts",
-          "src/core/analyzer/indexer.ts",
-          "src/llm/rateLimiter.ts",
-          "src/core/stats/usageStats.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/vscode/activityBar.ts",
-          "src/vscode/statusBar.ts"
-        ]
-      },
-      {
-        "name": "topologicalSort",
-        "kind": "function",
-        "line": 0,
-        "purpose": "Perform a topological sort on a dependency graph",
-        "behavior": "Returns a list of nodes in topological order",
-        "parameters": "graph",
-        "returns": "List of node names",
-        "limitations": "Must be called with a valid dependency graph",
-        "uses": [
-          "src/llm/types.ts",
-          "src/core/analyzer/graphBuilder.ts",
-          "src/core/analyzer/indexer.ts",
-          "src/llm/rateLimiter.ts",
-          "src/core/stats/usageStats.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/vscode/activityBar.ts",
-          "src/vscode/statusBar.ts"
-        ]
-      },
-      {
-        "name": "checkCancellation",
-        "kind": "function",
-        "line": 0,
-        "purpose": "Check if a cancellation request has been made",
-        "behavior": "Throws a cancellation error if the token is cancelled",
-        "parameters": "token",
-        "returns": "None",
-        "limitations": "Must be called with a valid cancellation token",
-        "uses": [
-          "src/llm/types.ts",
-          "src/core/analyzer/graphBuilder.ts",
-          "src/core/analyzer/indexer.ts",
-          "src/llm/rateLimiter.ts",
-          "src/core/stats/usageStats.ts",
-          "src/utils/logger.ts"
-        ],
-        "usedBy": [
-          "src/vscode/activityBar.ts",
-          "src/vscode/statusBar.ts"
-        ]
-      },
-      {
-        "name": "runConcurrent",
-        "kind": "function",
-        "line": 0,
-        "purpose": "Run an array of async tasks with concurrency",
-        "behavior": "Returns a list of task outcomes",
-        "parameters": "tasks, concurrency",
-        "returns": "List of task outcomes",
-        "limitations": "Must be called with a valid array of tasks and concurrency level",
+        "purpose": "Analyzes a single file with the LLM, including checking the shared cache and caching the result.",
+        "behavior": "Checks the shared cache for the file, and if it's not cached, analyzes the file with the LLM, caches the result, and updates the branch state.",
+        "parameters": "filePath: string, llm: ILLMProvider, options: Pick<WorkflowOptions, 'requestsPerMinute' | 'maxFileSizeKB' | 'maxChunkChars'>",
+        "returns": "Promise<void>",
+        "limitations": "Requires a valid filePath, ILLMProvider instance, and WorkflowOptions object. May throw errors if the file is not in the workspace source files or if there are issues with the LLM or caching.",
         "uses": [
           "src/llm/types.ts",
           "src/core/analyzer/graphBuilder.ts",
@@ -212,8 +80,8 @@
       "src/core/stats/usageStats.ts",
       "src/utils/logger.ts"
     ],
-    "analyzedAt": "2026-03-30T19:56:20.105Z",
+    "analyzedAt": "2026-03-30T21:28:30.994Z",
     "chunkCount": 1
   },
-  "cachedAt": "2026-03-30T19:56:42.642Z"
+  "cachedAt": "2026-03-30T21:28:59.075Z"
 }
