@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { FileContext } from '../analyzer/fileAnalyzer';
+import { FileContext, ChunkCacheEntry } from '../analyzer/fileAnalyzer';
 import {
   getSharedCacheDir,
   getBranchStatePath,
@@ -18,6 +18,8 @@ interface CacheEntry {
   contentHash: string;
   fileContext: FileContext;
   cachedAt: string;
+  /** Per-chunk hashes for chunk-level delta on next change. Optional for backward compat. */
+  chunkEntries?: ChunkCacheEntry[];
 }
 
 function getCacheEntryPath(contentHash: string): string {
@@ -28,8 +30,13 @@ function getCacheEntryPath(contentHash: string): string {
 
 /**
  * Store a FileContext in the shared cache, keyed by content hash.
+ * Optionally includes chunk-level entries for delta analysis on next change.
  */
-export function cacheFileContext(contentHash: string, ctx: FileContext): void {
+export function cacheFileContext(
+  contentHash: string,
+  ctx: FileContext,
+  chunkEntries?: ChunkCacheEntry[],
+): void {
   if (!contentHash) {
     return;
   }
@@ -38,6 +45,7 @@ export function cacheFileContext(contentHash: string, ctx: FileContext): void {
     contentHash,
     fileContext: ctx,
     cachedAt: new Date().toISOString(),
+    chunkEntries,
   };
   writeJson(entryPath, entry);
 }
@@ -63,6 +71,19 @@ export function hasCachedContext(contentHash: string): boolean {
     return false;
   }
   return fs.existsSync(getCacheEntryPath(contentHash));
+}
+
+/**
+ * Retrieve chunk-level cache entries from a previous file version.
+ * Returns null if the hash has no cached data or no chunk entries (old format).
+ */
+export function getCachedChunkEntries(contentHash: string): ChunkCacheEntry[] | null {
+  if (!contentHash) {
+    return null;
+  }
+  const entryPath = getCacheEntryPath(contentHash);
+  const entry = readJson<CacheEntry>(entryPath);
+  return entry?.chunkEntries ?? null;
 }
 
 // ─── Per-branch state ────────────────────────────────────────────────────────
@@ -158,9 +179,10 @@ export function hasBranchIndex(branch: string): boolean {
 
 /**
  * Batch-cache multiple FileContexts into the shared cache and update branch state.
+ * Supports optional chunk entries for chunk-level delta caching.
  */
 export function batchCacheContexts(
-  contexts: Array<{ contentHash: string; ctx: FileContext }>,
+  contexts: Array<{ contentHash: string; ctx: FileContext; chunkEntries?: ChunkCacheEntry[] }>,
   branch: string,
   headCommit: string,
 ): void {
@@ -168,8 +190,8 @@ export function batchCacheContexts(
 
   const fileHashes: Record<string, string> = {};
 
-  for (const { contentHash, ctx } of contexts) {
-    cacheFileContext(contentHash, ctx);
+  for (const { contentHash, ctx, chunkEntries } of contexts) {
+    cacheFileContext(contentHash, ctx, chunkEntries);
     fileHashes[ctx.relativePath] = contentHash;
   }
 

@@ -1,10 +1,10 @@
 {
   "version": "1.0",
-  "generatedAt": "2026-03-31T02:20:52.066Z",
+  "generatedAt": "2026-04-01T19:49:11.110Z",
   "workspaceRoot": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0",
   "stats": {
     "totalFiles": 31,
-    "totalSymbols": 570,
+    "totalSymbols": 634,
     "totalEdges": 69
   },
   "files": {
@@ -12,432 +12,810 @@
       "path": "src/core/analyzer/fileAnalyzer.ts",
       "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/core/analyzer/fileAnalyzer.ts",
       "language": "typescript",
-      "sizeBytes": 21780,
+      "sizeBytes": 40902,
       "symbols": [
         {
           "name": "FileContext",
           "kind": "interface",
-          "line": 10,
+          "line": 11,
           "signature": "export interface FileContext {"
         },
         {
           "name": "SymbolContext",
           "kind": "interface",
-          "line": 20,
+          "line": 21,
           "signature": "export interface SymbolContext {"
+        },
+        {
+          "name": "SemanticChunk",
+          "kind": "interface",
+          "line": 34,
+          "signature": "export interface SemanticChunk {"
+        },
+        {
+          "name": "SemanticChunkResult",
+          "kind": "interface",
+          "line": 51,
+          "signature": "export interface SemanticChunkResult {"
+        },
+        {
+          "name": "ChunkGroup",
+          "kind": "interface",
+          "line": 59,
+          "signature": "export interface ChunkGroup {"
         },
         {
           "name": "MAX_CHUNK_CHARS",
           "kind": "const",
-          "line": 35,
+          "line": 72,
           "signature": "const MAX_CHUNK_CHARS = 60_000;"
         },
         {
           "name": "BATCH_SIZE_THRESHOLD_BYTES",
           "kind": "const",
-          "line": 38,
+          "line": 75,
           "signature": "export const BATCH_SIZE_THRESHOLD_BYTES = 6_000;"
         },
         {
           "name": "FILES_PER_BATCH",
           "kind": "const",
-          "line": 41,
+          "line": 78,
           "signature": "const FILES_PER_BATCH = 6;"
         },
         {
           "name": "analyzeFile",
           "kind": "function",
-          "line": 48,
+          "line": 92,
           "signature": "export async function analyzeFile("
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 64,
-          "signature": "if (chunks.length === 1) {"
+          "line": 113,
+          "signature": "if (allChunks.length === 0) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 81,
+          "line": 119,
+          "signature": "if (previousChunkEntries) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 120,
+          "signature": "for (const entry of previousChunkEntries) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 129,
+          "signature": "for (let i = 0; i < allChunks.length; i++) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 132,
+          "signature": "if (cachedEntry) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 139,
+          "signature": "if (cachedResults.length > 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 151,
+          "signature": "for (const { chunkIndex, entry } of cachedResults) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 152,
+          "signature": "if (entry.result.overview) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 166,
+          "signature": "for (let g = 0; g < groups.length; g++) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 188,
           "signature": "if (!result) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 93,
-          "signature": "for (let i = 0; i < chunks.length; i++) {"
+          "line": 192,
+          "signature": "for (const chunk of group.chunks) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 111,
-          "signature": "if (!result) {"
-        },
-        {
-          "name": "if",
-          "kind": "method",
-          "line": 116,
+          "line": 203,
           "signature": "if (result.overview) {"
         },
         {
+          "name": "for",
+          "kind": "method",
+          "line": 209,
+          "signature": "for (const chunk of group.chunks) {"
+        },
+        {
           "name": "if",
           "kind": "method",
-          "line": 122,
-          "signature": "if (failedChunks === chunks.length) {"
+          "line": 231,
+          "signature": "if (failedGroups === totalGroups && cachedResults.length === 0) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 131,
+          "line": 237,
           "signature": "for (const sym of symbolContexts) {"
+        },
+        {
+          "name": "AnalyzeFileResult",
+          "kind": "interface",
+          "line": 257,
+          "signature": "export interface AnalyzeFileResult {"
+        },
+        {
+          "name": "ChunkCacheEntry",
+          "kind": "interface",
+          "line": 263,
+          "signature": "export interface ChunkCacheEntry {"
         },
         {
           "name": "analyzeFileBatch",
           "kind": "function",
-          "line": 151,
+          "line": 273,
           "signature": "export async function analyzeFileBatch("
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 159,
+          "line": 281,
           "signature": "if (fileNodes.length === 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 288,
+          "signature": "for (const node of fileNodes) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 221,
+          "line": 297,
+          "signature": "if (nonTrivialNodes.length === 0) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 366,
           "signature": "if (tracker) { tracker.recordCall(response, Date.now() - t0); }"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 226,
+          "line": 371,
           "signature": "if (!rawContent) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 235,
+          "line": 380,
           "signature": "if (batchResult === null) {"
         },
         {
           "name": "individualFallback",
           "kind": "function",
-          "line": 255,
+          "line": 402,
           "signature": "async function individualFallback("
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 265,
+          "line": 412,
           "signature": "for (const node of fileNodes) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 266,
+          "line": 413,
           "signature": "if (signal?.aborted) {"
         },
         {
           "name": "emptyFileContext",
           "kind": "function",
-          "line": 284,
+          "line": 430,
           "signature": "function emptyFileContext(node: FileNode): FileContext {"
         },
         {
           "name": "partitionForBatching",
           "kind": "function",
-          "line": 303,
+          "line": 449,
           "signature": "export function partitionForBatching(fileNodes: FileNode[]): {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 310,
+          "line": 456,
           "signature": "for (const node of fileNodes) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 311,
+          "line": 457,
           "signature": "if (node.sizeBytes <= BATCH_SIZE_THRESHOLD_BYTES) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 319,
+          "line": 465,
           "signature": "for (let i = 0; i < small.length; i += FILES_PER_BATCH) {"
         },
         {
           "name": "ChunkResult",
           "kind": "interface",
-          "line": 328,
+          "line": 474,
           "signature": "interface ChunkResult {"
         },
         {
           "name": "analyzeChunk",
           "kind": "function",
-          "line": 333,
+          "line": 479,
           "signature": "async function analyzeChunk("
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 378,
+          "line": 528,
           "signature": "if (tracker) { tracker.recordCall(response, elapsed); }"
         },
         {
           "name": "parseChunkResponse",
           "kind": "function",
-          "line": 386,
+          "line": 536,
           "signature": "function parseChunkResponse("
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 392,
+          "line": 542,
           "signature": "if (!parsed) {"
         },
         {
           "name": "parseBatchResponse",
           "kind": "function",
-          "line": 402,
+          "line": 552,
           "signature": "function parseBatchResponse("
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 407,
+          "line": 557,
           "signature": "if (!raw) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 415,
+          "line": 565,
           "signature": "if (!parsed) {"
         },
         {
           "name": "extractJson",
           "kind": "function",
-          "line": 460,
+          "line": 610,
           "signature": "export function extractJson<T>(raw: string): T | null {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 461,
+          "line": 611,
           "signature": "if (!raw) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 478,
+          "line": 628,
           "signature": "if (start === -1) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 486,
+          "line": 636,
           "signature": "for (let i = start; i < text.length; i++) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 488,
+          "line": 638,
           "signature": "if (escape) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 492,
+          "line": 642,
           "signature": "if (ch === '\\\\' && inString) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 496,
+          "line": 646,
           "signature": "if (ch === '\"') {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 500,
+          "line": 650,
           "signature": "if (inString) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 503,
+          "line": 653,
           "signature": "if (ch === '{') {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 506,
+          "line": 656,
           "signature": "if (ch === '}') {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 508,
+          "line": 658,
           "signature": "if (depth === 0) {"
         },
         {
           "name": "RawSymbol",
           "kind": "interface",
-          "line": 521,
+          "line": 671,
           "signature": "interface RawSymbol {"
         },
         {
           "name": "normalizeSymbols",
           "kind": "function",
-          "line": 532,
+          "line": 682,
           "signature": "export function normalizeSymbols(raw: RawSymbol[]): SymbolContext[] {"
         },
         {
-          "name": "buildDependencyContext",
+          "name": "TRIVIAL_FILE_THRESHOLD",
+          "kind": "const",
+          "line": 698,
+          "signature": "const TRIVIAL_FILE_THRESHOLD = 50;"
+        },
+        {
+          "name": "isTrivialFile",
           "kind": "function",
-          "line": 545,
-          "signature": "function buildDependencyContext("
+          "line": 704,
+          "signature": "export function isTrivialFile(fileNode: FileNode, content: string): boolean {"
+        },
+        {
+          "name": "syntheticContext",
+          "kind": "function",
+          "line": 711,
+          "signature": "function syntheticContext(node: FileNode): FileContext {"
+        },
+        {
+          "name": "collectImportedSymbolNames",
+          "kind": "function",
+          "line": 727,
+          "signature": "function collectImportedSymbolNames("
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 732,
+          "signature": "for (const dep of fileNode.imports) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 549,
+          "line": 734,
+          "signature": "if (!depNode) { continue; }"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 735,
+          "signature": "for (const s of depNode.symbols) {"
+        },
+        {
+          "name": "extractReferencedSymbols",
+          "kind": "function",
+          "line": 746,
+          "signature": "function extractReferencedSymbols("
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 751,
+          "signature": "for (const name of importedNames) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 753,
+          "signature": "if (name.length <= 2) { continue; }"
+        },
+        {
+          "name": "escapeRegex",
+          "kind": "function",
+          "line": 763,
+          "signature": "function escapeRegex(str: string): string {"
+        },
+        {
+          "name": "hashContent",
+          "kind": "function",
+          "line": 767,
+          "signature": "function hashContent(content: string): string {"
+        },
+        {
+          "name": "findDecoratorStart",
+          "kind": "function",
+          "line": 775,
+          "signature": "function findDecoratorStart(lines: string[], symbolLine0: number): number {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 777,
+          "signature": "for (let i = symbolLine0 - 1; i >= 0; i--) {"
+        },
+        {
+          "name": "SymbolRegion",
+          "kind": "interface",
+          "line": 796,
+          "signature": "interface SymbolRegion {"
+        },
+        {
+          "name": "extractSemanticChunks",
+          "kind": "function",
+          "line": 822,
+          "signature": "export function extractSemanticChunks("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 836,
+          "signature": "if (fileNode.symbols.length === 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 859,
+          "signature": "for (let i = 0; i < sorted.length; i++) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 877,
+          "signature": "for (let i = 1; i < regions.length; i++) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 878,
+          "signature": "if (regions[i].startLine <= regions[i - 1].endLine) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 896,
+          "signature": "for (const region of regions) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 901,
+          "signature": "if (regionLen + preambleLen + 1 > maxChunkChars) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 903,
+          "signature": "for (const sub of subChunks) {"
+        },
+        {
+          "name": "packChunksForAnalysis",
+          "kind": "function",
+          "line": 941,
+          "signature": "export function packChunksForAnalysis("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 948,
+          "signature": "if (chunks.length === 0) { return []; }"
+        },
+        {
+          "name": "while",
+          "kind": "method",
+          "line": 960,
+          "signature": "while (used.size < chunks.length) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 967,
+          "signature": "if (i >= chunks.length) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 969,
+          "signature": "for (let k = 0; k < chunks.length; k++) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 975,
+          "signature": "for (let j = i; j < chunks.length; j++) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 979,
+          "signature": "if (groupBodyLen + chunkLen + separator <= budget) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 987,
+          "signature": "for (let j = 0; j < i; j++) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 991,
+          "signature": "if (groupBodyLen + chunkLen + separator <= budget) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 998,
+          "signature": "if (groupChunks.length === 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 1001,
+          "signature": "for (let k = 0; k < chunks.length; k++) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 1016,
+          "signature": "for (const c of groupChunks) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 1017,
+          "signature": "for (const ref of c.referencedSymbols) { allRefs.add(ref); }"
+        },
+        {
+          "name": "buildGroupDependencyContext",
+          "kind": "function",
+          "line": 1034,
+          "signature": "function buildGroupDependencyContext("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1039,
+          "signature": "if (fileNode.imports.length === 0 || referencedSymbols.size === 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 1043,
+          "signature": "for (const dep of fileNode.imports) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1045,
+          "signature": "if (!depNode) { continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1047,
+          "signature": "if (relevant.length > 0) {"
+        },
+        {
+          "name": "buildChunkDependencyContext",
+          "kind": "function",
+          "line": 1060,
+          "signature": "function buildChunkDependencyContext("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1065,
+          "signature": "if (fileNode.imports.length === 0 || chunk.referencedSymbols.length === 0) {"
+        },
+        {
+          "name": "for",
+          "kind": "method",
+          "line": 1071,
+          "signature": "for (const dep of fileNode.imports) {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1073,
+          "signature": "if (!depNode) { continue; }"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1076,
+          "signature": "if (relevant.length > 0) {"
+        },
+        {
+          "name": "buildDependencyContextForFile",
+          "kind": "function",
+          "line": 1086,
+          "signature": "function buildDependencyContextForFile("
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1090,
           "signature": "if (fileNode.imports.length === 0) {"
         },
         {
+          "name": "for",
+          "kind": "method",
+          "line": 1094,
+          "signature": "for (const dep of fileNode.imports) {"
+        },
+        {
           "name": "if",
           "kind": "method",
-          "line": 555,
+          "line": 1096,
           "signature": "if (!depNode) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 559,
+          "line": 1100,
           "signature": "if (names) {"
         },
         {
           "name": "buildSystemPrompt",
           "kind": "function",
-          "line": 566,
+          "line": 1107,
           "signature": "function buildSystemPrompt(): string {"
         },
         {
           "name": "isContextSizeError",
           "kind": "function",
-          "line": 578,
+          "line": 1119,
           "signature": "function isContextSizeError(e: unknown): boolean {"
         },
         {
           "name": "isTransientNetworkError",
           "kind": "function",
-          "line": 586,
+          "line": 1127,
           "signature": "function isTransientNetworkError(e: unknown): boolean {"
         },
         {
           "name": "callWithRetry",
           "kind": "function",
-          "line": 602,
+          "line": 1143,
           "signature": "async function callWithRetry<T>("
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 607,
+          "line": 1148,
           "signature": "for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 624,
+          "line": 1165,
           "signature": "if (isRetryable && attempt < MAX_RETRIES) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 638,
+          "line": 1179,
           "signature": "if (attempt === MAX_RETRIES) {"
         },
         {
           "name": "renderContextMarkdown",
           "kind": "function",
-          "line": 648,
+          "line": 1189,
           "signature": "export function renderContextMarkdown(ctx: FileContext): string {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 657,
+          "line": 1198,
+          "signature": "if (ctx.chunkCount === 0 && ctx.overview === 'Trivial or empty file with no significant logic.') {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 1204,
           "signature": "if (!ctx.overview && ctx.symbols.length === 0 && ctx.chunkCount === 0) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 670,
+          "line": 1217,
           "signature": "if (ctx.overview) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 676,
+          "line": 1223,
           "signature": "if (ctx.dependencies.length > 0) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 678,
+          "line": 1225,
           "signature": "for (const dep of ctx.dependencies) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 684,
+          "line": 1231,
           "signature": "if (ctx.symbols.length > 0) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 687,
+          "line": 1234,
           "signature": "for (const sym of ctx.symbols) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 689,
+          "line": 1236,
           "signature": "if (sym.line > 0) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 696,
+          "line": 1243,
           "signature": "if (sym.parameters) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 699,
+          "line": 1246,
           "signature": "if (sym.returns) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 702,
+          "line": 1249,
           "signature": "if (sym.limitations) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 705,
+          "line": 1252,
           "signature": "if (sym.usedBy?.length) {"
         },
         {
           "name": "sleep",
           "kind": "function",
-          "line": 717,
+          "line": 1264,
           "signature": "function sleep(ms: number): Promise<void> {"
         }
       ],
@@ -772,7 +1150,7 @@
       "path": "src/core/cache/contextCache.ts",
       "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/core/cache/contextCache.ts",
       "language": "typescript",
-      "sizeBytes": 5926,
+      "sizeBytes": 6769,
       "symbols": [
         {
           "name": "CacheEntry",
@@ -783,127 +1161,139 @@
         {
           "name": "getCacheEntryPath",
           "kind": "function",
-          "line": 23,
+          "line": 25,
           "signature": "function getCacheEntryPath(contentHash: string): string {"
         },
         {
           "name": "cacheFileContext",
           "kind": "function",
-          "line": 32,
-          "signature": "export function cacheFileContext(contentHash: string, ctx: FileContext): void {"
+          "line": 35,
+          "signature": "export function cacheFileContext("
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 33,
+          "line": 40,
           "signature": "if (!contentHash) {"
         },
         {
           "name": "getCachedFileContext",
           "kind": "function",
-          "line": 49,
+          "line": 57,
           "signature": "export function getCachedFileContext(contentHash: string): FileContext | null {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 50,
+          "line": 58,
           "signature": "if (!contentHash) {"
         },
         {
           "name": "hasCachedContext",
           "kind": "function",
-          "line": 61,
+          "line": 69,
           "signature": "export function hasCachedContext(contentHash: string): boolean {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 62,
+          "line": 70,
+          "signature": "if (!contentHash) {"
+        },
+        {
+          "name": "getCachedChunkEntries",
+          "kind": "function",
+          "line": 80,
+          "signature": "export function getCachedChunkEntries(contentHash: string): ChunkCacheEntry[] | null {"
+        },
+        {
+          "name": "if",
+          "kind": "method",
+          "line": 81,
           "signature": "if (!contentHash) {"
         },
         {
           "name": "BranchState",
           "kind": "interface",
-          "line": 72,
+          "line": 93,
           "signature": "export interface BranchState {"
         },
         {
           "name": "loadBranchState",
           "kind": "function",
-          "line": 88,
+          "line": 109,
           "signature": "export function loadBranchState(branch: string): BranchState | null {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 91,
+          "line": 112,
           "signature": "if (existing?.version === '1.0' && existing.branch === branch) {"
         },
         {
           "name": "saveBranchState",
           "kind": "function",
-          "line": 100,
+          "line": 121,
           "signature": "export function saveBranchState(state: BranchState): void {"
         },
         {
           "name": "updateBranchState",
           "kind": "function",
-          "line": 109,
+          "line": 130,
           "signature": "export function updateBranchState("
         },
         {
           "name": "removeFromBranchState",
           "kind": "function",
-          "line": 136,
+          "line": 157,
           "signature": "export function removeFromBranchState("
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 141,
+          "line": 162,
           "signature": "if (!state) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 144,
+          "line": 165,
           "signature": "for (const p of filePaths) {"
         },
         {
           "name": "hasBranchIndex",
           "kind": "function",
-          "line": 153,
+          "line": 174,
           "signature": "export function hasBranchIndex(branch: string): boolean {"
         },
         {
           "name": "batchCacheContexts",
           "kind": "function",
-          "line": 162,
+          "line": 184,
           "signature": "export function batchCacheContexts("
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 171,
-          "signature": "for (const { contentHash, ctx } of contexts) {"
+          "line": 193,
+          "signature": "for (const { contentHash, ctx, chunkEntries } of contexts) {"
         },
         {
           "name": "partitionByCacheHit",
           "kind": "function",
-          "line": 184,
+          "line": 206,
           "signature": "export function partitionByCacheHit("
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 193,
+          "line": 215,
           "signature": "for (const { relativePath, contentHash } of files) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 195,
+          "line": 217,
           "signature": "if (ctx) {"
         }
       ],
@@ -1102,7 +1492,7 @@
       "path": "src/core/stats/usageStats.ts",
       "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/core/stats/usageStats.ts",
       "language": "typescript",
-      "sizeBytes": 7530,
+      "sizeBytes": 7533,
       "symbols": [
         {
           "name": "ProviderStats",
@@ -1207,12 +1597,6 @@
           "signature": "if (!data.providers[providerName]) {"
         },
         {
-          "name": "if",
-          "kind": "method",
-          "line": 233,
-          "signature": "if (data.runHistory.length > 20) { data.runHistory = data.runHistory.slice(-20); }"
-        },
-        {
           "name": "resetUsageStats",
           "kind": "function",
           "line": 246,
@@ -1236,300 +1620,300 @@
       "path": "src/core/workflow/runner.ts",
       "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/core/workflow/runner.ts",
       "language": "typescript",
-      "sizeBytes": 27795,
+      "sizeBytes": 29015,
       "symbols": [
         {
           "name": "WorkflowOptions",
           "kind": "interface",
-          "line": 48,
+          "line": 51,
           "signature": "export interface WorkflowOptions {"
         },
         {
           "name": "WorkflowResult",
           "kind": "interface",
-          "line": 59,
+          "line": 62,
           "signature": "export interface WorkflowResult {"
         },
         {
           "name": "isWorkflowRunning",
           "kind": "function",
-          "line": 69,
+          "line": 72,
           "signature": "export function isWorkflowRunning(): boolean {"
         },
         {
           "name": "cancelWorkflow",
           "kind": "function",
-          "line": 73,
+          "line": 76,
           "signature": "export function cancelWorkflow(): void {"
         },
         {
           "name": "activateBranch",
           "kind": "function",
-          "line": 81,
+          "line": 84,
           "signature": "function activateBranch(): { branch: string; headCommit: string } {"
         },
         {
           "name": "runFullWorkflow",
           "kind": "function",
-          "line": 90,
+          "line": 93,
           "signature": "export async function runFullWorkflow("
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 94,
+          "line": 97,
           "signature": "if (_currentWorkflow) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 124,
+          "line": 127,
           "signature": "if (sourceFiles.length === 0) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 160,
+          "line": 163,
           "signature": "for (const { ctx } of cached) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 175,
+          "line": 178,
           "signature": "if (estimatedRequests > 0) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 183,
+          "line": 186,
           "signature": "if (!isUnlimitedRpm) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 198,
+          "line": 204,
           "signature": "if (concurrency > 1) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 213,
+          "line": 219,
           "signature": "for (let i = 0; i < batchOutcomes.length; i++) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 215,
+          "line": 221,
           "signature": "if (outcome.error) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 223,
+          "line": 229,
           "signature": "for (const ctx of outcome.result!) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 227,
+          "line": 233,
           "signature": "if (hash) { newCacheEntries.push({ contentHash: hash, ctx }); }"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 241,
+          "line": 250,
           "signature": "for (let i = 0; i < largeOutcomes.length; i++) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 243,
+          "line": 252,
           "signature": "if (outcome.error) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 254,
-          "signature": "if (hash) { newCacheEntries.push({ contentHash: hash, ctx }); }"
+          "line": 263,
+          "signature": "if (hash) { newCacheEntries.push({ contentHash: hash, ctx, chunkEntries }); }"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 260,
+          "line": 269,
           "signature": "if (newCacheEntries.length > 0) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 266,
+          "line": 275,
           "signature": "for (const fh of filesWithHashes) { allFileHashes[fh.relativePath] = fh.contentHash; }"
         },
         {
           "name": "runIncrementalUpdate",
           "kind": "function",
-          "line": 302,
+          "line": 311,
           "signature": "export async function runIncrementalUpdate("
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 306,
+          "line": 315,
           "signature": "if (_currentWorkflow) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 334,
+          "line": 343,
           "signature": "if (!existingIndex) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 341,
+          "line": 350,
           "signature": "if (!branchState) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 353,
+          "line": 362,
           "signature": "if (changedRelPaths.length === 0 && deletedRelPaths.length === 0) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 391,
+          "line": 400,
           "signature": "if (relevantChanged.length === 0 && relevantDeleted.length === 0) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 415,
+          "line": 424,
           "signature": "for (const { ctx } of cached) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 433,
+          "line": 442,
           "signature": "if (concurrency > 1 && total > 0) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 446,
+          "line": 458,
           "signature": "for (let i = 0; i < uncachedOutcomes.length; i++) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 448,
+          "line": 460,
           "signature": "if (outcome.error) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 459,
-          "signature": "if (hash) { newCacheEntries.push({ contentHash: hash, ctx }); }"
+          "line": 471,
+          "signature": "if (hash) { newCacheEntries.push({ contentHash: hash, ctx, chunkEntries }); }"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 465,
+          "line": 477,
           "signature": "if (relevantDeleted.length > 0) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 467,
+          "line": 479,
           "signature": "for (const relPath of relevantDeleted) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 475,
+          "line": 487,
           "signature": "if (newCacheEntries.length > 0) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 481,
+          "line": 493,
           "signature": "for (const fh of filesWithHashes) { fileHashMap[fh.relativePath] = fh.contentHash; }"
         },
         {
           "name": "runSingleFileAnalysis",
           "kind": "function",
-          "line": 552,
+          "line": 564,
           "signature": "export async function runSingleFileAnalysis("
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 566,
+          "line": 578,
           "signature": "if (!fileNode) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 581,
+          "line": 593,
           "signature": "if (cachedCtx) {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 595,
+          "line": 616,
           "signature": "if (contentHash) {"
         },
         {
           "name": "topologicalSort",
           "kind": "function",
-          "line": 611,
+          "line": 631,
           "signature": "function topologicalSort(graph: DependencyGraph): string[] {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 619,
+          "line": 639,
           "signature": "if (node) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 620,
+          "line": 640,
           "signature": "for (const dep of node.imports) { visit(dep); }"
         },
         {
           "name": "checkCancellation",
           "kind": "function",
-          "line": 629,
+          "line": 649,
           "signature": "function checkCancellation(token: vscode.CancellationToken): void {"
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 630,
+          "line": 650,
           "signature": "if (token.isCancellationRequested) {"
         },
         {
           "name": "runConcurrent",
           "kind": "function",
-          "line": 638,
+          "line": 658,
           "signature": "async function runConcurrent<T>("
         },
         {
           "name": "if",
           "kind": "method",
-          "line": 644,
+          "line": 664,
           "signature": "if (concurrency <= 1) {"
         },
         {
           "name": "for",
           "kind": "method",
-          "line": 645,
+          "line": 665,
           "signature": "for (let i = 0; i < tasks.length; i++) {"
         },
         {
           "name": "while",
           "kind": "method",
-          "line": 658,
+          "line": 678,
           "signature": "while (next < tasks.length) {"
         }
       ],
@@ -2661,7 +3045,7 @@
       "path": "src/test/suite/fileAnalyzer.test.ts",
       "absolutePath": "/Users/dhairyapatel/Documents/Dhairya/CodeAtlas4.0/src/test/suite/fileAnalyzer.test.ts",
       "language": "typescript",
-      "sizeBytes": 10699,
+      "sizeBytes": 23761,
       "symbols": [],
       "imports": [
         "src/core/analyzer/graphBuilder.ts"

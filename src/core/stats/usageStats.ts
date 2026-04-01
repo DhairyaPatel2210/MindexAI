@@ -230,7 +230,7 @@ export function persistWorkflowUsage(
     errors: errorCount,
   };
   data.runHistory.push(record);
-  if (data.runHistory.length > 20) { data.runHistory = data.runHistory.slice(-20); }
+  // if (data.runHistory.length > 20) { data.runHistory = data.runHistory.slice(-20); }
 
   saveUsageStats(data);
   logger.info(

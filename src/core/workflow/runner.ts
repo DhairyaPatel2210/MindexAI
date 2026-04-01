@@ -9,6 +9,8 @@ import {
   partitionForBatching,
   renderContextMarkdown,
   FileContext,
+  AnalyzeFileResult,
+  ChunkCacheEntry,
 } from '../analyzer/fileAnalyzer';
 import { buildIndex, persistIndex, persistContextOverview, SemanticIndex } from '../analyzer/indexer';
 import {
@@ -39,6 +41,7 @@ import {
   batchCacheContexts,
   cacheFileContext,
   getCachedFileContext,
+  getCachedChunkEntries,
   loadBranchState,
   updateBranchState,
   removeFromBranchState,
@@ -190,10 +193,13 @@ export async function runFullWorkflow(
         const limiter = new RateLimiter(effectiveRpm);
         const tracker = new UsageTracker();
         const analyzedContexts: FileContext[] = [];
-        const newCacheEntries: Array<{ contentHash: string; ctx: FileContext }> = [];
+        const newCacheEntries: Array<{ contentHash: string; ctx: FileContext; chunkEntries?: ChunkCacheEntry[] }> = [];
         let done = 0;
         const total = estimatedRequests;
         const concurrency = options.concurrentRequests;
+
+        // Load existing branch state for chunk-level delta (if available)
+        const existingBranchState = loadBranchState(branch);
 
         if (concurrency > 1) {
           logger.info(`Running analysis with ${concurrency} concurrent requests`);
@@ -228,13 +234,16 @@ export async function runFullWorkflow(
           }
         }
 
-        // Process individual files
+        // Process individual (large) files with chunk-level delta support
         const largeTasks = large.map(node => async () => {
           progress.report({
             message: `${path.basename(node.path)} — ${++done}/${total}`,
             increment: total > 0 ? Math.round((1 / total) * 70) : 0,
           });
-          return analyzeFile(node, graph, llm, limiter, signal, options.maxChunkChars, tracker);
+          // Look up previous content hash for chunk-level delta
+          const prevHash = existingBranchState?.fileHashes[node.path];
+          const prevChunkEntries = prevHash ? getCachedChunkEntries(prevHash) : null;
+          return analyzeFile(node, graph, llm, limiter, signal, options.maxChunkChars, tracker, prevChunkEntries ?? undefined);
         });
 
         const largeOutcomes = await runConcurrent(largeTasks, concurrency);
@@ -247,11 +256,11 @@ export async function runFullWorkflow(
             errors.push(`Error: ${large[i].path}: ${msg}`);
             continue;
           }
-          const ctx = outcome.result!;
+          const { context: ctx, chunkEntries } = outcome.result!;
           analyzedContexts.push(ctx);
           writeText(getContextFilePath(ctx.relativePath), renderContextMarkdown(ctx));
           const hash = filesWithHashes.find(f => f.relativePath === ctx.relativePath)?.contentHash;
-          if (hash) { newCacheEntries.push({ contentHash: hash, ctx }); }
+          if (hash) { newCacheEntries.push({ contentHash: hash, ctx, chunkEntries }); }
         }
 
         checkCancellation(cts.token);
@@ -420,7 +429,7 @@ export async function runIncrementalUpdate(
         const limiter = new RateLimiter(effectiveRpm);
         const tracker = new UsageTracker();
         const analyzedContexts: FileContext[] = [];
-        const newCacheEntries: Array<{ contentHash: string; ctx: FileContext }> = [];
+        const newCacheEntries: Array<{ contentHash: string; ctx: FileContext; chunkEntries?: ChunkCacheEntry[] }> = [];
 
         const uncachedNodes = uncached
           .map(relPath => graph.files[relPath])
@@ -439,7 +448,10 @@ export async function runIncrementalUpdate(
             message: `Updating ${path.basename(node.path)} — ${++done}/${total}`,
             increment: total > 0 ? Math.round((1 / total) * 60) : 0,
           });
-          return analyzeFile(node, graph, llm, limiter, signal, options.maxChunkChars, tracker);
+          // Use previous hash from branch state for chunk-level delta
+          const prevHash = branchState.fileHashes[node.path];
+          const prevChunkEntries = prevHash ? getCachedChunkEntries(prevHash) : null;
+          return analyzeFile(node, graph, llm, limiter, signal, options.maxChunkChars, tracker, prevChunkEntries ?? undefined);
         });
 
         const uncachedOutcomes = await runConcurrent(uncachedTasks, concurrency);
@@ -452,11 +464,11 @@ export async function runIncrementalUpdate(
             errors.push(`Error: ${uncachedNodes[i].path}: ${msg}`);
             continue;
           }
-          const ctx = outcome.result!;
+          const { context: ctx, chunkEntries } = outcome.result!;
           analyzedContexts.push(ctx);
           writeText(getContextFilePath(ctx.relativePath), renderContextMarkdown(ctx));
           const hash = filesWithHashes.find(f => f.relativePath === ctx.relativePath)?.contentHash;
-          if (hash) { newCacheEntries.push({ contentHash: hash, ctx }); }
+          if (hash) { newCacheEntries.push({ contentHash: hash, ctx, chunkEntries }); }
         }
 
         checkCancellation(cts.token);
@@ -588,14 +600,22 @@ export async function runSingleFileAnalysis(
       progress.report({ message: 'Analyzing with LLM…' });
       const limiter = new RateLimiter(options.requestsPerMinute);
       const tracker = new UsageTracker();
-      const ctx = await analyzeFile(fileNode, graph, llm, limiter, undefined, options.maxChunkChars, tracker);
+
+      // Look up previous chunk entries for delta analysis
+      const { branch: br, headCommit: hc } = activateBranch();
+      const prevState = loadBranchState(br);
+      const prevHash = prevState?.fileHashes[relPath];
+      const prevChunkEntries = prevHash ? getCachedChunkEntries(prevHash) : null;
+
+      const { context: ctx, chunkEntries } = await analyzeFile(
+        fileNode, graph, llm, limiter, undefined, options.maxChunkChars, tracker, prevChunkEntries ?? undefined,
+      );
       writeText(getContextFilePath(relPath), renderContextMarkdown(ctx));
 
       // Cache the result in shared cache and update branch state
       if (contentHash) {
-        const { branch, headCommit } = activateBranch();
-        cacheFileContext(contentHash, ctx);
-        updateBranchState(branch, headCommit, { [relPath]: contentHash });
+        cacheFileContext(contentHash, ctx, chunkEntries);
+        updateBranchState(br, hc, { [relPath]: contentHash });
       }
 
       persistWorkflowUsage(llm.name, tracker, 1, 0, 0);

@@ -1,9 +1,9 @@
 # src/core/stats/usageStats.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T21:28:29.158Z  
+**Analyzed:** 2026-04-01T19:49:12.460Z  
 
 ## Overview
-This file provides functionality for tracking and persisting usage statistics of language models (LLMs) across multiple workflow runs, including input/output token counts, request counts, and error rates.
+This file provides functionality for tracking and persisting usage statistics of a language model, including input/output tokens, request count, files analyzed, and errors. It also includes a lightweight in-memory tracker for accumulating statistics during a single workflow run.
 
 ## Dependencies
 - `src/llm/types.ts`
@@ -13,81 +13,121 @@ This file provides functionality for tracking and persisting usage statistics of
 ## Symbols
 
 ### `ProviderStats` *(interface)*
-**Purpose:** Represents statistics for a single LLM provider, including input/output token counts, request counts, and error rates.  
+**Purpose:** Represents statistics for a single provider, including input/output tokens, request count, files analyzed, and errors.  
 
-**Behavior:** Stores aggregated statistics for a provider across multiple workflow runs.
+**Behavior:** Provides a structure for storing and retrieving provider-specific statistics.
 
 **Parameters:** None  
 **Returns:** None  
-**Limitations:** Does not account for unsplit tokens from providers that do not split input/output.  
+**Limitations:** Does not account for unsplit tokens when provider doesn't split input/output.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `RunRecord` *(interface)*
-**Purpose:** Represents a single workflow run, including timestamp, provider, input/output token counts, and error rates.  
+**Purpose:** Represents a single run record, including timestamp, provider, input/output tokens, files analyzed, and duration.  
 
-**Behavior:** Stores information about a single workflow run, including timestamp, provider, input/output token counts, and error rates.
+**Behavior:** Provides a structure for storing and retrieving run-specific statistics.
 
 **Parameters:** None  
 **Returns:** None  
-**Limitations:** Does not account for unsplit tokens from providers that do not split input/output.  
+**Limitations:** Does not account for unsplit tokens when provider doesn't split input/output.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `UsageStatsData` *(interface)*
-**Purpose:** Represents the overall usage statistics, including provider statistics, global statistics, and run history.  
+**Purpose:** Represents the overall usage statistics, including provider-specific statistics and global statistics.  
 
-**Behavior:** Stores aggregated statistics for all providers across multiple workflow runs, including provider statistics, global statistics, and run history.
+**Behavior:** Provides a structure for storing and retrieving usage statistics.
 
 **Parameters:** None  
 **Returns:** None  
-**Limitations:** Does not account for unsplit tokens from providers that do not split input/output.  
+**Limitations:** Does not account for unsplit tokens when provider doesn't split input/output.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `StatsDisplay` *(interface)*
-**Purpose:** Represents a display of usage statistics, including provider statistics and global statistics.  
+**Purpose:** Represents a display of usage statistics, including provider-specific statistics and global statistics.  
 
-**Behavior:** Displays aggregated statistics for all providers across multiple workflow runs, including provider statistics and global statistics.
-
-**Parameters:** None  
-**Returns:** None  
-**Limitations:** Does not account for unsplit tokens from providers that do not split input/output.  
-**Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
-
-### `UsageTracker` *(class)*
-**Purpose:** A lightweight accumulator that tracks usage statistics for a single workflow run.  
-
-**Behavior:** Accumulates usage statistics for a single workflow run, including input/output token counts, request counts, and error rates.
+**Behavior:** Provides a structure for displaying usage statistics in a human-readable format.
 
 **Parameters:** None  
 **Returns:** None  
-**Limitations:** Does not account for unsplit tokens from providers that do not split input/output.  
+**Limitations:** Does not account for unsplit tokens when provider doesn't split input/output.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `getStatsDisplay` *(function)*
-**Purpose:** Returns a display of usage statistics for a given usage statistics data.  
+**Purpose:** Converts usage statistics data into a displayable format.  
 
-**Behavior:** Calculates and returns a display of usage statistics for a given usage statistics data.
+**Behavior:** Takes usage statistics data as input and returns a displayable format.
 
-**Parameters:** data: UsageStatsData  
+**Parameters:** UsageStatsData  
 **Returns:** StatsDisplay  
-**Limitations:** Does not account for unsplit tokens from providers that do not split input/output.  
+**Limitations:** Does not account for unsplit tokens when provider doesn't split input/output.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
 
-### `loadUsageStats` *(function)*
-**Purpose:** Loads persisted usage statistics from file.  
+### `UsageTracker` *(class)*
+**Purpose:** Provides a lightweight in-memory tracker for accumulating statistics during a single workflow run.  
 
-**Behavior:** Loads persisted usage statistics from file and returns the data.
+**Behavior:** Accumulates statistics during a single workflow run and provides methods for accessing these statistics.
+
+**Parameters:** None  
+**Returns:** None  
+**Limitations:** Does not account for unsplit tokens when provider doesn't split input/output.  
+**Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
+
+### `recordCall` *(method)*
+**Purpose:** Records a single LLM API call and updates the tracker's statistics.  
+
+**Behavior:** Takes an LLM response and duration as input and updates the tracker's statistics.
+
+**Parameters:** LLMResponse, durationMs  
+**Returns:** None  
+**Limitations:** Does not account for unsplit tokens when provider doesn't split input/output.  
+**Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
+
+### `statsFilePath` *(function)*
+**Purpose:** Returns the file path for storing usage statistics.  
+
+**Behavior:** Returns the file path for storing usage statistics.
+
+**Parameters:** None  
+**Returns:** string  
+**Limitations:** None  
+**Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
+
+### `emptyStats` *(function)*
+**Purpose:** Returns an empty usage statistics data object.  
+
+**Behavior:** Returns an empty usage statistics data object.
 
 **Parameters:** None  
 **Returns:** UsageStatsData  
-**Limitations:** Returns empty stats if file does not exist or is invalid.  
+**Limitations:** None  
+**Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
+
+### `emptyProviderStats` *(function)*
+**Purpose:** Returns an empty provider statistics object.  
+
+**Behavior:** Returns an empty provider statistics object.
+
+**Parameters:** None  
+**Returns:** ProviderStats  
+**Limitations:** None  
+**Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
+
+### `loadUsageStats` *(function)*
+**Purpose:** Loads usage statistics from file and returns the data object.  
+
+**Behavior:** Loads usage statistics from file and returns the data object.
+
+**Parameters:** None  
+**Returns:** UsageStatsData  
+**Limitations:** Returns an empty object if file is missing or corrupted.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `saveUsageStats` *(function)*
 **Purpose:** Saves usage statistics to file.  
 
-**Behavior:** Saves usage statistics to file and logs an error if saving fails.
+**Behavior:** Saves usage statistics to file.
 
-**Parameters:** data: UsageStatsData  
+**Parameters:** UsageStatsData  
 **Returns:** None  
 **Limitations:** Logs an error if saving fails.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
@@ -95,19 +135,19 @@ This file provides functionality for tracking and persisting usage statistics of
 ### `persistWorkflowUsage` *(function)*
 **Purpose:** Merges a completed workflow run's tracker into the persisted stats.  
 
-**Behavior:** Merges a completed workflow run's tracker into the persisted stats and logs an info message.
+**Behavior:** Takes a provider name, tracker, files analyzed, files from cache, and error count as input and merges the tracker into the persisted stats.
 
-**Parameters:** providerName: string, tracker: UsageTracker, filesAnalyzed: number, filesFromCache: number, errorCount: number  
+**Parameters:** string, UsageTracker, number, number, number  
 **Returns:** None  
-**Limitations:** Logs an info message.  
+**Limitations:** Does not account for unsplit tokens when provider doesn't split input/output.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  
 
 ### `resetUsageStats` *(function)*
 **Purpose:** Resets all persisted usage statistics.  
 
-**Behavior:** Resets all persisted usage statistics and logs an info message.
+**Behavior:** Resets all persisted usage statistics.
 
 **Parameters:** None  
 **Returns:** None  
-**Limitations:** Logs an info message.  
+**Limitations:** Logs an info message when resetting.  
 **Used by:** `src/core/analyzer/fileAnalyzer.ts`, `src/core/workflow/runner.ts`, `src/test/suite/usageStats.test.ts`, `src/vscode/activityBar.ts`, `src/vscode/panel/mainPanel.ts`  

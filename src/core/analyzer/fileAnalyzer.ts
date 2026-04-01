@@ -1,7 +1,8 @@
 import * as fs from 'fs';
+import * as crypto from 'crypto';
 import * as path from 'path';
 import { ILLMProvider, RateLimitError } from '../../llm/types';
-import { FileNode, DependencyGraph } from './graphBuilder';
+import { FileNode, DependencyGraph, SymbolEntry } from './graphBuilder';
 import { chunkText } from '../../utils/fileUtils';
 import { RateLimiter } from '../../llm/rateLimiter';
 import { UsageTracker } from '../stats/usageStats';
@@ -30,6 +31,42 @@ export interface SymbolContext {
   uses?: string[];
 }
 
+export interface SemanticChunk {
+  /** Deterministic id: `filePath::chunk_N` */
+  id: string;
+  filePath: string;
+  /** Raw source text of this chunk — symbol code only (NO preamble) */
+  content: string;
+  /** SHA-256 of content — used as cache key for delta */
+  contentHash: string;
+  /** Symbol names DEFINED in this chunk */
+  symbolNames: string[];
+  /** Imported symbol names USED (referenced) in this chunk */
+  referencedSymbols: string[];
+  startLine: number;
+  endLine: number;
+}
+
+/** Result of extractSemanticChunks — preamble is separate for efficient packing */
+export interface SemanticChunkResult {
+  /** File preamble (imports, module docs) — shared across all chunks */
+  preamble: string;
+  /** Per-symbol chunks — each hashed individually */
+  chunks: SemanticChunk[];
+}
+
+/** A group of chunks packed together for a single LLM call */
+export interface ChunkGroup {
+  /** Chunks included in this group */
+  chunks: SemanticChunk[];
+  /** Combined content: preamble + all chunk contents */
+  combinedContent: string;
+  /** Merged dependency context for all chunks in this group */
+  depContext: string;
+  /** Merged symbol names across all chunks */
+  symbolNames: string[];
+}
+
 // Gemini 2.0 Flash supports up to 1M tokens — use a generous chunk size
 // to avoid unnecessary splitting. At ~4 chars/token this is ~150k tokens.
 const MAX_CHUNK_CHARS = 60_000;
@@ -43,7 +80,14 @@ const FILES_PER_BATCH = 6;
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 /**
- * Analyze a single file. Uses the rate limiter before every LLM call.
+ * Analyze a single file using symbol-boundary semantic chunking.
+ *
+ * Two-level design:
+ *   SemanticChunk (per-symbol) → unit of HASHING/CACHING (fine-grained delta)
+ *   ChunkGroup (packed chunks) → unit of LLM CALL (minimizes API calls)
+ *
+ * Optional `previousChunkEntries` enables chunk-level delta: only groups
+ * containing changed chunks are re-analyzed via LLM.
  */
 export async function analyzeFile(
   fileNode: FileNode,
@@ -53,79 +97,141 @@ export async function analyzeFile(
   signal?: AbortSignal,
   maxChunkChars = MAX_CHUNK_CHARS,
   tracker?: UsageTracker,
-): Promise<FileContext> {
+  previousChunkEntries?: ChunkCacheEntry[],
+): Promise<AnalyzeFileResult> {
   const content = fs.readFileSync(fileNode.absolutePath, 'utf-8');
-  const depContext = buildDependencyContext(fileNode, graph);
-  const chunks = chunkText(content, maxChunkChars);
 
-  let overview = '';
+  // Trivial file — no LLM call needed
+  if (isTrivialFile(fileNode, content)) {
+    logger.info(`Skipping trivial file: ${fileNode.path}`);
+    return { context: syntheticContext(fileNode), chunkEntries: [] };
+  }
+
+  // Split into per-symbol semantic chunks
+  const { preamble, chunks: allChunks } = extractSemanticChunks(fileNode, content, graph, maxChunkChars);
+
+  if (allChunks.length === 0) {
+    return { context: syntheticContext(fileNode), chunkEntries: [] };
+  }
+
+  // Build a lookup of previous chunk hashes for delta
+  const prevHashMap = new Map<string, ChunkCacheEntry>();
+  if (previousChunkEntries) {
+    for (const entry of previousChunkEntries) {
+      prevHashMap.set(entry.chunkHash, entry);
+    }
+  }
+
+  // Separate cached vs uncached chunks
+  const cachedResults: Array<{ chunkIndex: number; chunk: SemanticChunk; entry: ChunkCacheEntry }> = [];
+  const uncachedChunks: Array<{ chunkIndex: number; chunk: SemanticChunk }> = [];
+
+  for (let i = 0; i < allChunks.length; i++) {
+    const chunk = allChunks[i];
+    const cachedEntry = prevHashMap.get(chunk.contentHash);
+    if (cachedEntry) {
+      cachedResults.push({ chunkIndex: i, chunk, entry: cachedEntry });
+    } else {
+      uncachedChunks.push({ chunkIndex: i, chunk });
+    }
+  }
+
+  if (cachedResults.length > 0) {
+    logger.info(
+      `${fileNode.path}: ${cachedResults.length}/${allChunks.length} chunks from cache, ` +
+      `${uncachedChunks.length} need LLM analysis`,
+    );
+  }
+
+  // Collect results from cached chunks
+  const overviews: string[] = [];
   let symbolContexts: SymbolContext[] = [];
+  const newChunkEntries: ChunkCacheEntry[] = [];
 
-  if (chunks.length === 1) {
+  for (const { chunkIndex, entry } of cachedResults) {
+    if (entry.result.overview) {
+      overviews.push(entry.result.overview);
+    }
+    symbolContexts.push(...entry.result.symbols);
+    newChunkEntries.push({ ...entry, chunkIndex });
+  }
+
+  // Pack uncached chunks into groups for LLM calls (best-fit)
+  const uncachedOnly = uncachedChunks.map(u => u.chunk);
+  const groups = packChunksForAnalysis(uncachedOnly, preamble, fileNode, graph, maxChunkChars);
+
+  let failedGroups = 0;
+  const totalGroups = groups.length;
+
+  for (let g = 0; g < groups.length; g++) {
+    const group = groups[g];
+    const isFirstGroup = g === 0 && cachedResults.length === 0; // only include overview if nothing cached for first
+
     const result = await callWithRetry(
       () =>
         analyzeChunk(
-          content,
+          group.combinedContent,
           fileNode,
-          depContext,
+          group.depContext,
           llm,
           limiter,
-          true,
-          undefined,
-          undefined,
+          isFirstGroup,
+          g + 1,
+          totalGroups,
           signal,
           tracker,
+          group.symbolNames,
         ),
-      fileNode.path,
+      `${fileNode.path} group ${g + 1}/${totalGroups} (${group.chunks.length} chunks)`,
     );
+
     if (!result) {
-      throw new Error(
-        `Analysis failed for ${fileNode.path}: LLM returned no parseable response after retries`,
-      );
-    }
-    overview = result.overview ?? '';
-    symbolContexts = result.symbols ?? [];
-  } else {
-    logger.info(`File ${fileNode.path} split into ${chunks.length} chunks`);
-    const overviews: string[] = [];
-    let failedChunks = 0;
-
-    for (let i = 0; i < chunks.length; i++) {
-      const isFirst = i === 0;
-      const result = await callWithRetry(
-        () =>
-          analyzeChunk(
-            chunks[i],
-            fileNode,
-            isFirst ? depContext : '',
-            llm,
-            limiter,
-            isFirst,
-            i + 1,
-            chunks.length,
-            signal,
-            tracker,
-          ),
-        `${fileNode.path} chunk ${i + 1}/${chunks.length}`,
-      );
-      if (!result) {
-        failedChunks++;
-        logger.warn(`Chunk ${i + 1}/${chunks.length} failed for ${fileNode.path}`);
-        continue;
+      failedGroups++;
+      logger.warn(`Group ${g + 1}/${totalGroups} failed for ${fileNode.path}`);
+      // Record empty results for all chunks in this group
+      for (const chunk of group.chunks) {
+        const idx = allChunks.indexOf(chunk);
+        newChunkEntries.push({
+          chunkHash: chunk.contentHash,
+          chunkIndex: idx,
+          result: { overview: '', symbols: [] },
+        });
       }
-      if (result.overview) {
-        overviews.push(result.overview);
-      }
-      symbolContexts.push(...(result.symbols ?? []));
+      continue;
     }
 
-    if (failedChunks === chunks.length) {
-      throw new Error(
-        `Analysis failed for ${fileNode.path}: all ${chunks.length} chunks returned no parseable response`,
+    if (result.overview) {
+      overviews.push(result.overview);
+    }
+    symbolContexts.push(...(result.symbols ?? []));
+
+    // Map returned symbols back to their source chunks for per-chunk caching
+    for (const chunk of group.chunks) {
+      const idx = allChunks.indexOf(chunk);
+      const chunkSymbols = (result.symbols ?? []).filter(s =>
+        chunk.symbolNames.includes(s.name)
       );
+      // Symbols that don't match any chunk go to the first chunk in the group
+      const unmatchedSymbols = chunk === group.chunks[0]
+        ? (result.symbols ?? []).filter(s =>
+            !group.chunks.some(c => c.symbolNames.includes(s.name))
+          )
+        : [];
+      newChunkEntries.push({
+        chunkHash: chunk.contentHash,
+        chunkIndex: idx,
+        result: {
+          overview: chunk === group.chunks[0] ? (result.overview ?? '') : '',
+          symbols: [...chunkSymbols, ...unmatchedSymbols],
+        },
+      });
     }
+  }
 
-    overview = overviews.join('\n\n');
+  if (failedGroups === totalGroups && cachedResults.length === 0) {
+    throw new Error(
+      `Analysis failed for ${fileNode.path}: all ${totalGroups} groups returned no parseable response`,
+    );
   }
 
   for (const sym of symbolContexts) {
@@ -134,19 +240,35 @@ export async function analyzeFile(
   }
 
   return {
-    relativePath: fileNode.path,
-    language: fileNode.language,
-    overview,
-    symbols: symbolContexts,
-    dependencies: fileNode.imports,
-    analyzedAt: new Date().toISOString(),
-    chunkCount: chunks.length,
+    context: {
+      relativePath: fileNode.path,
+      language: fileNode.language,
+      overview: overviews.join('\n\n'),
+      symbols: symbolContexts,
+      dependencies: fileNode.imports,
+      analyzedAt: new Date().toISOString(),
+      chunkCount: allChunks.length,
+    },
+    chunkEntries: newChunkEntries,
   };
+}
+
+/** Result of analyzeFile — includes chunk entries for cache storage */
+export interface AnalyzeFileResult {
+  context: FileContext;
+  chunkEntries: ChunkCacheEntry[];
+}
+
+/** Per-chunk cache data stored alongside the file-level cache entry */
+export interface ChunkCacheEntry {
+  chunkHash: string;
+  chunkIndex: number;
+  result: { overview: string; symbols: SymbolContext[] };
 }
 
 /**
  * Analyze multiple small files in a SINGLE LLM request.
- * Returns one FileContext per file.
+ * Returns one FileContext per file. Trivial files get synthetic context.
  */
 export async function analyzeFileBatch(
   fileNodes: FileNode[],
@@ -160,12 +282,34 @@ export async function analyzeFileBatch(
     return [];
   }
 
+  // Separate trivial files — they don't need LLM calls
+  const trivialResults: FileContext[] = [];
+  const nonTrivialNodes: FileNode[] = [];
+  for (const node of fileNodes) {
+    const content = fs.readFileSync(node.absolutePath, 'utf-8');
+    if (isTrivialFile(node, content)) {
+      trivialResults.push(syntheticContext(node));
+    } else {
+      nonTrivialNodes.push(node);
+    }
+  }
+
+  if (nonTrivialNodes.length === 0) {
+    return trivialResults;
+  }
+
   const systemPrompt = buildSystemPrompt();
 
-  // Build a combined prompt with all files
-  const fileSections = fileNodes.map((node) => {
+  // Build a combined prompt with all non-trivial files
+  // For small batch files, extract a single SemanticChunk to get
+  // relevance-based dependency context
+  const fileSections = nonTrivialNodes.map((node) => {
     const content = fs.readFileSync(node.absolutePath, 'utf-8');
-    const depCtx = buildDependencyContext(node, graph);
+    const { chunks } = extractSemanticChunks(node, content, graph);
+    // Small files are single-chunk; use chunk dep context if available
+    const depCtx = chunks.length > 0
+      ? buildChunkDependencyContext(chunks[0], node, graph)
+      : buildDependencyContextForFile(node, graph);
     const depNote = depCtx ? `\nDependencies: ${depCtx}` : '';
     return [
       `### FILE: ${node.path}`,
@@ -176,7 +320,8 @@ export async function analyzeFileBatch(
     ].join('\n');
   });
 
-  const paths = fileNodes.map((n) => n.path);
+  const paths = nonTrivialNodes.map((n) => n.path);
+  const nodeCount = nonTrivialNodes.length;
 
   // Build a concrete example using the actual file paths so the model
   // uses the exact key format without guessing.
@@ -190,7 +335,7 @@ export async function analyzeFileBatch(
     'Your entire response MUST start with { and end with }.',
     'Do NOT use markdown code fences. Do NOT wrap in arrays. Do NOT add any text before or after the JSON.',
     '',
-    `Analyze these ${fileNodes.length} source files and return ONE JSON object with exactly ${fileNodes.length} top-level key${fileNodes.length > 1 ? 's' : ''}:`,
+    `Analyze these ${nodeCount} source files and return ONE JSON object with exactly ${nodeCount} top-level key${nodeCount > 1 ? 's' : ''}:`,
     paths.map(p => `  "${p}"`).join('\n'),
     '',
     'Each key maps to:',
@@ -204,7 +349,7 @@ export async function analyzeFileBatch(
     fileSections.join('\n\n---\n\n'),
   ].join('\n');
 
-  const batchLabel = `batch [${fileNodes.map((n) => path.basename(n.path)).join(', ')}]`;
+  const batchLabel = `batch [${nonTrivialNodes.map((n) => path.basename(n.path)).join(', ')}]`;
 
   try {
     const raw = await callWithRetry(async () => {
@@ -224,21 +369,22 @@ export async function analyzeFileBatch(
 
     const rawContent = typeof raw === 'string' ? raw : raw?.content;
     if (!rawContent) {
-      // All retries failed — fall back to individual analysis
       logger.warn(
         `Batch returned no content for ${batchLabel}, falling back to individual analysis`,
       );
-      return individualFallback(fileNodes, graph, llm, limiter, signal, MAX_CHUNK_CHARS, tracker);
+      const fallback = await individualFallback(nonTrivialNodes, graph, llm, limiter, signal, MAX_CHUNK_CHARS, tracker);
+      return [...trivialResults, ...fallback];
     }
 
-    const batchResult = parseBatchResponse(rawContent, fileNodes, graph);
+    const batchResult = parseBatchResponse(rawContent, nonTrivialNodes, graph);
     if (batchResult === null) {
       logger.warn(
         `Batch parse failed for ${batchLabel}, falling back to individual analysis`,
       );
-      return individualFallback(fileNodes, graph, llm, limiter, signal, MAX_CHUNK_CHARS, tracker);
+      const fallback = await individualFallback(nonTrivialNodes, graph, llm, limiter, signal, MAX_CHUNK_CHARS, tracker);
+      return [...trivialResults, ...fallback];
     }
-    return batchResult;
+    return [...trivialResults, ...batchResult];
   } catch (e) {
     if ((e as Error).name === 'AbortError') {
       throw e;
@@ -247,7 +393,8 @@ export async function analyzeFileBatch(
     logger.warn(
       `Batch failed (${e instanceof Error ? e.message.slice(0, 80) : e}), analyzing files individually`,
     );
-    return individualFallback(fileNodes, graph, llm, limiter, signal, MAX_CHUNK_CHARS, tracker);
+    const fallback = await individualFallback(nonTrivialNodes, graph, llm, limiter, signal, MAX_CHUNK_CHARS, tracker);
+    return [...trivialResults, ...fallback];
   }
 }
 
@@ -267,9 +414,8 @@ async function individualFallback(
       break;
     }
     try {
-      results.push(
-        await analyzeFile(node, graph, llm, limiter, signal, maxChunkChars, tracker),
-      );
+      const { context } = await analyzeFile(node, graph, llm, limiter, signal, maxChunkChars, tracker);
+      results.push(context);
     } catch (e) {
       if ((e as Error).name === 'AbortError') {
         throw e;
@@ -341,10 +487,14 @@ async function analyzeChunk(
   totalChunks?: number,
   signal?: AbortSignal,
   tracker?: UsageTracker,
+  chunkSymbolNames?: string[],
 ): Promise<ChunkResult> {
   const chunkLabel =
     chunkNum && totalChunks ? ` (chunk ${chunkNum}/${totalChunks})` : '';
   const depSection = depContext ? `\n\nDependencies: ${depContext}` : '';
+  const symbolHint = chunkSymbolNames && chunkSymbolNames.length > 0
+    ? `\nThis chunk defines: ${chunkSymbolNames.join(', ')}`
+    : '';
   const overviewField = includeOverview
     ? '"overview": "<2-3 sentence description of this file\'s purpose and role>",'
     : '"overview": "",';
@@ -354,7 +504,7 @@ async function analyzeChunk(
     'Your entire response MUST start with { and end with }.',
     'Do NOT use markdown code fences. Do NOT add any text, explanation, or preamble before or after the JSON.',
     '',
-    `Analyze this ${fileNode.language} file: ${fileNode.path}${chunkLabel}${depSection}`,
+    `Analyze this ${fileNode.language} file: ${fileNode.path}${chunkLabel}${depSection}${symbolHint}`,
     '',
     `Return this exact JSON structure (no extra keys, no wrapping object):`,
     `{ ${overviewField} "symbols": [ { "name":"...", "kind":"function|class|method|interface|type|variable|constant|enum|struct|trait", "line":0, "purpose":"...", "behavior":"...", "parameters":"...", "returns":"...", "limitations":"..." } ] }`,
@@ -542,7 +692,398 @@ export function normalizeSymbols(raw: RawSymbol[]): SymbolContext[] {
   }));
 }
 
-function buildDependencyContext(
+// ─── Semantic chunking ───────────────────────────────────────────────────────
+
+/** Minimum content length to consider a file worth sending to the LLM */
+const TRIVIAL_FILE_THRESHOLD = 50;
+
+/**
+ * Returns true when a file has no extractable symbols and negligible content.
+ * These files get a synthetic FileContext without an LLM call.
+ */
+export function isTrivialFile(fileNode: FileNode, content: string): boolean {
+  return fileNode.symbols.length === 0 && content.trim().length < TRIVIAL_FILE_THRESHOLD;
+}
+
+/**
+ * Build a synthetic FileContext for trivial/empty files — no LLM call needed.
+ */
+function syntheticContext(node: FileNode): FileContext {
+  return {
+    relativePath: node.path,
+    language: node.language,
+    overview: 'Trivial or empty file with no significant logic.',
+    symbols: [],
+    dependencies: node.imports,
+    analyzedAt: new Date().toISOString(),
+    chunkCount: 0,
+  };
+}
+
+/**
+ * Collect all symbol names exported by every file this file imports.
+ * Used to detect which imported symbols appear in a chunk.
+ */
+function collectImportedSymbolNames(
+  fileNode: FileNode,
+  graph: DependencyGraph,
+): Set<string> {
+  const names = new Set<string>();
+  for (const dep of fileNode.imports) {
+    const depNode = graph.files[dep];
+    if (!depNode) { continue; }
+    for (const s of depNode.symbols) {
+      names.add(s.name);
+    }
+  }
+  return names;
+}
+
+/**
+ * Scan chunk content for references to imported symbol names.
+ * Uses word-boundary matching to avoid partial-name false positives.
+ */
+function extractReferencedSymbols(
+  chunkContent: string,
+  importedNames: Set<string>,
+): string[] {
+  const found: string[] = [];
+  for (const name of importedNames) {
+    // Skip very short names (1-2 chars) to avoid false positives
+    if (name.length <= 2) { continue; }
+    // Word-boundary check: the name must not be preceded/followed by a word char
+    const regex = new RegExp(`\\b${escapeRegex(name)}\\b`);
+    if (regex.test(chunkContent)) {
+      found.push(name);
+    }
+  }
+  return found;
+}
+
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function hashContent(content: string): string {
+  return crypto.createHash('sha256').update(content).digest('hex');
+}
+
+/**
+ * Determines how many lines above a symbol's start line belong to it
+ * (decorators, annotations, doc comments).
+ */
+function findDecoratorStart(lines: string[], symbolLine0: number): number {
+  let start = symbolLine0;
+  for (let i = symbolLine0 - 1; i >= 0; i--) {
+    const trimmed = lines[i].trim();
+    if (
+      trimmed.startsWith('@') ||       // Java/Python/TS decorators
+      trimmed.startsWith('#[') ||      // Rust attributes
+      trimmed.startsWith('///') ||     // Rust/C# doc comments
+      trimmed.startsWith('/**') ||     // JSDoc
+      trimmed.startsWith('*') ||       // JSDoc continuation
+      trimmed.startsWith('//') ||      // line comments directly above
+      trimmed.startsWith('#') && !trimmed.startsWith('#!') // Python comments (not shebang)
+    ) {
+      start = i;
+    } else {
+      break;
+    }
+  }
+  return start;
+}
+
+interface SymbolRegion {
+  name: string;
+  kind: string;
+  startLine: number; // 0-indexed
+  endLine: number;   // 0-indexed, inclusive
+}
+
+/**
+ * Split a file into SemanticChunks using symbol line-number boundaries
+ * from existing ctags/regex extraction.
+ *
+ * Algorithm:
+ * 1. Sort symbols by line number.
+ * 2. Identify preamble (lines before first symbol — imports, module docs).
+ * 3. Each symbol owns from its line (adjusted for decorators) to next symbol's adjusted start - 1.
+ * 4. Group adjacent symbol regions into chunks respecting maxChunkChars.
+ * 5. Prepend preamble to every chunk so LLM always has import context.
+ * 6. Compute contentHash, symbolNames, referencedSymbols per chunk.
+ */
+/**
+ * Split a file into per-symbol SemanticChunks.
+ * Each chunk = one symbol region, hashed independently (NO preamble in content).
+ * Preamble (imports, module docs) is returned separately for efficient packing.
+ *
+ * Oversized single symbols are split with line-based fallback.
+ */
+export function extractSemanticChunks(
+  fileNode: FileNode,
+  content: string,
+  graph: DependencyGraph,
+  maxChunkChars: number = MAX_CHUNK_CHARS,
+): SemanticChunkResult {
+  // Trivial file — no chunks, no LLM
+  if (isTrivialFile(fileNode, content)) {
+    return { preamble: '', chunks: [] };
+  }
+
+  const lines = content.split('\n');
+
+  // No symbols but substantial content (config files, CSS, etc.) — single chunk
+  if (fileNode.symbols.length === 0) {
+    const importedNames = collectImportedSymbolNames(fileNode, graph);
+    const refs = extractReferencedSymbols(content, importedNames);
+    return {
+      preamble: '',
+      chunks: [{
+        id: `${fileNode.path}::chunk_0`,
+        filePath: fileNode.path,
+        content,
+        contentHash: hashContent(content),
+        symbolNames: [],
+        referencedSymbols: refs,
+        startLine: 0,
+        endLine: lines.length - 1,
+      }],
+    };
+  }
+
+  // Sort symbols by line (1-indexed from ctags/regex)
+  const sorted = [...fileNode.symbols].sort((a, b) => a.line - b.line);
+
+  // Build symbol regions with decorator attachment
+  const regions: SymbolRegion[] = [];
+  for (let i = 0; i < sorted.length; i++) {
+    const sym = sorted[i];
+    const rawStart = sym.line - 1; // convert to 0-indexed
+    const adjustedStart = findDecoratorStart(lines, rawStart);
+    const endLine = i < sorted.length - 1
+      ? sorted[i + 1].line - 2  // up to line before next symbol's raw start
+      : lines.length - 1;       // last symbol owns to EOF
+
+    regions.push({
+      name: sym.name,
+      kind: sym.kind,
+      startLine: adjustedStart,
+      endLine: Math.max(adjustedStart, endLine), // safety: end >= start
+    });
+  }
+
+  // Fix overlapping regions: if decorator attachment pulled a region's start
+  // above the previous region's end, clamp to avoid overlap.
+  for (let i = 1; i < regions.length; i++) {
+    if (regions[i].startLine <= regions[i - 1].endLine) {
+      regions[i].startLine = regions[i - 1].endLine + 1;
+    }
+  }
+
+  // Preamble: lines before the first region (imports, module docstring)
+  const preambleEnd = regions[0].startLine - 1;
+  const preamble = preambleEnd >= 0
+    ? lines.slice(0, preambleEnd + 1).join('\n')
+    : '';
+  const preambleLen = preamble.length;
+
+  // Collect imported symbol names for reference detection
+  const importedNames = collectImportedSymbolNames(fileNode, graph);
+
+  // Create one chunk per symbol region (NO grouping — packing happens later)
+  const chunks: SemanticChunk[] = [];
+
+  for (const region of regions) {
+    const regionText = lines.slice(region.startLine, region.endLine + 1).join('\n');
+    const regionLen = regionText.length;
+
+    // If a single region exceeds limit even alone, fall back to line-based split
+    if (regionLen + preambleLen + 1 > maxChunkChars) {
+      const subChunks = chunkText(regionText, maxChunkChars - preambleLen - 1);
+      for (const sub of subChunks) {
+        const refs = extractReferencedSymbols(sub, importedNames);
+        chunks.push({
+          id: `${fileNode.path}::chunk_${chunks.length}`,
+          filePath: fileNode.path,
+          content: sub,
+          contentHash: hashContent(sub),
+          symbolNames: [region.name],
+          referencedSymbols: refs,
+          startLine: region.startLine,
+          endLine: region.endLine,
+        });
+      }
+      continue;
+    }
+
+    const refs = extractReferencedSymbols(regionText, importedNames);
+    chunks.push({
+      id: `${fileNode.path}::chunk_${chunks.length}`,
+      filePath: fileNode.path,
+      content: regionText,
+      contentHash: hashContent(regionText),
+      symbolNames: [region.name],
+      referencedSymbols: refs,
+      startLine: region.startLine,
+      endLine: region.endLine,
+    });
+  }
+
+  return { preamble, chunks };
+}
+
+/**
+ * Pack whole semantic chunks into groups for LLM calls using best-fit.
+ * Each group fits within maxChunkChars (including preamble).
+ * If the next sequential chunk doesn't fit, scan remaining chunks for
+ * a smaller one that does — maximizes utilization per LLM call.
+ */
+export function packChunksForAnalysis(
+  chunks: SemanticChunk[],
+  preamble: string,
+  fileNode: FileNode,
+  graph: DependencyGraph,
+  maxChunkChars: number = MAX_CHUNK_CHARS,
+): ChunkGroup[] {
+  if (chunks.length === 0) { return []; }
+
+  const preambleLen = preamble.length;
+  // 1 for newline between preamble and body, 1 for newline between chunks
+  const overhead = preambleLen > 0 ? preambleLen + 1 : 0;
+  const budget = maxChunkChars - overhead;
+
+  const groups: ChunkGroup[] = [];
+  const used = new Set<number>(); // indices of chunks already placed
+
+  // Process chunks: try sequential order, but fill gaps with smaller chunks
+  let i = 0;
+  while (used.size < chunks.length) {
+    // Start a new group
+    const groupChunks: SemanticChunk[] = [];
+    let groupBodyLen = 0;
+
+    // Find the first unplaced chunk to seed this group
+    while (i < chunks.length && used.has(i)) { i++; }
+    if (i >= chunks.length) {
+      // All remaining unplaced chunks — find first one
+      for (let k = 0; k < chunks.length; k++) {
+        if (!used.has(k)) { i = k; break; }
+      }
+    }
+
+    // Add chunks sequentially while they fit
+    for (let j = i; j < chunks.length; j++) {
+      if (used.has(j)) { continue; }
+      const chunkLen = chunks[j].content.length;
+      const separator = groupBodyLen > 0 ? 1 : 0; // newline between chunks
+      if (groupBodyLen + chunkLen + separator <= budget) {
+        groupChunks.push(chunks[j]);
+        used.add(j);
+        groupBodyLen += chunkLen + separator;
+      }
+    }
+
+    // If sequential scan missed any earlier chunks that could fit, try them too
+    for (let j = 0; j < i; j++) {
+      if (used.has(j)) { continue; }
+      const chunkLen = chunks[j].content.length;
+      const separator = groupBodyLen > 0 ? 1 : 0;
+      if (groupBodyLen + chunkLen + separator <= budget) {
+        groupChunks.push(chunks[j]);
+        used.add(j);
+        groupBodyLen += chunkLen + separator;
+      }
+    }
+
+    if (groupChunks.length === 0) {
+      // Safety: shouldn't happen, but avoid infinite loop
+      // Force-add the next unplaced chunk (it exceeds budget alone — already split)
+      for (let k = 0; k < chunks.length; k++) {
+        if (!used.has(k)) {
+          groupChunks.push(chunks[k]);
+          used.add(k);
+          break;
+        }
+      }
+    }
+
+    // Build the combined content and dep context for this group
+    const body = groupChunks.map(c => c.content).join('\n');
+    const combinedContent = preamble ? preamble + '\n' + body : body;
+
+    // Merge dep context: union of all referenced symbols across chunks
+    const allRefs = new Set<string>();
+    for (const c of groupChunks) {
+      for (const ref of c.referencedSymbols) { allRefs.add(ref); }
+    }
+    const depContext = buildGroupDependencyContext(allRefs, fileNode, graph);
+
+    const symbolNames = groupChunks.flatMap(c => c.symbolNames);
+
+    groups.push({ chunks: groupChunks, combinedContent, depContext, symbolNames });
+
+    i++;
+  }
+
+  return groups;
+}
+
+/**
+ * Build dependency context for a group of chunks — union of all referenced symbols.
+ */
+function buildGroupDependencyContext(
+  referencedSymbols: Set<string>,
+  fileNode: FileNode,
+  graph: DependencyGraph,
+): string {
+  if (fileNode.imports.length === 0 || referencedSymbols.size === 0) {
+    return '';
+  }
+  const lines: string[] = [];
+  for (const dep of fileNode.imports) {
+    const depNode = graph.files[dep];
+    if (!depNode) { continue; }
+    const relevant = depNode.symbols.filter(s => referencedSymbols.has(s.name));
+    if (relevant.length > 0) {
+      const names = relevant.map(s => `${s.name}(${s.kind})`).join(', ');
+      lines.push(`\`${dep}\`: ${names}`);
+    }
+  }
+  return lines.join('; ');
+}
+
+/**
+ * Build dependency context for a specific chunk — includes only symbols from
+ * imported files that are actually referenced in this chunk's content.
+ * No artificial cap on number of imports checked.
+ */
+function buildChunkDependencyContext(
+  chunk: SemanticChunk,
+  fileNode: FileNode,
+  graph: DependencyGraph,
+): string {
+  if (fileNode.imports.length === 0 || chunk.referencedSymbols.length === 0) {
+    return '';
+  }
+  const refSet = new Set(chunk.referencedSymbols);
+  const lines: string[] = [];
+
+  for (const dep of fileNode.imports) {
+    const depNode = graph.files[dep];
+    if (!depNode) { continue; }
+
+    const relevant = depNode.symbols.filter(s => refSet.has(s.name));
+    if (relevant.length > 0) {
+      const names = relevant.map(s => `${s.name}(${s.kind})`).join(', ');
+      lines.push(`\`${dep}\`: ${names}`);
+    }
+  }
+  return lines.join('; ');
+}
+
+// Keep the old function signature available for batch analysis of small files
+// that don't go through semantic chunking
+function buildDependencyContextForFile(
   fileNode: FileNode,
   graph: DependencyGraph,
 ): string {
@@ -550,7 +1091,7 @@ function buildDependencyContext(
     return '';
   }
   const lines: string[] = [];
-  for (const dep of fileNode.imports.slice(0, 5)) {
+  for (const dep of fileNode.imports) {
     const depNode = graph.files[dep];
     if (!depNode) {
       continue;
@@ -652,6 +1193,12 @@ export function renderContextMarkdown(ctx: FileContext): string {
   lines.push(`**Language:** ${ctx.language}  `);
   lines.push(`**Analyzed:** ${ctx.analyzedAt}  `);
   lines.push('');
+
+  // Trivial file — no symbols, synthetic overview
+  if (ctx.chunkCount === 0 && ctx.overview === 'Trivial or empty file with no significant logic.') {
+    lines.push('> **Trivial file** — no significant logic to analyze.');
+    return lines.join('\n');
+  }
 
   // If analysis failed completely (no overview, no symbols), write an explicit notice
   if (!ctx.overview && ctx.symbols.length === 0 && ctx.chunkCount === 0) {
