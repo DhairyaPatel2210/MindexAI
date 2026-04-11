@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { initTreeSitter } from './core/analyzer/treeSitterParser';
 import { initializeSecretStorage, createLLMProvider, hasApiKey, deleteApiKey } from './llm/factory';
 import { serverManager } from './server/serverManager';
 import { MainPanel } from './vscode/panel/mainPanel';
@@ -30,6 +31,12 @@ let _lastKnownBranch: string | undefined;
 let _lastKnownHead: string | undefined;
 
 export function activate(context: vscode.ExtensionContext): void {
+  // Pre-load tree-sitter WASM grammars in the background so the first analysis
+  // does not stall waiting for initialisation.
+  initTreeSitter().catch(err =>
+    logger.warn(`tree-sitter pre-init failed: ${err}`)
+  );
+
   // Initialize secure secret storage for API keys
   initializeSecretStorage(context.secrets);
 

@@ -220,12 +220,13 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "tsc -p ./ && node scripts/copyWasm.js",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
     "test": "node ./out/test/index.js",
     "package": "vsce package"
   },
+  "dependencies": {},
   "devDependencies": {
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.0.0",
@@ -234,6 +235,8 @@
     "@vscode/vsce": "^2.22.0",
     "glob": "^10.3.10",
     "mocha": "^10.3.0",
-    "typescript": "^5.3.0"
+    "typescript": "^5.3.0",
+    "web-tree-sitter": "^0.24.0",
+    "tree-sitter-wasms": "^0.1.12"
   }
 }
