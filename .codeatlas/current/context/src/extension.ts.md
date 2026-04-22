@@ -1,81 +1,83 @@
 # src/extension.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T22:02:45.378Z  
+**Analyzed:** 2026-04-11T23:19:55.735Z  
 
 ## Overview
-This file is the main entry point for the CodeAtlas extension, responsible for initializing and managing the extension's functionality, including status bar, main panel, activity bar, and auto-update features.
+This TypeScript file defines the main extension logic for CodeAtlas, a Visual Studio Code extension that provides code analysis and indexing features.
 
 ## Dependencies
+- `src/core/analyzer/treeSitterParser.ts`
 - `src/llm/factory.ts`
 - `src/server/serverManager.ts`
 - `src/vscode/panel/mainPanel.ts`
 - `src/vscode/statusBar.ts`
 - `src/vscode/activityBar.ts`
+- `src/core/workflow/runner.ts`
 - `src/utils/logger.ts`
 - `src/llm/types.ts`
+- `src/utils/fileUtils.ts`
 - `src/core/git/gitService.ts`
 - `src/core/cache/contextCache.ts`
 
 ## Symbols
 
 ### `activate` *(function)*
-**Purpose:** Initialize and activate the CodeAtlas extension  
+**Purpose:** Initialize the CodeAtlas extension, setting up the status bar, main panel, and activity bar.  
 
-**Behavior:** Sets up the extension's UI components, command handlers, and auto-update features
+**Behavior:** Pre-loads tree-sitter WASM grammars, initializes secure secret storage, and sets up various commands and event listeners.
 
 **Parameters:** vscode.ExtensionContext  
 **Returns:** void  
-**Limitations:** Must be called once to initialize the extension  
+**Limitations:** Requires the extension to be activated in a Visual Studio Code workspace.  
 
 ### `deactivate` *(function)*
-**Purpose:** Deactivate and clean up the CodeAtlas extension  
+**Purpose:** Clean up resources when the extension is deactivated.  
 
-**Behavior:** Disposes of auto-update and server manager resources
+**Behavior:** Disposes of the auto-update timer, server manager, and logger.
 
-**Parameters:** void  
 **Returns:** void  
-**Limitations:** Must be called when the extension is deactivated  
+**Limitations:** Should be called when the extension is deactivated to prevent resource leaks.  
 
 ### `setupAutoUpdate` *(function)*
-**Purpose:** Set up auto-update features for the CodeAtlas extension  
+**Purpose:** Set up the auto-update feature, watching for changes in the workspace and updating the index accordingly.  
 
-**Behavior:** Configures file watcher and branch polling
+**Behavior:** Watches for changes in the workspace and updates the index using the `runIncrementalUpdate` function.
 
 **Parameters:** vscode.ExtensionContext, CodeAtlasActivityProvider  
 **Returns:** void  
-**Limitations:** Must be called once to set up auto-update  
+**Limitations:** Requires the `autoUpdate` configuration option to be enabled.  
 
 ### `disposeAutoUpdate` *(function)*
-**Purpose:** Dispose of auto-update resources  
+**Purpose:** Clean up resources used by the auto-update feature.  
 
-**Behavior:** Clears file watcher and branch polling
-
-**Parameters:** void  
-**Returns:** void  
-**Limitations:** Must be called when auto-update is disabled  
-
-### `disposeAutoUpdate` *(function)*
-**Purpose:** Dispose of auto-update resources, including clearing intervals and file watchers.  
-
-**Behavior:** Clears the branch poll interval and file watcher, and resets the last known branch and head.
+**Behavior:** Cancels the auto-update timer and disposes of the file watcher.
 
 **Returns:** void  
-**Limitations:** Must be called when the extension is being disposed of to prevent memory leaks.  
+**Limitations:** Should be called when the auto-update feature is disabled to prevent resource leaks.  
 
 ### `buildWorkflowOptions` *(function)*
-**Purpose:** Builds workflow options based on the VSCode workspace configuration and the LLM provider type.  
+**Purpose:** Build the workflow options based on the configuration and provider.  
 
-**Behavior:** Calculates workflow options such as requests per minute, max file size, and concurrent requests based on the configuration and provider type.
+**Behavior:** Calculates the workflow options based on the configuration and provider, including requests per minute, max file size, and concurrent requests.
 
-**Parameters:** config: vscode.WorkspaceConfiguration, provider: LLMProviderType  
+**Parameters:** vscode.WorkspaceConfiguration, LLMProviderType  
 **Returns:** WorkflowOptions  
-**Limitations:** Requires a valid VSCode workspace configuration and LLM provider type.  
+**Limitations:** Requires the configuration and provider to be valid.  
+
+### `debouncedUpdate` *(function)*
+**Purpose:** Updates the index file after a short delay, debouncing repeated calls  
+
+**Behavior:** Checks if the branch has switched, if the index file exists, and if a workflow is running. If not, it schedules an update after a 3-second delay.
+
+**Parameters:** isBranchSwitch: boolean  
+**Returns:** void  
+**Limitations:** Does not handle cases where the branch has switched multiple times in quick succession  
 
 ### `handleWorkflowError` *(function)*
-**Purpose:** Handles workflow errors by displaying error messages and logging the error.  
+**Purpose:** Handles errors that occur during workflow execution  
 
-**Behavior:** Displays an error message to the user and logs the error, depending on the type of error.
+**Behavior:** Checks the type of error and updates the status bar accordingly. If the error is a cancellation error, it shows an information message. Otherwise, it shows an error message and allows the user to view the log.
 
 **Parameters:** e: unknown, statusBar: CodeAtlasStatusBar  
 **Returns:** void  
-**Limitations:** Must be called when a workflow error occurs to display the error message and log the error.  
+**Limitations:** Does not handle cases where the error is not an instance of Error or vscode.CancellationError  

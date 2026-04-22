@@ -2,21 +2,21 @@
   "version": 1,
   "providers": {
     "openai-compat": {
-      "inputTokens": 113083,
-      "outputTokens": 30008,
+      "inputTokens": 134292,
+      "outputTokens": 33692,
       "unsplitTokens": 0,
-      "requestCount": 33,
-      "filesAnalyzed": 37,
-      "filesFromCache": 146,
+      "requestCount": 41,
+      "filesAnalyzed": 42,
+      "filesFromCache": 151,
       "errors": 3,
-      "totalDurationMs": 29788,
-      "lastUsed": "2026-04-01T19:49:19.707Z"
+      "totalDurationMs": 34559,
+      "lastUsed": "2026-04-11T23:19:56.303Z"
     }
   },
   "global": {
-    "workflowRuns": 6,
+    "workflowRuns": 7,
     "firstUsed": "2026-03-30T21:28:59.102Z",
-    "lastUsed": "2026-04-01T19:49:19.707Z"
+    "lastUsed": "2026-04-11T23:19:56.303Z"
   },
   "runHistory": [
     {
@@ -77,6 +77,16 @@
       "filesAnalyzed": 5,
       "filesFromCache": 26,
       "durationMs": 8224,
+      "errors": 0
+    },
+    {
+      "timestamp": "2026-04-11T23:19:56.303Z",
+      "provider": "openai-compat",
+      "inputTokens": 21209,
+      "outputTokens": 3684,
+      "filesAnalyzed": 5,
+      "filesFromCache": 5,
+      "durationMs": 4771,
       "errors": 0
     }
   ]

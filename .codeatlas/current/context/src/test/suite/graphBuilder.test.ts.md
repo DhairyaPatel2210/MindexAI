@@ -1,29 +1,20 @@
 # src/test/suite/graphBuilder.test.ts
 **Language:** typescript  
-**Analyzed:** 2026-03-30T21:28:53.935Z  
+**Analyzed:** 2026-04-11T23:19:56.247Z  
 
 ## Overview
-This file contains unit tests for the GraphBuilder class, which is responsible for extracting symbols and imports from source code files. The tests cover various programming languages, including TypeScript, JavaScript, Python, Go, Rust, and Java.
+This file contains unit tests for the graphBuilder's resolveImportPaths function, which resolves import paths for various programming languages.
 
 ## Dependencies
 - `src/core/analyzer/graphBuilder.ts`
 
 ## Symbols
 
-### `extractSymbolsFromContent` *(function)*
-**Purpose:** Extracts symbols from a given source code content.  
+### `makeFiles` *(function)*
+**Purpose:** Creates a dictionary of FileNode objects for a given list of file paths.  
 
-**Behavior:** Takes a source code content and a file path as input, and returns an array of extracted symbols.
+**Behavior:** Iterates over the list of file paths, creating a FileNode object for each path and storing it in the dictionary.
 
-**Parameters:** content: string, filePath: string  
-**Returns:** Array of extracted symbols  
-**Limitations:** Only supports a limited set of programming languages.  
-
-### `extractImports` *(function)*
-**Purpose:** Extracts imports from a given source code content.  
-
-**Behavior:** Takes a source code content, a file path, a workspace root, and an array of file nodes as input, and returns an array of extracted imports.
-
-**Parameters:** content: string, filePath: string, workspaceRoot: string, fileNodes: Array  
-**Returns:** Array of extracted imports  
-**Limitations:** Only supports a limited set of programming languages.  
+**Parameters:** paths: string[]  
+**Returns:** Record<string, FileNode>  
+**Limitations:** Does not perform any validation on the input file paths.  
