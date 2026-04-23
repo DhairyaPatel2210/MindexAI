@@ -11,7 +11,7 @@ import {
 import { logger } from '../../utils/logger';
 
 // ─── Shared content-hash cache ──────────────────────────────────────────────
-// Stored under .codeatlas/cache/ — shared across ALL branches.
+// Stored under .mindexai/cache/ — shared across ALL branches.
 // Keyed by content hash so identical file content is never re-analyzed.
 
 interface CacheEntry {
@@ -87,7 +87,7 @@ export function getCachedChunkEntries(contentHash: string): ChunkCacheEntry[] | 
 }
 
 // ─── Per-branch state ────────────────────────────────────────────────────────
-// Stored under .codeatlas/branches/{name}/branch-state.json
+// Stored under .mindexai/branches/{name}/branch-state.json
 // Each branch tracks its OWN headCommit so incremental diffs are correct.
 
 export interface BranchState {

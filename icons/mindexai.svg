@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none">
+  <!-- Neural network forming an M — nodes at each vertex connected by lines -->
+  <!-- Connections (rendered behind nodes) -->
+  <path d="M2 13.5 L5 4 L8 9 L11 4 L14 13.5"
+        stroke="currentColor" stroke-width="1.4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Neural nodes at each vertex -->
+  <circle cx="2"  cy="13.5" r="1.4" fill="currentColor"/>
+  <circle cx="5"  cy="4"    r="1.4" fill="currentColor"/>
+  <circle cx="8"  cy="9"    r="1.4" fill="currentColor"/>
+  <circle cx="11" cy="4"    r="1.4" fill="currentColor"/>
+  <circle cx="14" cy="13.5" r="1.4" fill="currentColor"/>
+</svg>

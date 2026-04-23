@@ -8,7 +8,7 @@ import { OllamaProvider } from './providers/ollama';
 import { OpenAICompatProvider } from './providers/openaiCompat';
 
 export async function createLLMProvider(): Promise<ILLMProvider> {
-  const config = vscode.workspace.getConfiguration('codeatlas');
+  const config = vscode.workspace.getConfiguration('mindexai');
   const providerType = config.get<LLMProviderType>('llmProvider', 'openai');
 
   if (providerType === 'local') {
@@ -18,7 +18,7 @@ export async function createLLMProvider(): Promise<ILLMProvider> {
     if (!model) {
       throw new Error(
         'No local model name configured. ' +
-        'Run "CodeAtlas: Configure LLM Provider" and enter the model name (e.g. mistral, llama3).'
+        'Run "MindexAI: Configure LLM Provider" and enter the model name (e.g. mistral, llama3).'
       );
     }
     if (apiType === 'ollama') {
@@ -35,13 +35,13 @@ export async function createLLMProvider(): Promise<ILLMProvider> {
     if (!baseUrl) {
       throw new Error(
         'No base URL configured for OpenAI-compatible server. ' +
-        'Run "CodeAtlas: Configure LLM Provider" and enter the server URL.'
+        'Run "MindexAI: Configure LLM Provider" and enter the server URL.'
       );
     }
     if (!model) {
       throw new Error(
         'No model name configured for OpenAI-compatible server. ' +
-        'Run "CodeAtlas: Configure LLM Provider" and enter the model name.'
+        'Run "MindexAI: Configure LLM Provider" and enter the model name.'
       );
     }
     // API key is optional — many self-hosted servers accept any value
@@ -53,7 +53,7 @@ export async function createLLMProvider(): Promise<ILLMProvider> {
   if (!apiKey) {
     throw new Error(
       `No API key configured for ${providerType}. ` +
-      'Run "CodeAtlas: Configure LLM Provider" to set up your API key.'
+      'Run "MindexAI: Configure LLM Provider" to set up your API key.'
     );
   }
 
@@ -76,15 +76,15 @@ export async function createLLMProvider(): Promise<ILLMProvider> {
 }
 
 export async function getStoredApiKey(provider: LLMProviderType): Promise<string | undefined> {
-  return _secretStorage?.get(`codeatlas.apiKey.${provider}`);
+  return _secretStorage?.get(`mindexai.apiKey.${provider}`);
 }
 
 export async function storeApiKey(provider: LLMProviderType, apiKey: string): Promise<void> {
-  await _secretStorage?.store(`codeatlas.apiKey.${provider}`, apiKey);
+  await _secretStorage?.store(`mindexai.apiKey.${provider}`, apiKey);
 }
 
 export async function deleteApiKey(provider: LLMProviderType): Promise<void> {
-  await _secretStorage?.delete(`codeatlas.apiKey.${provider}`);
+  await _secretStorage?.delete(`mindexai.apiKey.${provider}`);
 }
 
 let _secretStorage: vscode.SecretStorage | undefined;
@@ -96,12 +96,12 @@ export function initializeSecretStorage(storage: vscode.SecretStorage): void {
 export async function hasApiKey(provider: LLMProviderType): Promise<boolean> {
   if (provider === 'local') {
     // Local is ready when a model name is set — no key required
-    const model = vscode.workspace.getConfiguration('codeatlas').get<string>('localModel', '');
+    const model = vscode.workspace.getConfiguration('mindexai').get<string>('localModel', '');
     return model.trim().length > 0;
   }
   if (provider === 'openai-compat') {
     // Remote OpenAI-compatible server is ready when base URL and model are set
-    const cfg = vscode.workspace.getConfiguration('codeatlas');
+    const cfg = vscode.workspace.getConfiguration('mindexai');
     const url   = cfg.get<string>('openaiCompatBaseUrl', '');
     const model = cfg.get<string>('openaiCompatModel', '');
     return url.trim().length > 0 && model.trim().length > 0;

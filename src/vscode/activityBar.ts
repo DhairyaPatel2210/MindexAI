@@ -4,7 +4,7 @@ import { loadUsageStats, getStatsDisplay, RunRecord } from '../core/stats/usageS
 import { hasApiKey } from '../llm/factory';
 import { LLMProviderType } from '../llm/types';
 
-export class CodeAtlasActivityProvider implements vscode.TreeDataProvider<ActivityItem>, vscode.Disposable {
+export class MindexAIActivityProvider implements vscode.TreeDataProvider<ActivityItem>, vscode.Disposable {
   private _onDidChangeTreeData = new vscode.EventEmitter<ActivityItem | undefined | void>();
   readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
@@ -14,7 +14,7 @@ export class CodeAtlasActivityProvider implements vscode.TreeDataProvider<Activi
     // Refresh when configuration changes
     this.disposables.push(
       vscode.workspace.onDidChangeConfiguration(e => {
-        if (e.affectsConfiguration('codeatlas')) { this.refresh(); }
+        if (e.affectsConfiguration('mindexai')) { this.refresh(); }
       })
     );
   }
@@ -41,7 +41,7 @@ export class CodeAtlasActivityProvider implements vscode.TreeDataProvider<Activi
         '$(loading~spin) Analysis Running…',
         'Click to cancel the running analysis',
         vscode.TreeItemCollapsibleState.None,
-        { command: 'codeatlas.cancelWorkflow', title: 'Cancel' },
+        { command: 'mindexai.cancelWorkflow', title: 'Cancel' },
         'running'
       ));
     } else {
@@ -49,21 +49,21 @@ export class CodeAtlasActivityProvider implements vscode.TreeDataProvider<Activi
         '$(play) Run Full Analysis',
         'Analyze entire codebase and build semantic index',
         vscode.TreeItemCollapsibleState.None,
-        { command: 'codeatlas.runWorkflow', title: 'Run' },
+        { command: 'mindexai.runWorkflow', title: 'Run' },
         'action-primary'
       ));
       items.push(new ActivityItem(
         '$(sync) Update Index',
         'Incremental update for changed files only',
         vscode.TreeItemCollapsibleState.None,
-        { command: 'codeatlas.updateIndex', title: 'Update' },
+        { command: 'mindexai.updateIndex', title: 'Update' },
         'action'
       ));
       items.push(new ActivityItem(
         '$(file-code) Analyze Current File',
         'Analyze the currently open editor file',
         vscode.TreeItemCollapsibleState.None,
-        { command: 'codeatlas.analyzeFile', title: 'Analyze File' },
+        { command: 'mindexai.analyzeFile', title: 'Analyze File' },
         'action'
       ));
     }
@@ -72,7 +72,7 @@ export class CodeAtlasActivityProvider implements vscode.TreeDataProvider<Activi
       '$(book) View Semantic Index',
       'Open the CONTEXT.md overview in preview',
       vscode.TreeItemCollapsibleState.None,
-      { command: 'codeatlas.showIndex', title: 'Show Index' },
+      { command: 'mindexai.showIndex', title: 'Show Index' },
       'action'
     ));
 
@@ -86,7 +86,7 @@ export class CodeAtlasActivityProvider implements vscode.TreeDataProvider<Activi
     ));
 
     // ── Configuration ──────────────────────────────────────────────────────
-    const config = vscode.workspace.getConfiguration('codeatlas');
+    const config = vscode.workspace.getConfiguration('mindexai');
     const provider = config.get<LLMProviderType>('llmProvider', 'openai');
     let keySet = false;
     try {
@@ -97,7 +97,7 @@ export class CodeAtlasActivityProvider implements vscode.TreeDataProvider<Activi
       `$(gear) Configure`,
       `Provider: ${provider}${keySet ? ' ✓' : ' (not configured)'}`,
       vscode.TreeItemCollapsibleState.None,
-      { command: 'codeatlas.openSetup', title: 'Configure' },
+      { command: 'mindexai.openSetup', title: 'Configure' },
       keySet ? 'config-ok' : 'config-warn'
     ));
 
@@ -110,7 +110,7 @@ export class CodeAtlasActivityProvider implements vscode.TreeDataProvider<Activi
           '─── Statistics ───',
           'Click to view all run history',
           vscode.TreeItemCollapsibleState.None,
-          { command: 'codeatlas.showStats', title: 'All Stats' },
+          { command: 'mindexai.showStats', title: 'All Stats' },
           'separator'
         ));
 
@@ -129,7 +129,7 @@ export class CodeAtlasActivityProvider implements vscode.TreeDataProvider<Activi
               `$(pulse) ${p.name}: ${totalK}K tokens`,
               `${p.requestCount} requests · avg ${p.avgInputTokensPerRun.toLocaleString()} in / ${p.avgOutputTokensPerRun.toLocaleString()} out per run`,
               vscode.TreeItemCollapsibleState.None,
-              { command: 'codeatlas.showStats', title: 'Stats' },
+              { command: 'mindexai.showStats', title: 'Stats' },
               'stats-detail'
             ));
           }
@@ -188,7 +188,7 @@ class ActivityItem extends vscode.TreeItem {
       label,
       tooltip,
       vscode.TreeItemCollapsibleState.None,
-      { command: 'codeatlas.showStats', title: 'Stats' },
+      { command: 'mindexai.showStats', title: 'Stats' },
       'stats-run'
     );
   }

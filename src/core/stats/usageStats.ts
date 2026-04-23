@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { LLMResponse } from '../../llm/types';
-import { getCodeAtlasDir } from '../../utils/fileUtils';
+import { getMindexAIDir } from '../../utils/fileUtils';
 import { logger } from '../../utils/logger';
 
 // ─── Per-provider stats (persisted) ──────────────────────────────────────────
@@ -135,7 +135,7 @@ export class UsageTracker {
 // ─── Persistence ─────────────────────────────────────────────────────────────
 
 function statsFilePath(): string {
-  return path.join(getCodeAtlasDir(), 'usage-stats.json');
+  return path.join(getMindexAIDir(), 'usage-stats.json');
 }
 
 function emptyStats(): UsageStatsData {

@@ -15,7 +15,7 @@ import {
 import { buildIndex, persistIndex, persistContextOverview, SemanticIndex } from '../analyzer/indexer';
 import {
   collectSourceFiles,
-  ensureCodeAtlasDirs,
+  ensureMindexAIDirs,
   writeJson,
   writeText,
   readJson,
@@ -109,7 +109,7 @@ export async function runFullWorkflow(
 
   try {
     return await vscode.window.withProgress(
-      { location: vscode.ProgressLocation.Notification, title: 'CodeAtlas', cancellable: true },
+      { location: vscode.ProgressLocation.Notification, title: 'MindexAI', cancellable: true },
       async (progress, token) => {
         token.onCancellationRequested(() => cts.cancel());
         logger.show();
@@ -118,7 +118,7 @@ export async function runFullWorkflow(
         const { branch, headCommit } = activateBranch();
         const isUnlimitedRpm = llm.name === 'local' || llm.name === 'openai-compat';
         const effectiveRpm = isUnlimitedRpm ? 10_000 : options.requestsPerMinute;
-        logger.section(`CodeAtlas Full Analysis`);
+        logger.section(`MindexAI Full Analysis`);
         logger.info(`Branch: ${branch} | Provider: ${llm.name}${isUnlimitedRpm ? ' (no rate limit)' : `, RPM cap: ${options.requestsPerMinute}`}`);
 
         // ── Step 1: Collect files ─────────────────────────────────────────
@@ -131,7 +131,7 @@ export async function runFullWorkflow(
         checkCancellation(cts.token);
 
         // ── Step 2: Ensure dirs ───────────────────────────────────────────
-        ensureCodeAtlasDirs();
+        ensureMindexAIDirs();
 
         // ── Step 3: Build dependency graph ────────────────────────────────
         progress.report({ message: 'Building dependency graph…', increment: 5 });
@@ -327,7 +327,7 @@ export async function runIncrementalUpdate(
 
   try {
     return await vscode.window.withProgress(
-      { location: vscode.ProgressLocation.Notification, title: 'CodeAtlas: Updating', cancellable: true },
+      { location: vscode.ProgressLocation.Notification, title: 'MindexAI: Updating', cancellable: true },
       async (progress, token) => {
         token.onCancellationRequested(() => cts.cancel());
 
@@ -335,7 +335,7 @@ export async function runIncrementalUpdate(
         const { branch, headCommit } = activateBranch();
         const isUnlimitedRpm = llm.name === 'local' || llm.name === 'openai-compat';
         const effectiveRpm = isUnlimitedRpm ? 10_000 : options.requestsPerMinute;
-        logger.section(`CodeAtlas Incremental Update`);
+        logger.section(`MindexAI Incremental Update`);
         logger.info(`Branch: ${branch} | Provider: ${llm.name}${isUnlimitedRpm ? ' (no rate limit)' : `, RPM cap: ${effectiveRpm}`}`);
 
         // ── Check prerequisites ───────────────────────────────────────────
@@ -375,13 +375,13 @@ export async function runIncrementalUpdate(
         // ── Collect current source files & rebuild graph ──────────────────
         progress.report({ message: 'Rebuilding dependency graph…', increment: 10 });
         const sourceFiles = await collectSourceFiles();
-        ensureCodeAtlasDirs();
+        ensureMindexAIDirs();
         const graph = await buildDependencyGraph(sourceFiles);
         writeJson(getGraphFilePath(), graph);
         checkCancellation(cts.token);
 
         // ── Filter changed files to only those in current source set ──────
-        const config = vscode.workspace.getConfiguration('codeatlas');
+        const config = vscode.workspace.getConfiguration('mindexai');
         const includedExtensions = new Set(
           config.get<string[]>('includedExtensions', []).map(e => e.toLowerCase())
         );
@@ -571,7 +571,7 @@ export async function runSingleFileAnalysis(
 
   const sourceFiles = await collectSourceFiles();
   const graph = await buildDependencyGraph(sourceFiles);
-  ensureCodeAtlasDirs();
+  ensureMindexAIDirs();
 
   const relPath = toRelativePath(filePath);
   const fileNode = graph.files[relPath];
@@ -582,7 +582,7 @@ export async function runSingleFileAnalysis(
   return vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Notification,
-      title: `CodeAtlas: Analyzing ${path.basename(filePath)}`,
+      title: `MindexAI: Analyzing ${path.basename(filePath)}`,
       cancellable: false,
     },
     async (progress) => {

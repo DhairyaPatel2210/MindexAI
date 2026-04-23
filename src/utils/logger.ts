@@ -5,7 +5,7 @@ class Logger {
   private _debugEnabled = false;
 
   constructor() {
-    this.outputChannel = vscode.window.createOutputChannel('CodeAtlas');
+    this.outputChannel = vscode.window.createOutputChannel('MindexAI');
   }
 
   set debugEnabled(v: boolean) { this._debugEnabled = v; }

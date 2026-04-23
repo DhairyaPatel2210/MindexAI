@@ -1,9 +1,10 @@
 {
-  "name": "codeatlas",
-  "displayName": "CodeAtlas",
+  "name": "mindexai",
+  "displayName": "MindexAI",
   "description": "Generate semantic English-language context of your codebase for LLM tools",
   "version": "0.1.0",
-  "publisher": "codeatlas",
+  "publisher": "mindexai",
+  "icon": "icons/mindexai.png",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -14,91 +15,95 @@
   "contributes": {
     "commands": [
       {
-        "command": "codeatlas.runWorkflow",
-        "title": "CodeAtlas: Run Full Analysis",
-        "icon": "$(circuit-board)"
+        "command": "mindexai.runWorkflow",
+        "title": "MindexAI: Run Full Analysis",
+        "icon": "$(sparkle)"
       },
       {
-        "command": "codeatlas.openSetup",
-        "title": "CodeAtlas: Configure LLM Provider",
+        "command": "mindexai.openSetup",
+        "title": "MindexAI: Configure LLM Provider",
         "icon": "$(gear)"
       },
       {
-        "command": "codeatlas.analyzeFile",
-        "title": "CodeAtlas: Analyze Current File",
+        "command": "mindexai.analyzeFile",
+        "title": "MindexAI: Analyze Current File",
         "icon": "$(file-code)"
       },
       {
-        "command": "codeatlas.showIndex",
-        "title": "CodeAtlas: Show Semantic Index",
+        "command": "mindexai.showIndex",
+        "title": "MindexAI: Show Semantic Index",
         "icon": "$(book)"
       },
       {
-        "command": "codeatlas.cancelWorkflow",
-        "title": "CodeAtlas: Cancel Running Analysis",
+        "command": "mindexai.cancelWorkflow",
+        "title": "MindexAI: Cancel Running Analysis",
         "icon": "$(stop-circle)"
       },
       {
-        "command": "codeatlas.clearApiKeys",
-        "title": "CodeAtlas: Clear All API Keys"
+        "command": "mindexai.clearApiKeys",
+        "title": "MindexAI: Clear All API Keys"
       },
       {
-        "command": "codeatlas.updateIndex",
-        "title": "CodeAtlas: Update Index (Incremental)",
+        "command": "mindexai.updateIndex",
+        "title": "MindexAI: Update Index (Incremental)",
         "icon": "$(sync)"
       },
       {
-        "command": "codeatlas.showStats",
-        "title": "CodeAtlas: Show Usage Statistics",
+        "command": "mindexai.showStats",
+        "title": "MindexAI: Show Usage Statistics",
         "icon": "$(pulse)"
+      },
+      {
+        "command": "mindexai.addToGitignore",
+        "title": "MindexAI: Add .mindexai to .gitignore"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "codeatlasBar",
-          "title": "CodeAtlas",
-          "icon": "$(circuit-board)"
+          "id": "mindexaiBar",
+          "title": "MindexAI",
+          "icon": "icons/mindexai.svg"
         }
       ]
     },
     "views": {
-      "codeatlasBar": [
+      "mindexaiBar": [
         {
-          "id": "codeatlas.activityView",
-          "name": "CodeAtlas"
+          "id": "mindexai.activityView",
+          "name": "MindexAI"
         }
       ]
     },
     "menus": {
       "view/title": [
         {
-          "command": "codeatlas.runWorkflow",
-          "when": "view == codeatlas.activityView",
+          "command": "mindexai.runWorkflow",
+          "when": "view == mindexai.activityView",
           "group": "navigation@1"
         },
         {
-          "command": "codeatlas.updateIndex",
-          "when": "view == codeatlas.activityView",
+          "command": "mindexai.updateIndex",
+          "when": "view == mindexai.activityView",
           "group": "navigation@2"
         },
         {
-          "command": "codeatlas.openSetup",
-          "when": "view == codeatlas.activityView",
+          "command": "mindexai.openSetup",
+          "when": "view == mindexai.activityView",
           "group": "navigation@3"
         }
       ],
       "editor/context": [
         {
-          "command": "codeatlas.analyzeFile",
-          "group": "codeatlas"
+          "command": "mindexai.analyzeFile",
+          "group": "mindexai"
         }
       ]
     },
     "configuration": {
-      "title": "CodeAtlas",
+      "title": "MindexAI",
       "properties": {
-        "codeatlas.llmProvider": {
+        "mindexai.llmProvider": {
           "type": "string",
           "enum": ["openai", "gemini", "claude", "local", "openai-compat"],
           "enumDescriptions": [
@@ -111,28 +116,28 @@
           "default": "openai",
           "description": "LLM provider to use for code analysis"
         },
-        "codeatlas.openaiModel": {
+        "mindexai.openaiModel": {
           "type": "string",
           "default": "gpt-4o",
           "description": "OpenAI model to use"
         },
-        "codeatlas.geminiModel": {
+        "mindexai.geminiModel": {
           "type": "string",
           "default": "gemini-2.5-flash",
           "description": "Gemini model to use"
         },
-        "codeatlas.claudeModel": {
+        "mindexai.claudeModel": {
           "type": "string",
           "default": "claude-opus-4-6",
           "description": "Claude model to use"
         },
-        "codeatlas.excludePatterns": {
+        "mindexai.excludePatterns": {
           "type": "array",
           "items": { "type": "string" },
           "default": [
             "**/node_modules/**",
             "**/.git/**",
-            "**/.codeatlas/**",
+            "**/.mindexai/**",
             "**/dist/**",
             "**/build/**",
             "**/out/**",
@@ -143,17 +148,17 @@
           ],
           "description": "Glob patterns to exclude from analysis"
         },
-        "codeatlas.maxFileSizeKB": {
+        "mindexai.maxFileSizeKB": {
           "type": "number",
           "default": 200,
           "description": "Maximum file size in KB to analyze (larger files are chunked)"
         },
-        "codeatlas.localBaseUrl": {
+        "mindexai.localBaseUrl": {
           "type": "string",
           "default": "http://localhost:11434/v1",
           "description": "Base URL for your local inference server"
         },
-        "codeatlas.localApiType": {
+        "mindexai.localApiType": {
           "type": "string",
           "enum": ["openai-compat", "ollama"],
           "enumDescriptions": [
@@ -163,37 +168,37 @@
           "default": "openai-compat",
           "description": "API protocol used by the local inference server"
         },
-        "codeatlas.localModel": {
+        "mindexai.localModel": {
           "type": "string",
           "default": "",
           "description": "Model name to pass to the local server (e.g. mistral, llama3, codellama, phi3)"
         },
-        "codeatlas.requestsPerMinute": {
+        "mindexai.requestsPerMinute": {
           "type": "number",
           "default": 12,
           "description": "Max LLM API calls per minute. Gemini free tier = 15 RPM, paid = 60+. Default 12 leaves a safety buffer for the free tier."
         },
-        "codeatlas.localContextSize": {
+        "mindexai.localContextSize": {
           "type": "number",
           "default": 4096,
           "description": "Token context window of the local inference server (set automatically when starting the built-in server). Used to compute safe file chunk sizes."
         },
-        "codeatlas.openaiCompatBaseUrl": {
+        "mindexai.openaiCompatBaseUrl": {
           "type": "string",
           "default": "",
           "description": "Base URL of the remote OpenAI API-compatible server, including /v1 (e.g. http://192.168.1.100:8000/v1)"
         },
-        "codeatlas.openaiCompatModel": {
+        "mindexai.openaiCompatModel": {
           "type": "string",
           "default": "",
           "description": "Model name to pass to the remote OpenAI-compatible server (e.g. mistral-7b, llama-3-8b)"
         },
-        "codeatlas.openaiCompatContextSize": {
+        "mindexai.openaiCompatContextSize": {
           "type": "number",
           "default": 8192,
           "description": "Token context window of the remote OpenAI-compatible server. Used to compute safe file chunk sizes so requests never exceed the model's limit."
         },
-        "codeatlas.includedExtensions": {
+        "mindexai.includedExtensions": {
           "type": "array",
           "items": { "type": "string" },
           "default": [
@@ -203,12 +208,17 @@
           ],
           "description": "File extensions to include in analysis"
         },
-        "codeatlas.autoUpdate": {
+        "mindexai.autoUpdate": {
           "type": "boolean",
           "default": false,
           "description": "Automatically update the semantic index when files change or branches switch. Requires an existing index (run full analysis first). Uses incremental updates with caching to minimize LLM calls."
         },
-        "codeatlas.concurrentRequests": {
+        "mindexai.autoAddToGitignore": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically add .mindexai/ to .gitignore when the extension activates to prevent committing generated index files."
+        },
+        "mindexai.concurrentRequests": {
           "type": "number",
           "default": 1,
           "minimum": 1,

@@ -331,7 +331,7 @@ export async function analyzeFileBatch(
   const exampleJson = `{${exampleEntries}}`;
 
   const userPrompt = [
-    'OUTPUT ONLY A SINGLE RAW JSON OBJECT — nothing else.',
+    'MUST OUTPUT ONLY A SINGLE RAW JSON OBJECT — nothing else.',
     'Your entire response MUST start with { and end with }.',
     'Do NOT use markdown code fences. Do NOT wrap in arrays. Do NOT add any text before or after the JSON.',
     '',
@@ -1109,7 +1109,7 @@ function buildSystemPrompt(): string {
     'You are a senior software engineer creating semantic documentation of source code. ' +
     'Your output will be used by AI coding assistants to understand the codebase semantically. ' +
     'Be precise, concise, and informative. Focus on WHAT the code does, WHY it exists, and WHAT its limitations are. ' +
-    'Do not reproduce actual code. Describe behavior in plain English. Always output only valid JSON.'
+    'Do not reproduce actual code. Describe behavior in plain English. MUST Always output only valid JSON.'
   );
 }
 

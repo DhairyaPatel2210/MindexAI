@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as cp from 'child_process';
 
-export const CODEATLAS_DIR = '.codeatlas';
+export const MINDEXAI_DIR = '.mindexai';
 export const BRANCHES_DIR = 'branches';
 export const CACHE_DIR = 'cache';
 export const CURRENT_DIR = 'current';
@@ -24,17 +24,17 @@ export function getWorkspaceRoot(): string {
   return folders[0].uri.fsPath;
 }
 
-export function getCodeAtlasDir(): string {
-  return path.join(getWorkspaceRoot(), CODEATLAS_DIR);
+export function getMindexAIDir(): string {
+  return path.join(getWorkspaceRoot(), MINDEXAI_DIR);
 }
 
 /**
- * Get the .codeatlas directory for a given workspace root.
+ * Get the .mindexai directory for a given workspace root.
  * This variant does NOT depend on vscode.workspace.workspaceFolders,
  * making it safe to use in core modules and tests.
  */
-export function getCodeAtlasDirForRoot(workspaceRoot: string): string {
-  return path.join(workspaceRoot, CODEATLAS_DIR);
+export function getMindexAIDirForRoot(workspaceRoot: string): string {
+  return path.join(workspaceRoot, MINDEXAI_DIR);
 }
 
 /**
@@ -46,17 +46,17 @@ export function sanitizeBranchName(branch: string): string {
 }
 
 /**
- * Get the per-branch directory under `.codeatlas/branches/{sanitized-branch}/`.
+ * Get the per-branch directory under `.mindexai/branches/{sanitized-branch}/`.
  */
 export function getBranchDir(branch: string): string {
-  return path.join(getCodeAtlasDir(), BRANCHES_DIR, sanitizeBranchName(branch));
+  return path.join(getMindexAIDir(), BRANCHES_DIR, sanitizeBranchName(branch));
 }
 
 /**
- * Get the shared content-hash cache directory (`.codeatlas/cache/`).
+ * Get the shared content-hash cache directory (`.mindexai/cache/`).
  */
 export function getSharedCacheDir(): string {
-  return path.join(getCodeAtlasDir(), CACHE_DIR);
+  return path.join(getMindexAIDir(), CACHE_DIR);
 }
 
 // ─── Active branch tracking ──────────────────────────────────────────────────
@@ -112,21 +112,21 @@ export function getBranchStatePath(branch?: string): string {
 }
 
 export function getContextFilePath(relativeFilePath: string): string {
-  // e.g. src/foo/bar.ts -> .codeatlas/branches/main/context/src/foo/bar.ts.md
+  // e.g. src/foo/bar.ts -> .mindexai/branches/main/context/src/foo/bar.ts.md
   return path.join(getContextDir(), relativeFilePath + '.md');
 }
 
 /**
- * Get the stable `.codeatlas/current/` directory path.
+ * Get the stable `.mindexai/current/` directory path.
  * This always points to the latest indexed branch's output — use this path
  * when giving the index to an AI code editor.
  */
 export function getCurrentIndexDir(): string {
-  return path.join(getCodeAtlasDir(), CURRENT_DIR);
+  return path.join(getMindexAIDir(), CURRENT_DIR);
 }
 
 /**
- * Copy the active branch's output files to `.codeatlas/current/` so there is
+ * Copy the active branch's output files to `.mindexai/current/` so there is
  * always a stable, predictable path to the latest index.
  * Copies: index.json, CONTEXT.md, graph.json, and context/ directory.
  */
@@ -171,8 +171,8 @@ export function ensureDir(dirPath: string): void {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
-export function ensureCodeAtlasDirs(): void {
-  ensureDir(getCodeAtlasDir());
+export function ensureMindexAIDirs(): void {
+  ensureDir(getMindexAIDir());
   ensureDir(getSharedCacheDir());
   ensureDir(getActiveBranchDir());
   ensureDir(getContextDir());
@@ -227,7 +227,7 @@ export function toAbsolutePath(relativePath: string): string {
   return path.join(getWorkspaceRoot(), relativePath);
 }
 
-export const INCLUDE_FILE = '.include.codeatlas';
+export const INCLUDE_FILE = '.include.mindexai';
 
 /**
  * Check if the workspace root is inside a git repository.
@@ -246,21 +246,39 @@ export function isGitRepo(): boolean {
 }
 
 /**
- * Returns the path to the .include.codeatlas file.
+ * Returns the path to the .include.mindexai file.
  */
 export function getIncludeFilePath(): string {
   return path.join(getWorkspaceRoot(), INCLUDE_FILE);
 }
 
 /**
- * Check if a .include.codeatlas file exists in the workspace root.
+ * Check if a .include.mindexai file exists in the workspace root.
  */
 export function hasIncludeFile(): boolean {
   return fs.existsSync(getIncludeFilePath());
 }
 
 /**
- * Parse the .include.codeatlas file. Each non-empty, non-comment line is
+ * Create a default .include.mindexai file in the workspace root.
+ */
+export function createIncludeFile(): void {
+  const filePath = getIncludeFilePath();
+  const content = [
+    '# Directories to include (scanned recursively)',
+    'src',
+    '',
+    '# Individual files',
+    '# main.ts',
+    '',
+    '# Lines starting with # are comments',
+    '',
+  ].join('\n');
+  writeText(filePath, content);
+}
+
+/**
+ * Parse the .include.mindexai file. Each non-empty, non-comment line is
  * treated as a file or directory path (relative to workspace root).
  * Returns the list of resolved entries.
  */
@@ -275,19 +293,19 @@ function parseIncludeFile(): string[] {
 }
 
 /**
- * Collect source files using the `.include.codeatlas` file.
+ * Collect source files using the `.include.mindexai` file.
  * Only files/directories listed in that file are considered.
  * Each entry is either a file path or a directory — directories are scanned
  * recursively for files matching includedExtensions.
  */
 export async function collectSourceFiles(): Promise<string[]> {
-  const config = vscode.workspace.getConfiguration('codeatlas');
+  const config = vscode.workspace.getConfiguration('mindexai');
   const includedExtensions = config.get<string[]>('includedExtensions', []);
   const excludePatterns = config.get<string[]>('excludePatterns', []);
   const extSet = new Set(includedExtensions.map(e => e.toLowerCase()));
 
   if (!hasIncludeFile()) {
-    // Fall back to VS Code glob-based collection if no .include.codeatlas file
+    // Fall back to VS Code glob-based collection if no .include.mindexai file
     return collectSourceFilesViaGlob(includedExtensions, excludePatterns);
   }
 
@@ -295,7 +313,7 @@ export async function collectSourceFiles(): Promise<string[]> {
 }
 
 /**
- * Collect files based on entries in .include.codeatlas.
+ * Collect files based on entries in .include.mindexai.
  * Entries can be individual files or directories.
  * Directories are scanned recursively for matching extensions.
  */
@@ -328,7 +346,7 @@ function collectSourceFilesViaInclude(
       const fullPath = path.join(dirPath, item.name);
       const relPath = path.relative(root, fullPath);
 
-      if (relPath.startsWith(CODEATLAS_DIR)) { continue; }
+      if (relPath.startsWith(MINDEXAI_DIR)) { continue; }
       if (isExcluded(relPath)) { continue; }
 
       if (item.isDirectory()) {
@@ -351,7 +369,7 @@ function collectSourceFilesViaInclude(
       scanDir(fullPath);
     } else if (stat.isFile()) {
       const relPath = path.relative(root, fullPath);
-      if (relPath.startsWith(CODEATLAS_DIR)) { continue; }
+      if (relPath.startsWith(MINDEXAI_DIR)) { continue; }
       if (isExcluded(relPath)) { continue; }
       const ext = path.extname(fullPath).toLowerCase();
       if (extSet.has(ext)) {
@@ -364,7 +382,7 @@ function collectSourceFilesViaInclude(
 }
 
 /**
- * Original VS Code glob-based file collection (fallback when no .include.codeatlas).
+ * Original VS Code glob-based file collection (fallback when no .include.mindexai).
  */
 async function collectSourceFilesViaGlob(
   includedExtensions: string[],
@@ -380,7 +398,7 @@ async function collectSourceFilesViaGlob(
     .map(uri => uri.fsPath)
     .filter(p => {
       const rel = toRelativePath(p);
-      return !rel.startsWith(CODEATLAS_DIR);
+      return !rel.startsWith(MINDEXAI_DIR);
     })
     .sort();
 }
@@ -435,4 +453,53 @@ export function detectLanguage(filePath: string): string {
     '.svelte': 'Svelte',
   };
   return languageMap[ext] || 'Unknown';
+}
+
+/**
+ * Returns the path to the .gitignore file in the workspace root.
+ */
+export function getGitignorePath(): string {
+  return path.join(getWorkspaceRoot(), '.gitignore');
+}
+
+export type GitignoreResult =
+  | { status: 'added' }
+  | { status: 'already-present' }
+  | { status: 'no-gitignore'; isGitRepo: boolean };
+
+const MINDEXAI_GITIGNORE_PATTERNS = ['.mindexai/'];
+
+/**
+ * Add .mindexai/ to the workspace .gitignore.
+ * Returns the result so the caller can surface appropriate feedback.
+ */
+export function addMindexAIToGitignore(): GitignoreResult {
+  const gitignorePath = getGitignorePath();
+
+  if (!fs.existsSync(gitignorePath)) {
+    return { status: 'no-gitignore', isGitRepo: isGitRepo() };
+  }
+
+  let content = fs.readFileSync(gitignorePath, 'utf-8');
+  const patternsToAdd = MINDEXAI_GITIGNORE_PATTERNS.filter(
+    p => !content.includes(p) && !content.includes('.mindexai/**')
+  );
+
+  if (patternsToAdd.length === 0) {
+    return { status: 'already-present' };
+  }
+
+  if (!content.endsWith('\n')) { content += '\n'; }
+  content += '\n# MindexAI\n' + patternsToAdd.join('\n') + '\n';
+  writeText(gitignorePath, content);
+  return { status: 'added' };
+}
+
+/**
+ * Create a new .gitignore in the workspace root containing the MindexAI patterns.
+ */
+export function createGitignoreWithMindexAI(): void {
+  const gitignorePath = getGitignorePath();
+  const content = '# MindexAI\n' + MINDEXAI_GITIGNORE_PATTERNS.join('\n') + '\n';
+  writeText(gitignorePath, content);
 }

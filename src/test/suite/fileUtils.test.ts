@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { sanitizeBranchName, chunkText, detectLanguage, getCodeAtlasDirForRoot } from '../../utils/fileUtils';
+import { sanitizeBranchName, chunkText, detectLanguage, getMindexAIDirForRoot } from '../../utils/fileUtils';
 import * as path from 'path';
 
 suite('fileUtils — sanitizeBranchName', () => {
@@ -102,22 +102,22 @@ suite('fileUtils — detectLanguage', () => {
   }
 });
 
-suite('fileUtils — getCodeAtlasDirForRoot', () => {
-  test('returns .codeatlas under given root', () => {
+suite('fileUtils — getMindexAIDirForRoot', () => {
+  test('returns .mindexai under given root', () => {
     const root = '/home/user/myproject';
-    const expected = path.join(root, '.codeatlas');
-    assert.strictEqual(getCodeAtlasDirForRoot(root), expected);
+    const expected = path.join(root, '.mindexai');
+    assert.strictEqual(getMindexAIDirForRoot(root), expected);
   });
 
   test('handles Windows-style path', () => {
     const root = 'C:\\Users\\user\\project';
-    const result = getCodeAtlasDirForRoot(root);
+    const result = getMindexAIDirForRoot(root);
     assert.ok(result.startsWith('C:\\'), 'Should preserve drive letter');
-    assert.ok(result.endsWith('.codeatlas'), 'Should end with .codeatlas');
+    assert.ok(result.endsWith('.mindexai'), 'Should end with .mindexai');
   });
 
   test('does not depend on VSCode workspace', () => {
     // This should work without any VSCode context
-    assert.doesNotThrow(() => getCodeAtlasDirForRoot('/some/path'));
+    assert.doesNotThrow(() => getMindexAIDirForRoot('/some/path'));
   });
 });

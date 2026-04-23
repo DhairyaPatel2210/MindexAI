@@ -2,7 +2,15 @@ import * as vscode from 'vscode';
 import { LLMProviderType } from '../../llm/types';
 import { storeApiKey, deleteApiKey, hasApiKey } from '../../llm/factory';
 import { serverManager, detectBinary } from '../../server/serverManager';
-import { hasIncludeFile, getCurrentIndexDir, getCodeAtlasDir, fileExists } from '../../utils/fileUtils';
+import {
+  hasIncludeFile,
+  getCurrentIndexDir,
+  getMindexAIDir,
+  fileExists,
+  addMindexAIToGitignore,
+  createGitignoreWithMindexAI,
+  getGitignorePath,
+} from '../../utils/fileUtils';
 import { loadUsageStats, resetUsageStats, getStatsDisplay, UsageStatsData, StatsDisplay } from '../../core/stats/usageStats';
 import { logger } from '../../utils/logger';
 
@@ -15,6 +23,7 @@ interface WebviewMessage {
   apiType?: string;
   contextSize?: string | number;
   autoUpdate?: string;
+  autoAddToGitignore?: string;
   requestsPerMinute?: string | number;
   concurrentRequests?: string | number;
   maxFileSizeKB?: string | number;
@@ -37,8 +46,8 @@ export class MainPanel implements vscode.Disposable {
     if (this.panel) { this.panel.reveal(vscode.ViewColumn.One); return; }
 
     this.panel = vscode.window.createWebviewPanel(
-      'codeatlas.setup',
-      'CodeAtlas',
+      'mindexai.setup',
+      'MindexAI',
       vscode.ViewColumn.One,
       { enableScripts: true, retainContextWhenHidden: true }
     );
@@ -64,6 +73,7 @@ export class MainPanel implements vscode.Disposable {
           msg.provider as LLMProviderType, msg.apiKey ?? '', msg.baseUrl, msg.model, msg.apiType
         ); break;
         case 'saveSettings':   await this.handleSaveSettings(msg);  break;
+        case 'addToGitignore': await this.handleAddToGitignore();   break;
         case 'resetStats':     this.handleResetStats();              break;
         case 'startServer':    await this.handleStartServer(msg);   break;
         case 'stopServer':     await serverManager.stop();          break;
@@ -85,7 +95,7 @@ export class MainPanel implements vscode.Disposable {
 
   private async updatePanel(): Promise<void> {
     if (!this.panel) { return; }
-    const config = vscode.workspace.getConfiguration('codeatlas');
+    const config = vscode.workspace.getConfiguration('mindexai');
     const currentProvider = config.get<LLMProviderType>('llmProvider', 'openai');
     const hasKeys = {
       openai:          await hasApiKey('openai'),
@@ -219,7 +229,7 @@ export class MainPanel implements vscode.Disposable {
   // ── Handlers ────────────────────────────────────────────────────────────────
 
   private async handleSaveConfig(msg: WebviewMessage): Promise<void> {
-    const config = vscode.workspace.getConfiguration('codeatlas');
+    const config = vscode.workspace.getConfiguration('mindexai');
     const provider = msg.provider as LLMProviderType;
     await config.update('llmProvider', provider, vscode.ConfigurationTarget.Global);
     if (msg.model) {
@@ -227,25 +237,25 @@ export class MainPanel implements vscode.Disposable {
     }
     const hasKey = !!(msg.apiKey?.trim());
     if (hasKey) { await storeApiKey(provider, msg.apiKey!.trim()); }
-    vscode.window.showInformationMessage(`CodeAtlas: Saved ${provider}${hasKey ? ' + API key' : ''}`);
+    vscode.window.showInformationMessage(`MindexAI: Saved ${provider}${hasKey ? ' + API key' : ''}`);
     const keyNowStored = hasKey || await hasApiKey(provider);
     this.panel?.webview.postMessage({ type: 'saved', provider, keyStored: keyNowStored });
   }
 
   private async handleSaveLocal(msg: WebviewMessage): Promise<void> {
-    const config = vscode.workspace.getConfiguration('codeatlas');
+    const config = vscode.workspace.getConfiguration('mindexai');
     await config.update('llmProvider', 'local', vscode.ConfigurationTarget.Global);
     if (msg.baseUrl)    { await config.update('localBaseUrl',     msg.baseUrl,               vscode.ConfigurationTarget.Global); }
     if (msg.model)      { await config.update('localModel',       msg.model,                 vscode.ConfigurationTarget.Global); }
     if (msg.apiType)    { await config.update('localApiType',     msg.apiType,               vscode.ConfigurationTarget.Global); }
     if (msg.contextSize){ await config.update('localContextSize', Number(msg.contextSize),   vscode.ConfigurationTarget.Global); }
     if (msg.apiKey?.trim()) { await storeApiKey('local', msg.apiKey.trim()); }
-    vscode.window.showInformationMessage('CodeAtlas: Local LLM configuration saved');
+    vscode.window.showInformationMessage('MindexAI: Local LLM configuration saved');
     this.panel?.webview.postMessage({ type: 'saved', provider: 'local', keyStored: !!msg.model });
   }
 
   private async handleSaveOpenAICompat(msg: WebviewMessage): Promise<void> {
-    const config = vscode.workspace.getConfiguration('codeatlas');
+    const config = vscode.workspace.getConfiguration('mindexai');
     await config.update('llmProvider', 'openai-compat', vscode.ConfigurationTarget.Global);
     if (msg.baseUrl) { await config.update('openaiCompatBaseUrl', msg.baseUrl, vscode.ConfigurationTarget.Global); }
     if (msg.model)   { await config.update('openaiCompatModel',   msg.model,   vscode.ConfigurationTarget.Global); }
@@ -256,14 +266,14 @@ export class MainPanel implements vscode.Disposable {
         await config.update('openaiCompatContextSize', ctx, vscode.ConfigurationTarget.Global);
       }
     }
-    vscode.window.showInformationMessage('CodeAtlas: Remote OpenAI-compatible server configuration saved');
+    vscode.window.showInformationMessage('MindexAI: Remote OpenAI-compatible server configuration saved');
     const ready = !!(msg.baseUrl?.trim()) && !!(msg.model?.trim());
     this.panel?.webview.postMessage({ type: 'saved', provider: 'openai-compat', keyStored: ready });
   }
 
   private async handleDeleteKey(provider: LLMProviderType): Promise<void> {
     await deleteApiKey(provider);
-    const config = vscode.workspace.getConfiguration('codeatlas');
+    const config = vscode.workspace.getConfiguration('mindexai');
     if (provider === 'local') {
       await config.update('localModel', '', vscode.ConfigurationTarget.Global);
       if (serverManager.isRunning) { await serverManager.stop(); }
@@ -272,14 +282,52 @@ export class MainPanel implements vscode.Disposable {
       await config.update('openaiCompatBaseUrl', '', vscode.ConfigurationTarget.Global);
       await config.update('openaiCompatModel',   '', vscode.ConfigurationTarget.Global);
     }
-    vscode.window.showInformationMessage(`CodeAtlas: Cleared ${provider} configuration`);
+    vscode.window.showInformationMessage(`MindexAI: Cleared ${provider} configuration`);
     this.panel?.webview.postMessage({ type: 'keyDeleted', provider });
   }
 
+  private async handleAddToGitignore(): Promise<void> {
+    try {
+      const result = addMindexAIToGitignore();
+      if (result.status === 'added') {
+        vscode.window.showInformationMessage('MindexAI: Added .mindexai/ to .gitignore.');
+        this.panel?.webview.postMessage({ type: 'gitignoreResult', status: 'added' });
+      } else if (result.status === 'already-present') {
+        vscode.window.showInformationMessage('MindexAI: .mindexai/ is already in .gitignore.');
+        this.panel?.webview.postMessage({ type: 'gitignoreResult', status: 'already-present' });
+      } else if (result.status === 'no-gitignore') {
+        if (result.isGitRepo) {
+          const choice = await vscode.window.showWarningMessage(
+            'MindexAI: No .gitignore found in workspace. Create one?',
+            'Create .gitignore'
+          );
+          if (choice === 'Create .gitignore') {
+            createGitignoreWithMindexAI();
+            vscode.window.showInformationMessage('MindexAI: Created .gitignore with .mindexai/ entry.');
+            this.panel?.webview.postMessage({ type: 'gitignoreResult', status: 'added' });
+          } else {
+            this.panel?.webview.postMessage({ type: 'gitignoreResult', status: 'no-gitignore' });
+          }
+        } else {
+          vscode.window.showWarningMessage(
+            'MindexAI: No .gitignore found and workspace is not a git repository.'
+          );
+          this.panel?.webview.postMessage({ type: 'gitignoreResult', status: 'no-gitignore' });
+        }
+      }
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      vscode.window.showErrorMessage(`MindexAI: Failed to update .gitignore — ${msg}`);
+    }
+  }
+
   private async handleSaveSettings(msg: WebviewMessage): Promise<void> {
-    const config = vscode.workspace.getConfiguration('codeatlas');
+    const config = vscode.workspace.getConfiguration('mindexai');
     if (msg.autoUpdate !== undefined) {
       await config.update('autoUpdate', msg.autoUpdate === 'true', vscode.ConfigurationTarget.Global);
+    }
+    if (msg.autoAddToGitignore !== undefined) {
+      await config.update('autoAddToGitignore', msg.autoAddToGitignore === 'true', vscode.ConfigurationTarget.Global);
     }
     if (msg.requestsPerMinute !== undefined) {
       const rpm = Number(msg.requestsPerMinute);
@@ -312,13 +360,13 @@ export class MainPanel implements vscode.Disposable {
       await config.update('excludePatterns', patterns, vscode.ConfigurationTarget.Global);
     }
     this.panel?.webview.postMessage({ type: 'settingsSaved' });
-    vscode.window.showInformationMessage('CodeAtlas: Settings saved');
+    vscode.window.showInformationMessage('MindexAI: Settings saved');
   }
 
   private handleResetStats(): void {
     resetUsageStats();
     this.panel?.webview.postMessage({ type: 'statsReset' });
-    vscode.window.showInformationMessage('CodeAtlas: Usage statistics reset');
+    vscode.window.showInformationMessage('MindexAI: Usage statistics reset');
   }
 
   private async handleTestConnection(
@@ -327,13 +375,13 @@ export class MainPanel implements vscode.Disposable {
     this.panel?.webview.postMessage({ type: 'testStart', provider });
     try {
       if (provider === 'local') {
-        const config = vscode.workspace.getConfiguration('codeatlas');
+        const config = vscode.workspace.getConfiguration('mindexai');
         if (baseUrl)  { await config.update('localBaseUrl',  baseUrl,  vscode.ConfigurationTarget.Global); }
         if (model)    { await config.update('localModel',    model,    vscode.ConfigurationTarget.Global); }
         if (apiType)  { await config.update('localApiType',  apiType,  vscode.ConfigurationTarget.Global); }
         if (apiKey.trim()) { await storeApiKey('local', apiKey.trim()); }
       } else if (provider === 'openai-compat') {
-        const config = vscode.workspace.getConfiguration('codeatlas');
+        const config = vscode.workspace.getConfiguration('mindexai');
         if (baseUrl) { await config.update('openaiCompatBaseUrl', baseUrl, vscode.ConfigurationTarget.Global); }
         if (model)   { await config.update('openaiCompatModel',   model,   vscode.ConfigurationTarget.Global); }
         if (apiKey.trim()) { await storeApiKey('openai-compat', apiKey.trim()); }
@@ -354,7 +402,7 @@ export class MainPanel implements vscode.Disposable {
   }
 
   private async handleStartServer(msg: WebviewMessage): Promise<void> {
-    const config = vscode.workspace.getConfiguration('codeatlas');
+    const config = vscode.workspace.getConfiguration('mindexai');
     const port        = Number(msg.port) || 8080;
     const contextSize = Number(msg.contextSize) || 4096;
     const baseUrl     = `http://127.0.0.1:${port}/v1`;
@@ -400,12 +448,23 @@ export class MainPanel implements vscode.Disposable {
     binaryFound: boolean,
     includeFileExists: boolean
   ): string {
-    const cfg = vscode.workspace.getConfiguration('codeatlas');
+    const cfg = vscode.workspace.getConfiguration('mindexai');
     const autoUpdate = cfg.get<boolean>('autoUpdate', false);
+    const autoAddToGitignore = cfg.get<boolean>('autoAddToGitignore', true);
 
     let currentIndexPath = '';
     try { currentIndexPath = getCurrentIndexDir(); } catch { /* no workspace */ }
     const indexExists = currentIndexPath ? fileExists(currentIndexPath + '/index.json') : false;
+
+    let gitignoreHasMindexAI = false;
+    try {
+      const gitignorePath = getGitignorePath();
+      if (fileExists(gitignorePath)) {
+        const fs = require('fs') as typeof import('fs');
+        const content = fs.readFileSync(gitignorePath, 'utf-8') as string;
+        gitignoreHasMindexAI = content.includes('.mindexai/') || content.includes('.mindexai/**');
+      }
+    } catch { /* no workspace */ }
 
     const modelOpts: Record<string, string[]> = {
       openai: ['gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo', 'gpt-3.5-turbo'],
@@ -487,7 +546,7 @@ export class MainPanel implements vscode.Disposable {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CodeAtlas</title>
+<title>MindexAI</title>
 <style>
 :root {
   --bg: var(--vscode-editor-background);
@@ -681,7 +740,7 @@ pre.code-sample {
 
 <!-- ── TAB: LLM Providers ── -->
 <div id="tab-providers" class="tab-content active">
-<h1>&#9889; CodeAtlas</h1>
+<h1>&#9889; MindexAI</h1>
 <p class="subtitle">Configure your LLM provider for semantic code analysis</p>
 
 ${cloudCard('openai',
@@ -861,11 +920,11 @@ ${cloudCard('claude',
 <div class="card">
   <div class="body open" style="display:block">
     <div class="field">
-      <label class="field-label">File Selection — <code>.include.codeatlas</code></label>
+      <label class="field-label">File Selection — <code>.include.mindexai</code></label>
       ${includeFileExists
-        ? '<div class="msg ok" style="margin-top:6px">&#10003; <code>.include.codeatlas</code> found. Only files and directories listed in it will be analyzed.</div>'
+        ? '<div class="msg ok" style="margin-top:6px">&#10003; <code>.include.mindexai</code> found. Only files and directories listed in it will be analyzed.</div>'
         : `<div class="msg" style="margin-top:6px; background:rgba(255,152,0,.12); color:var(--warn)">
-            &#9888; No <code>.include.codeatlas</code> file found in the workspace root.<br>
+            &#9888; No <code>.include.mindexai</code> file found in the workspace root.<br>
             Create this file to control which files are analyzed.
           </div>
           <pre class="code-sample"># Directories to include (scanned recursively)
@@ -929,7 +988,7 @@ utils/helpers.py
         </label>
       </div>
       <div class="hint" style="margin-top:6px">
-        When enabled, CodeAtlas watches for file saves and git branch switches,
+        When enabled, MindexAI watches for file saves and git branch switches,
         then incrementally updates the semantic index. Requires an existing index (run full analysis first).
       </div>
     </div>
@@ -952,9 +1011,39 @@ utils/helpers.py
       <button type="button" class="btn-secondary" data-action="copy-index-path" style="flex-shrink:0">&#128203; Copy</button>
     </div>
     <div class="hint" style="margin-top:6px">
-      This <code>.codeatlas/current/</code> directory always contains the latest branch&rsquo;s index.
+      This <code>.mindexai/current/</code> directory always contains the latest branch&rsquo;s index.
       Key files: <code>index.json</code>, <code>CONTEXT.md</code>, <code>context/</code>.
     </div>
+  </div>
+</div>
+
+<h2>Git</h2>
+<div class="card">
+  <div class="body open" style="display:block">
+    <div class="field">
+      <label class="field-label">.gitignore Integration</label>
+      ${gitignoreHasMindexAI
+        ? `<div class="msg ok" id="gitignore-status" style="margin-top:6px">&#10003; <code>.mindexai/</code> is already in .gitignore.</div>`
+        : `<div class="msg" id="gitignore-status" style="margin-top:6px; background:rgba(255,152,0,.12); color:var(--warn)">
+            &#9888; <code>.mindexai/</code> is not in .gitignore. Generated index files may be committed accidentally.
+          </div>`
+      }
+      <div class="hint" style="margin-top:6px">
+        The <code>.mindexai/</code> directory contains generated index files and should not be committed to version control.
+      </div>
+    </div>
+    <div class="field" style="margin-top:12px">
+      <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px">
+        <input type="checkbox" id="autoAddToGitignoreToggle" ${autoAddToGitignore ? 'checked' : ''}
+          style="width:15px; height:15px; cursor:pointer">
+        Automatically add <code>.mindexai/</code> to .gitignore on activation
+      </label>
+      <div class="hint" style="margin-top:4px">When enabled, MindexAI adds the entry on startup if not already present.</div>
+    </div>
+    <div class="row-actions" style="margin-top:12px">
+      <button type="button" class="btn-secondary" data-action="add-to-gitignore">Add to .gitignore now</button>
+    </div>
+    <div id="status-gitignore" class="status-area"></div>
   </div>
 </div>
 
@@ -982,13 +1071,13 @@ utils/helpers.py
 
 <!-- ── TAB: About ── -->
 <div id="tab-about" class="tab-content">
-<h1>&#8505; About CodeAtlas</h1>
+<h1>&#8505; About MindexAI</h1>
 <p class="subtitle">Semantic codebase indexing for AI-assisted development</p>
 
 <div class="about-section">
-  <h3>What CodeAtlas Does</h3>
+  <h3>What MindexAI Does</h3>
   <p style="font-size:13px; line-height:1.7; opacity:.85">
-    CodeAtlas analyzes your source code with an LLM to generate plain-English semantic descriptions
+    MindexAI analyzes your source code with an LLM to generate plain-English semantic descriptions
     of every file and symbol. The resulting index helps AI code editors (Cursor, Copilot, Claude)
     understand your codebase without reading every file from scratch.
   </p>
@@ -1011,22 +1100,22 @@ utils/helpers.py
 <div class="about-section">
   <h3>How to Use the Index</h3>
   <p style="font-size:13px; line-height:1.7; opacity:.85">
-    After running an analysis, the index is stored in <code>.codeatlas/current/</code>.
+    After running an analysis, the index is stored in <code>.mindexai/current/</code>.
     Add this directory to your AI editor's context:
   </p>
   <pre class="code-sample">
 # In Cursor's rules or Claude's project knowledge, add:
-@.codeatlas/current/CONTEXT.md
-@.codeatlas/current/index.json
+@.mindexai/current/CONTEXT.md
+@.mindexai/current/index.json
 
 # Or for a specific file context:
-@.codeatlas/current/context/src/myFile.ts.md</pre>
+@.mindexai/current/context/src/myFile.ts.md</pre>
 </div>
 
 <div class="about-section">
-  <h3>.include.codeatlas Format</h3>
+  <h3>.include.mindexai Format</h3>
   <p style="font-size:13px; line-height:1.7; opacity:.85">
-    Create a <code>.include.codeatlas</code> file in your workspace root to control which files are analyzed:
+    Create a <code>.include.mindexai</code> file in your workspace root to control which files are analyzed:
   </p>
   <pre class="code-sample">
 # Include a directory (scanned recursively for matching extensions)
@@ -1049,7 +1138,7 @@ config/settings.py
 </div>
 
 <div class="about-section" style="opacity:.6; font-size:12px; margin-top:32px">
-  CodeAtlas v0.1.0 &bull; <a href="https://github.com/codeatlas/codeatlas" style="color:var(--accent)">GitHub</a>
+  MindexAI v0.1.0 &bull; <a href="https://github.com/mindexai/mindexai" style="color:var(--accent)">GitHub</a>
 </div>
 </div><!-- end tab-about -->
 
@@ -1132,6 +1221,7 @@ config/settings.py
       case 'save-local':         saveLocal();              break;
       case 'save-openai-compat': saveOpenAICompat();       break;
       case 'save-settings':      saveSettings();           break;
+      case 'add-to-gitignore':   addToGitignore();         break;
       case 'copy-index-path':    copyIndexPath();          break;
       case 'reset-stats':        resetStats();             break;
       case 'refresh-stats':      vscode.postMessage({ type: 'refreshStats' }); break;
@@ -1193,15 +1283,24 @@ config/settings.py
   }
 
   function saveSettings() {
+    var autoUpdateEl = document.getElementById('autoUpdateToggle');
+    var autoGitignoreEl = document.getElementById('autoAddToGitignoreToggle');
     vscode.postMessage({
-      type:               'saveSettings',
-      requestsPerMinute:  val('requestsPerMinute'),
-      concurrentRequests: val('concurrentRequests'),
-      maxFileSizeKB:      val('maxFileSizeKB'),
-      includedExtensions: val('includedExtensions'),
-      excludePatterns:    val('excludePatterns'),
-      autoUpdate:         document.getElementById('autoUpdateToggle').checked ? 'true' : 'false',
+      type:                 'saveSettings',
+      requestsPerMinute:    val('requestsPerMinute'),
+      concurrentRequests:   val('concurrentRequests'),
+      maxFileSizeKB:        val('maxFileSizeKB'),
+      includedExtensions:   val('includedExtensions'),
+      excludePatterns:      val('excludePatterns'),
+      autoUpdate:           autoUpdateEl && autoUpdateEl.checked ? 'true' : 'false',
+      autoAddToGitignore:   autoGitignoreEl && autoGitignoreEl.checked ? 'true' : 'false',
     });
+  }
+
+  function addToGitignore() {
+    var btn = document.querySelector('[data-action="add-to-gitignore"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Adding\u2026'; }
+    vscode.postMessage({ type: 'addToGitignore' });
   }
 
   function copyIndexPath() {
@@ -1290,6 +1389,24 @@ config/settings.py
 
       case 'settingsSaved': {
         setStatus('status-settings', 'ok', '\u2713 Settings saved');
+        break;
+      }
+
+      case 'gitignoreResult': {
+        var btn2 = document.querySelector('[data-action="add-to-gitignore"]');
+        if (btn2) { btn2.disabled = false; btn2.textContent = 'Add to .gitignore now'; }
+        var statusEl4 = document.getElementById('gitignore-status');
+        if (msg.status === 'added') {
+          setStatus('status-gitignore', 'ok', '\u2713 Added .mindexai/ to .gitignore');
+          if (statusEl4) {
+            statusEl4.className = 'msg ok';
+            statusEl4.innerHTML = '\u2713 <code>.mindexai/</code> is already in .gitignore.';
+          }
+        } else if (msg.status === 'already-present') {
+          setStatus('status-gitignore', 'ok', '\u2713 Already present in .gitignore');
+        } else {
+          setStatus('status-gitignore', 'err', '\u26a0 No .gitignore found \u2014 see notification');
+        }
         break;
       }
 

@@ -3,8 +3,8 @@ import { initTreeSitter } from './core/analyzer/treeSitterParser';
 import { initializeSecretStorage, createLLMProvider, hasApiKey, deleteApiKey } from './llm/factory';
 import { serverManager } from './server/serverManager';
 import { MainPanel } from './vscode/panel/mainPanel';
-import { CodeAtlasStatusBar } from './vscode/statusBar';
-import { CodeAtlasActivityProvider } from './vscode/activityBar';
+import { MindexAIStatusBar } from './vscode/statusBar';
+import { MindexAIActivityProvider } from './vscode/activityBar';
 import {
   runFullWorkflow,
   runIncrementalUpdate,
@@ -21,6 +21,9 @@ import {
   fileExists,
   hasIncludeFile,
   setActiveBranch,
+  createIncludeFile,
+  addMindexAIToGitignore,
+  createGitignoreWithMindexAI,
 } from './utils/fileUtils';
 import { getCurrentBranch, getHeadCommit } from './core/git/gitService';
 import { hasBranchIndex } from './core/cache/contextCache';
@@ -41,7 +44,7 @@ export function activate(context: vscode.ExtensionContext): void {
   initializeSecretStorage(context.secrets);
 
   // ── Status bar ─────────────────────────────────────────────────────────
-  const statusBar = new CodeAtlasStatusBar();
+  const statusBar = new MindexAIStatusBar();
   context.subscriptions.push(statusBar);
 
   // ── Main panel (config + stats webview) ────────────────────────────────
@@ -49,8 +52,8 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(mainPanel);
 
   // ── Activity bar tree view ──────────────────────────────────────────────
-  const activityProvider = new CodeAtlasActivityProvider();
-  const treeView = vscode.window.createTreeView('codeatlas.activityView', {
+  const activityProvider = new MindexAIActivityProvider();
+  const treeView = vscode.window.createTreeView('mindexai.activityView', {
     treeDataProvider: activityProvider,
     showCollapseAll: false,
   });
@@ -62,55 +65,59 @@ export function activate(context: vscode.ExtensionContext): void {
 
   // ── Command: Open Setup ──────────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('codeatlas.openSetup', async () => {
+    vscode.commands.registerCommand('mindexai.openSetup', async () => {
       await mainPanel.show();
     })
   );
 
   // ── Command: Show Stats ──────────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('codeatlas.showStats', async () => {
+    vscode.commands.registerCommand('mindexai.showStats', async () => {
       await mainPanel.showStats();
     })
   );
 
   // ── Command: Run Full Workflow ───────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('codeatlas.runWorkflow', async () => {
+    vscode.commands.registerCommand('mindexai.runWorkflow', async () => {
       if (isWorkflowRunning()) {
         vscode.window.showWarningMessage(
-          'CodeAtlas is already running. Click the status bar item to cancel.'
+          'MindexAI is already running. Click the status bar item to cancel.'
         );
         return;
       }
 
       if (!vscode.workspace.workspaceFolders?.length) {
-        vscode.window.showErrorMessage('CodeAtlas requires an open workspace folder.');
+        vscode.window.showErrorMessage('MindexAI requires an open workspace folder.');
         return;
       }
 
       if (!hasIncludeFile()) {
         const choice = await vscode.window.showWarningMessage(
-          'CodeAtlas: No .include.codeatlas file found. Without it, the workspace will be scanned ' +
+          'MindexAI: No .include.mindexai file found. Without it, the workspace will be scanned ' +
           'using default extension patterns.',
-          'Continue Anyway',
-          'Configure'
+          'Configure',
+          'Continue Anyway'
         );
         if (choice === 'Configure') {
+          createIncludeFile();
+          vscode.window.showInformationMessage(
+            'MindexAI: .include.mindexai created with defaults. Edit it to control which directories are analyzed.'
+          );
           await mainPanel.show();
           return;
         }
         if (choice !== 'Continue Anyway') { return; }
       }
 
-      const config = vscode.workspace.getConfiguration('codeatlas');
+      const config = vscode.workspace.getConfiguration('mindexai');
       const provider = config.get<LLMProviderType>('llmProvider', 'openai');
       const keySet = await hasApiKey(provider);
 
       if (!keySet) {
         const msg = provider === 'local'
-          ? 'CodeAtlas: No local model configured. Set a model name in the setup panel.'
-          : `CodeAtlas: No API key configured for ${provider}.`;
+          ? 'MindexAI: No local model configured. Set a model name in the setup panel.'
+          : `MindexAI: No API key configured for ${provider}.`;
         const choice = await vscode.window.showWarningMessage(msg, 'Configure Now', 'Cancel');
         if (choice === 'Configure Now') { await mainPanel.show(); }
         return;
@@ -118,7 +125,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
       statusBar.setRunning();
       activityProvider.refresh();
-      logger.info('CodeAtlas full workflow started by user');
+      logger.info('MindexAI full workflow started by user');
 
       try {
         const llm = await createLLMProvider();
@@ -134,7 +141,7 @@ export function activate(context: vscode.ExtensionContext): void {
         const errMsg = result.errors.length > 0 ? ` — ${result.errors.length} error(s)` : '';
 
         vscode.window.showInformationMessage(
-          `CodeAtlas: Analysis complete in ${durationSec}s — ` +
+          `MindexAI: Analysis complete in ${durationSec}s — ` +
           `${result.filesAnalyzed + result.filesFromCache} files${cacheNote}, ${result.symbolsIndexed} symbols${errMsg}`,
           'View Log'
         ).then(choice => {
@@ -149,25 +156,25 @@ export function activate(context: vscode.ExtensionContext): void {
 
   // ── Command: Incremental Update ──────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('codeatlas.updateIndex', async () => {
+    vscode.commands.registerCommand('mindexai.updateIndex', async () => {
       if (isWorkflowRunning()) {
-        vscode.window.showWarningMessage('CodeAtlas is already running.');
+        vscode.window.showWarningMessage('MindexAI is already running.');
         return;
       }
 
       if (!vscode.workspace.workspaceFolders?.length) {
-        vscode.window.showErrorMessage('CodeAtlas requires an open workspace folder.');
+        vscode.window.showErrorMessage('MindexAI requires an open workspace folder.');
         return;
       }
 
-      const config = vscode.workspace.getConfiguration('codeatlas');
+      const config = vscode.workspace.getConfiguration('mindexai');
       const provider = config.get<LLMProviderType>('llmProvider', 'openai');
       const keySet = await hasApiKey(provider);
 
       if (!keySet) {
         const msg = provider === 'local'
-          ? 'CodeAtlas: No local model configured.'
-          : `CodeAtlas: No API key configured for ${provider}.`;
+          ? 'MindexAI: No local model configured.'
+          : `MindexAI: No API key configured for ${provider}.`;
         const choice = await vscode.window.showWarningMessage(msg, 'Configure Now', 'Cancel');
         if (choice === 'Configure Now') { await mainPanel.show(); }
         return;
@@ -175,7 +182,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
       statusBar.setRunning();
       activityProvider.refresh();
-      logger.info('CodeAtlas incremental update started by user');
+      logger.info('MindexAI incremental update started by user');
 
       try {
         const llm = await createLLMProvider();
@@ -192,7 +199,7 @@ export function activate(context: vscode.ExtensionContext): void {
           : `${result.filesAnalyzed} analyzed, ${result.filesFromCache} from cache`;
 
         vscode.window.showInformationMessage(
-          `CodeAtlas: Update complete in ${durationSec}s — ${detail}`,
+          `MindexAI: Update complete in ${durationSec}s — ${detail}`,
           'View Log'
         ).then(choice => {
           if (choice === 'View Log') { logger.show(); }
@@ -206,7 +213,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
   // ── Command: Cancel Workflow ─────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('codeatlas.cancelWorkflow', () => {
+    vscode.commands.registerCommand('mindexai.cancelWorkflow', () => {
       cancelWorkflow();
       statusBar.setIdle();
       activityProvider.refresh();
@@ -215,20 +222,20 @@ export function activate(context: vscode.ExtensionContext): void {
 
   // ── Command: Analyze Current File ────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('codeatlas.analyzeFile', async () => {
+    vscode.commands.registerCommand('mindexai.analyzeFile', async () => {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
-        vscode.window.showWarningMessage('CodeAtlas: No active file to analyze.');
+        vscode.window.showWarningMessage('MindexAI: No active file to analyze.');
         return;
       }
 
-      const config = vscode.workspace.getConfiguration('codeatlas');
+      const config = vscode.workspace.getConfiguration('mindexai');
       const provider = config.get<LLMProviderType>('llmProvider', 'openai');
       const keySet = await hasApiKey(provider);
 
       if (!keySet) {
         const choice = await vscode.window.showWarningMessage(
-          `CodeAtlas: No API key configured for ${provider}.`,
+          `MindexAI: No API key configured for ${provider}.`,
           'Configure Now'
         );
         if (choice === 'Configure Now') { await mainPanel.show(); }
@@ -248,18 +255,18 @@ export function activate(context: vscode.ExtensionContext): void {
           { requestsPerMinute, maxFileSizeKB, maxChunkChars }
         );
 
-        vscode.window.showInformationMessage('CodeAtlas: File analyzed successfully.');
+        vscode.window.showInformationMessage('MindexAI: File analyzed successfully.');
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e);
         logger.error('Single file analysis failed', e);
-        vscode.window.showErrorMessage(`CodeAtlas: Failed — ${msg}`);
+        vscode.window.showErrorMessage(`MindexAI: Failed — ${msg}`);
       }
     })
   );
 
   // ── Command: Show Index ──────────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('codeatlas.showIndex', async () => {
+    vscode.commands.registerCommand('mindexai.showIndex', async () => {
       const { getContextOverviewPath } = await import('./utils/fileUtils');
       const { getCurrentBranch: getBranch } = await import('./core/git/gitService');
       try { setActiveBranch(getBranch()); } catch { setActiveBranch('default'); }
@@ -267,11 +274,11 @@ export function activate(context: vscode.ExtensionContext): void {
 
       if (!fileExists(overviewPath)) {
         const choice = await vscode.window.showWarningMessage(
-          'CodeAtlas: No index found. Run analysis first.',
+          'MindexAI: No index found. Run analysis first.',
           'Run Analysis'
         );
         if (choice === 'Run Analysis') {
-          vscode.commands.executeCommand('codeatlas.runWorkflow');
+          vscode.commands.executeCommand('mindexai.runWorkflow');
         }
         return;
       }
@@ -283,17 +290,79 @@ export function activate(context: vscode.ExtensionContext): void {
 
   // ── Command: Clear API Keys ──────────────────────────────────────────────
   context.subscriptions.push(
-    vscode.commands.registerCommand('codeatlas.clearApiKeys', async () => {
+    vscode.commands.registerCommand('mindexai.clearApiKeys', async () => {
       const providers: LLMProviderType[] = ['openai', 'gemini', 'claude', 'local', 'openai-compat'];
       for (const p of providers) { await deleteApiKey(p); }
-      const config = vscode.workspace.getConfiguration('codeatlas');
+      const config = vscode.workspace.getConfiguration('mindexai');
       await config.update('localModel', '', vscode.ConfigurationTarget.Global);
       await config.update('openaiCompatBaseUrl', '', vscode.ConfigurationTarget.Global);
       await config.update('openaiCompatModel', '', vscode.ConfigurationTarget.Global);
-      vscode.window.showInformationMessage('CodeAtlas: All API keys and provider configs cleared.');
+      vscode.window.showInformationMessage('MindexAI: All API keys and provider configs cleared.');
       activityProvider.refresh();
     })
   );
+
+  // ── Command: Add .mindexai to .gitignore ────────────────────────────────
+  context.subscriptions.push(
+    vscode.commands.registerCommand('mindexai.addToGitignore', async () => {
+      if (!vscode.workspace.workspaceFolders?.length) {
+        vscode.window.showErrorMessage('MindexAI requires an open workspace folder.');
+        return;
+      }
+      try {
+        const result = addMindexAIToGitignore();
+        if (result.status === 'added') {
+          vscode.window.showInformationMessage('MindexAI: Added .mindexai/ to .gitignore.');
+        } else if (result.status === 'already-present') {
+          vscode.window.showInformationMessage('MindexAI: .mindexai/ is already in .gitignore.');
+        } else if (result.status === 'no-gitignore') {
+          if (result.isGitRepo) {
+            const choice = await vscode.window.showWarningMessage(
+              'MindexAI: No .gitignore file found. Create one to prevent committing the generated index.',
+              'Create .gitignore'
+            );
+            if (choice === 'Create .gitignore') {
+              createGitignoreWithMindexAI();
+              vscode.window.showInformationMessage('MindexAI: Created .gitignore with .mindexai/ entry.');
+            }
+          } else {
+            vscode.window.showWarningMessage(
+              'MindexAI: No .gitignore found and workspace is not a git repository.'
+            );
+          }
+        }
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        vscode.window.showErrorMessage(`MindexAI: Failed to update .gitignore — ${msg}`);
+      }
+    })
+  );
+
+  // ── Auto-add .mindexai to .gitignore on activation ──────────────────────
+  if (vscode.workspace.workspaceFolders?.length) {
+    const config = vscode.workspace.getConfiguration('mindexai');
+    if (config.get<boolean>('autoAddToGitignore', true)) {
+      try {
+        const result = addMindexAIToGitignore();
+        if (result.status === 'no-gitignore' && result.isGitRepo) {
+          const shownKey = 'mindexai.shownGitignoreWarning';
+          const shownBefore = context.globalState.get<boolean>(shownKey);
+          if (!shownBefore) {
+            context.globalState.update(shownKey, true);
+            vscode.window.showWarningMessage(
+              'MindexAI: No .gitignore found. Create one to prevent committing the generated index.',
+              'Create .gitignore'
+            ).then(choice => {
+              if (choice === 'Create .gitignore') {
+                createGitignoreWithMindexAI();
+                vscode.window.showInformationMessage('MindexAI: Created .gitignore with .mindexai/ entry.');
+              }
+            });
+          }
+        }
+      } catch { /* no workspace root available yet */ }
+    }
+  }
 
   // ── Auto-update: File watcher + branch polling ──────────────────────────
   setupAutoUpdate(context, activityProvider);
@@ -301,8 +370,8 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(e => {
       if (
-        e.affectsConfiguration('codeatlas.autoUpdate') ||
-        e.affectsConfiguration('codeatlas.includedExtensions')
+        e.affectsConfiguration('mindexai.autoUpdate') ||
+        e.affectsConfiguration('mindexai.includedExtensions')
       ) {
         disposeAutoUpdate();
         setupAutoUpdate(context, activityProvider);
@@ -311,18 +380,18 @@ export function activate(context: vscode.ExtensionContext): void {
   );
 
   // ── Welcome message on first install ────────────────────────────────────
-  const hasShownWelcome = context.globalState.get<boolean>('codeatlas.shownWelcome');
+  const hasShownWelcome = context.globalState.get<boolean>('mindexai.shownWelcome');
   if (!hasShownWelcome) {
-    context.globalState.update('codeatlas.shownWelcome', true);
+    context.globalState.update('mindexai.shownWelcome', true);
     vscode.window.showInformationMessage(
-      'Welcome to CodeAtlas! Click the circuit-board icon in the Activity Bar to get started.',
+      'Welcome to MindexAI! Click the MindexAI icon in the Activity Bar to get started.',
       'Open Panel'
     ).then(choice => {
       if (choice === 'Open Panel') { mainPanel.show(); }
     });
   }
 
-  logger.info('CodeAtlas extension activated');
+  logger.info('MindexAI extension activated');
 }
 
 export function deactivate(): void {
@@ -335,9 +404,9 @@ export function deactivate(): void {
 
 function setupAutoUpdate(
   context: vscode.ExtensionContext,
-  activityProvider: CodeAtlasActivityProvider
+  activityProvider: MindexAIActivityProvider
 ): void {
-  const config = vscode.workspace.getConfiguration('codeatlas');
+  const config = vscode.workspace.getConfiguration('mindexai');
   const autoUpdate = config.get<boolean>('autoUpdate', false);
 
   if (!autoUpdate) {
@@ -360,7 +429,7 @@ function setupAutoUpdate(
     if (updateTimer) { clearTimeout(updateTimer); }
     updateTimer = setTimeout(() => {
       _branchSwitchPending = false;
-      vscode.commands.executeCommand('codeatlas.updateIndex');
+      vscode.commands.executeCommand('mindexai.updateIndex');
     }, 3000);
   };
 
@@ -471,16 +540,16 @@ function buildWorkflowOptions(
   };
 }
 
-function handleWorkflowError(e: unknown, statusBar: CodeAtlasStatusBar): void {
+function handleWorkflowError(e: unknown, statusBar: MindexAIStatusBar): void {
   if (e instanceof vscode.CancellationError) {
     statusBar.setIdle();
-    vscode.window.showInformationMessage('CodeAtlas: Analysis cancelled.');
+    vscode.window.showInformationMessage('MindexAI: Analysis cancelled.');
     logger.info('Workflow cancelled by user');
   } else {
     statusBar.setError();
     const msg = e instanceof Error ? e.message : String(e);
     logger.error('Workflow failed', e);
-    vscode.window.showErrorMessage(`CodeAtlas: Analysis failed — ${msg}`, 'View Log')
+    vscode.window.showErrorMessage(`MindexAI: Analysis failed — ${msg}`, 'View Log')
       .then(choice => {
         if (choice === 'View Log') { logger.show(); }
       });
