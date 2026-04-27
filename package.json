@@ -1,15 +1,48 @@
 {
   "name": "mindexai",
   "displayName": "MindexAI",
-  "description": "Generate semantic English-language context of your codebase for LLM tools",
+  "description": "Build a private, plain-English map of your codebase for AI tools. MindexAI gives your AI full context while keeping your code local and under your control.",
   "version": "0.1.0",
   "publisher": "mindexai",
   "icon": "icons/mindexai.png",
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": ["Other", "Programming Languages"],
-  "keywords": ["llm", "ai", "context", "semantic", "codebase"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DhairyaPatel2210/MindexAI"
+  },
+  "categories": ["AI",
+  "Programming Languages",
+  "Other"
+  ],
+  "keywords": [
+  "ai",
+  "llm",
+  "codebase",
+  "codebase index",
+  "semantic search",
+  "code understanding",
+  "context aware ai",
+  "ai coding",
+  "developer tools",
+  "code analysis",
+  "project map",
+  "code navigation",
+  "repo understanding",
+  "ai assistant",
+  "copilot",
+  "cursor",
+  "code intelligence",
+  "indexing",
+  "static analysis",
+  "local ai",
+  "privacy",
+  "ollama",
+  "code documentation",
+  "architecture",
+  "developer productivity"
+  ],
   "activationEvents": ["onStartupFinished"],
   "main": "./out/extension.js",
   "contributes": {
