@@ -2,7 +2,7 @@
   "name": "mindexai",
   "displayName": "MindexAI",
   "description": "Build a private, plain-English map of your codebase for AI tools. MindexAI gives your AI full context while keeping your code local and under your control.",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "publisher": "mindexai",
   "icon": "icons/mindexai.png",
   "engines": {
@@ -12,38 +12,41 @@
     "type": "git",
     "url": "https://github.com/DhairyaPatel2210/MindexAI"
   },
-  "categories": ["AI",
-  "Programming Languages",
-  "Other"
+  "categories": [
+    "AI",
+    "Programming Languages",
+    "Other"
   ],
   "keywords": [
-  "ai",
-  "llm",
-  "codebase",
-  "codebase index",
-  "semantic search",
-  "code understanding",
-  "context aware ai",
-  "ai coding",
-  "developer tools",
-  "code analysis",
-  "project map",
-  "code navigation",
-  "repo understanding",
-  "ai assistant",
-  "copilot",
-  "cursor",
-  "code intelligence",
-  "indexing",
-  "static analysis",
-  "local ai",
-  "privacy",
-  "ollama",
-  "code documentation",
-  "architecture",
-  "developer productivity"
+    "ai",
+    "llm",
+    "codebase",
+    "codebase index",
+    "semantic search",
+    "code understanding",
+    "context aware ai",
+    "ai coding",
+    "developer tools",
+    "code analysis",
+    "project map",
+    "code navigation",
+    "repo understanding",
+    "ai assistant",
+    "copilot",
+    "cursor",
+    "code intelligence",
+    "indexing",
+    "static analysis",
+    "local ai",
+    "privacy",
+    "ollama",
+    "code documentation",
+    "architecture",
+    "developer productivity"
   ],
-  "activationEvents": ["onStartupFinished"],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -138,7 +141,13 @@
       "properties": {
         "mindexai.llmProvider": {
           "type": "string",
-          "enum": ["openai", "gemini", "claude", "local", "openai-compat"],
+          "enum": [
+            "openai",
+            "gemini",
+            "claude",
+            "local",
+            "openai-compat"
+          ],
           "enumDescriptions": [
             "OpenAI (GPT-4o, GPT-3.5-turbo)",
             "Google Gemini (2.5 Flash)",
@@ -166,7 +175,9 @@
         },
         "mindexai.excludePatterns": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": [
             "**/node_modules/**",
             "**/.git/**",
@@ -193,7 +204,10 @@
         },
         "mindexai.localApiType": {
           "type": "string",
-          "enum": ["openai-compat", "ollama"],
+          "enum": [
+            "openai-compat",
+            "ollama"
+          ],
           "enumDescriptions": [
             "OpenAI-compatible /v1/chat/completions (LM Studio, llama.cpp server, Jan.ai, text-generation-webui)",
             "Ollama native /api/chat (use when running Ollama directly)"
@@ -233,11 +247,30 @@
         },
         "mindexai.includedExtensions": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": [
-            ".ts", ".tsx", ".js", ".jsx", ".py", ".go", ".rs", ".java",
-            ".cs", ".cpp", ".c", ".h", ".hpp", ".rb", ".php", ".swift",
-            ".kt", ".scala", ".vue", ".svelte"
+            ".ts",
+            ".tsx",
+            ".js",
+            ".jsx",
+            ".py",
+            ".go",
+            ".rs",
+            ".java",
+            ".cs",
+            ".cpp",
+            ".c",
+            ".h",
+            ".hpp",
+            ".rb",
+            ".php",
+            ".swift",
+            ".kt",
+            ".scala",
+            ".vue",
+            ".svelte"
           ],
           "description": "File extensions to include in analysis"
         },
@@ -261,6 +294,10 @@
       }
     }
   },
+  "overrides": {
+    "diff": "^9.0.0",
+    "serialize-javascript": "^7.0.5"
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./ && node scripts/copyWasm.js",
@@ -269,7 +306,6 @@
     "test": "node ./out/test/index.js",
     "package": "vsce package"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.0.0",
@@ -277,9 +313,9 @@
     "@vscode/test-electron": "^2.3.8",
     "@vscode/vsce": "^2.22.0",
     "glob": "^10.3.10",
-    "mocha": "^10.3.0",
+    "mocha": "^11.7.5",
+    "tree-sitter-wasms": "^0.1.12",
     "typescript": "^5.3.0",
-    "web-tree-sitter": "^0.24.0",
-    "tree-sitter-wasms": "^0.1.12"
+    "web-tree-sitter": "^0.24.0"
   }
 }
